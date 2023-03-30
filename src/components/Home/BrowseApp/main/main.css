@@ -1,0 +1,237 @@
+.main-main{
+    margin-top: 2em;
+    width: 57.8%;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 18em;
+    right: 20em;
+    height: 100vh;
+
+}
+
+.main-div-first-flexes{
+    display: flex;
+    flex-direction: column;
+    background-color: #e52f1e17;
+    padding: 2em 0.9em;
+    width: 100%;
+    height: 9em;
+    border-radius: 0.6em;
+}
+
+.main-div-first-flex{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top:1em;
+    width: 100%;
+    padding: 0em 2em;
+    gap: 1em;
+}
+.main-div-first-flexes-icon{
+    color:#e52f1e;
+    margin-bottom: 0.3em;
+}
+.main-div-first-flexes-h4{
+    font-size:0.9em;
+    color:#e52f1e;
+    margin-top: 0.4em;
+}
+.main-div-first-flexes-p{
+    font-size:0.7em;
+    color:#e52f1e;
+    margin-top: 0.4em;
+}
+
+
+
+/* gray color */
+.gray{
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(128, 128, 128, 0.136);
+    padding: 2em 0.9em;
+    width: 100%;
+    height: 9em;
+    border-radius: 0.6em;
+}
+
+.div-gray{
+    color:gray;
+    margin-bottom: 0.3em;
+}
+.h4-gray{
+    font-size:0.9em;
+    color:gray;
+    margin-top: 0.4em;
+}
+.p-gray{
+    font-size:0.7em;
+    color:gray;
+    margin-top: 0.4em;
+}
+
+
+
+/* blue */
+.blue {
+    display: flex;
+    flex-direction: column;
+    background-color: #4286f42d;
+    padding: 2em 0.9em;
+    width: 100%;
+    height: 9em;
+    border-radius: 0.6em;
+}
+
+.div-blue{
+    color:#4285F4;
+    margin-bottom: 0.3em;
+}
+.h4-blue{
+    font-size:0.9em;
+    color:#4285F4;
+    margin-top: 0.4em;
+}
+.p-blue{
+    font-size:0.7em;
+    color:#4285F4;
+    margin-top: 0.4em;
+}
+
+
+/* green */
+.green {
+    display: flex;
+    flex-direction: column;
+    background-color: #4cd21b1b;
+    padding: 2em 0.9em;
+    width: 100%;
+    height: 9em;
+    border-radius: 0.6em;
+}
+
+.div-green{
+    color:#4BD21B;
+    margin-bottom: 0.3em;
+}
+.h4-green{
+    font-size:0.9em;
+    color:#4BD21B;
+    margin-top: 0.4em;
+}
+.p-green{
+    font-size:0.7em;
+    color:#4BD21B;
+    margin-top: 0.4em;
+}
+
+
+.div-main-doc{
+    background-color: white;
+    width: 78%;
+    height: 69%;
+  
+}
+.div-main-gray-doc{
+    background-color: rgba(128, 128, 128, 0.311);
+    width: 100%;
+    height:65%;
+    border-radius: 0.2em;
+    display: flex;
+    justify-content: center;
+    align-items:last baseline;
+ }
+
+ .div-main-gray-doc-stroke{
+    width: 16em;
+    height: 12em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 0.06em solid black;
+    border-radius: 0.9em;
+    cursor:pointer;
+    margin-top: 0.2em;
+ }
+ .div-main-doc-h5{
+    margin-bottom: 1.8em;
+    padding-left: 2em;
+    padding-right: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+ }
+
+ .main-main-doc{
+    gap: 0.7em;
+    margin-top: 2em;
+    display: flex;
+    flex-direction: column;
+    padding: 2em 2em;
+}
+.main-main-doc-flex{
+    display: flex;
+    gap: 2em;
+}
+
+
+@media screen and (max-width:1300px){
+    .main-main{
+        width: 48%;
+    }
+}
+
+@media screen and (max-width:1170px){
+    .main-main{
+        width: 65%;
+        position: fixed;
+        left: 0;
+    }
+    
+}
+
+@media screen and (max-width:839px){
+    .main-main{
+        width: 45%;
+        position: fixed;
+        left: 0;
+    }
+    .main-div-first-flex{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-top:1em;
+        width: 100%;
+        padding: 0em 2em;
+        gap: 1em;
+    }
+    .main-main-doc{
+        display:none;
+    }
+    
+}
+
+
+@media screen and (max-width:556px){
+    .main-main{
+        display: none;
+        width: 45%;
+        position: fixed;
+        left: 0;
+    }
+    .main-div-first-flex{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-top:1em;
+        width: 100%;
+        padding: 0em 2em;
+        gap: 1em;
+    }
+    .main-main-doc{
+        display:none;
+    }
+    
+}

@@ -1,0 +1,104 @@
+.div-background-one{
+    background-color: #292482;
+    width:100%;
+    height: 60vh;
+    color: white;
+    padding: 5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.div-background-div-one{
+    gap:2.4em;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    
+}
+.div-background-h1-one{
+    font-size: 3.4em;
+    text-align: center;
+}
+.div-background-p{
+    text-align: center;
+}
+@media(max-width:1157px){
+    .div-background-one{
+        background-color: #292482;
+        width:100%;
+        height: 60vh;
+        color: white;
+        padding: 2.4em;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .div-background-div-one{
+        gap:1.5em;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    .div-background-p{
+        width: 70%;
+        text-align: center;
+    }
+    
+
+    .div-background-h1-one{
+        font-size: 3em;
+    }
+}
+
+
+@media(max-width:745px){
+    .div-background-one{
+        background-color: #292482;
+        width:100%;
+        height: 78vh;
+        color: white;
+        padding: 2.2em;
+ 
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .div-background-div-one{
+        gap:2.6em;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .div-background-h1-one{
+        font-size: 2.6em;
+        text-align: center;
+    }
+}
+
+@media(max-width:444px){
+    .div-background-one{
+      
+        background-color: #292482;
+        width:100%;
+        height: 80vh;
+        color: white;
+        padding: 1.2em;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .div-background-div-one{
+        gap:2em;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .div-background-h1-one{
+        font-size: 2em;
+    }
+}

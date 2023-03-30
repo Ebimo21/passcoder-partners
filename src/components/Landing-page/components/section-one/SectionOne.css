@@ -1,0 +1,153 @@
+.div-container-gray{
+    width:72em;
+    height: 54em;
+    background-color:#29248212;
+    padding: 6em;
+    margin-top: -1.2em;
+    border-radius: 1em;
+    display: flex;
+    gap: 2em;
+}
+.padding-section-one{
+    padding-bottom: 1em;
+}
+.center-this-image{
+    width: 70%;
+}
+.center{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+.div-container-gray-one{
+    margin-top: 3.8em;
+}
+.h1-section-one{
+    font-size: 2.4em;
+    margin-top: 1em;
+    margin-bottom: 0.6em;
+}
+
+.image-in-div{
+    width: 24em;
+    height: 39em;
+}
+.p-section-one{
+    color:rgba(0, 0, 0, 0.778);
+    font-size: 1em;
+    width:70%;
+}
+.btn-section-one{
+    display:flex;
+    gap: 2em;
+    margin-top: 3em;
+} 
+
+@media (max-width:1177px){
+    
+    .p-section-one{
+    color:rgba(0, 0, 0, 0.778);
+    font-size: 0.8em;
+}
+    .div-container-gray{
+        width:58em;
+        height:47em;
+        background-color:#29248212;
+        padding: 3em;
+        margin-top: -1.2em;
+        border-radius: 1em;
+        display: flex;
+        gap: 2em;
+        
+    }
+    .image-in-div{
+        width: 22em;
+        height: 36.6em;
+        margin-top: 3em;
+    }
+
+}
+
+@media (max-width:1000px){
+    .div-container-gray{
+        width:39em;
+        height:74em;
+        background-color:#29248212;
+        padding: 1.9em;
+        margin-top: -1.2em;
+        border-radius: 1em;
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+        
+    }
+    .image-in-div{
+        width: 20em;
+        height: 34.6em;
+        margin-top: 3em;
+    }
+    .center-this-image{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 2em;
+    }
+    .h1-section-one{
+        font-size: 1.8em;
+        margin-top: 1em;
+        margin-bottom: 0.6em;
+    }
+    
+    .p-section-one{
+        color:rgba(0, 0, 0, 0.778);
+        font-size: 0.8em;
+    }
+
+}
+
+
+@media (max-width:679px){
+    .div-container-gray{
+        width:27em;
+        height:74em;
+        background-color:#29248212;
+        padding: 1.9em;
+        margin-top: 1em;
+        border-radius: 1em;
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+        
+    } .p-section-one{
+        color:rgba(0, 0, 0, 0.778);
+        font-size: 0.8em;
+    }
+
+}
+
+@media (max-width:439px){
+    .div-container-gray{
+
+        width:21.7em;
+        height:71em;
+        background-color:#29248212;
+        padding: 1.3em;
+        margin-top: 2em;
+        border-radius: 1em;
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+        
+    }
+    .image-of-logo{
+        margin-top: -1em;
+    }
+    .image-in-div{
+        width: 20em;
+        height: 30.6em;
+        margin-top: 1.7em;
+    } .p-section-one{
+        color:rgba(0, 0, 0, 0.778);
+        font-size: 0.8em;
+    }
+}

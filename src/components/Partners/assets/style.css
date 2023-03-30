@@ -1,0 +1,22 @@
+.pattern-bg{
+    background-image: url('./pattern-bg.png');
+    background-size: cover;
+}
+
+.signin-bg{
+    background-image: url("./bg-signin.png");
+    background-size: cover;
+}
+
+.wavebg {
+    background-image: url('./vector.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+
+/* table{
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+} */

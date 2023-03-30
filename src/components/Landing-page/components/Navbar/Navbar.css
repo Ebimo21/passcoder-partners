@@ -1,0 +1,198 @@
+/* Lexend font as explained by the figma file */
+@import url('https://fonts.googleapis.com/css2?family=Lexend&display=swap');
+
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: "lexend";
+}
+
+/* giving a background color to our body */
+body{
+    background-color: white;
+}
+
+:root {
+	--mainColor: #10162F;;
+	--mainColorLight: #292482;
+	--secondaryColor: #FFF0E5;
+	--textColor: #eee;
+}
+
+
+
+/* Styling our header in which our nav bar is sitted inside */
+header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 80px;
+    gap: 2.5em;
+	padding: 0 2rem;
+	background-color:white;
+	color: #000000;
+    position:fixed;
+    top:0; 
+    left:0; 
+    right:0;
+}
+
+
+/* h3-for-navbar is the styles for the Passcoder words just beside the logo */
+.h3-for-navbar{
+    margin-left:0.2em;
+    font-weight: bolder;
+
+}
+
+/* our nav link contents */
+
+nav a {
+	margin: 0 2rem;
+	color: #000000;
+	text-decoration: none;
+}
+
+
+header .nav-btn {
+	padding: 5px;
+	cursor: pointer;
+	background: transparent;
+	border: none;
+	outline: none;
+	color: #292482;
+	visibility: hidden;
+	opacity: 0;
+	font-size: 1.8rem;
+}
+
+header div,
+nav {
+	display: flex;
+	align-items: center;
+}
+
+
+/* these sections are for our nav bar sign up buttons on display none and block */
+.div-navbar-signup-button{
+    display: none;
+   
+}
+.navbar-signup-button-close{
+    display: block;
+    width: 10em;
+    height: 3em;
+    background-color: #292482;
+    color: #ffffff;
+    border:none;
+    border-radius: 0.43em;
+    transition: 2s;
+ }
+ .navbar-signup-button-close:hover{
+    display: block;
+    width: 10em;
+    height: 3em;
+    border:0.13 solid #292482;
+    background-color: orangered;
+    color: #ffffff;
+    border-radius: 05em;
+    transition: 1s;
+ }
+.navbar-signup-button{
+    display:none;
+ }
+
+
+ 
+@media only screen and (max-width: 1054px) {
+	header .nav-btn {
+		visibility: visible;
+		opacity: 1;
+        color:#292482;
+	}
+    .div-navbar-signup-button{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width:100%;
+        margin-top: 2em;
+    }
+    .navbar-signup-button{
+       display:block;
+        opacity: 1;
+        width: 26em;
+        height: 3em;
+        border-radius: 0.43em;
+        border:none;
+        background-color: white;
+        color:#10162F;
+        transition: 1s;
+     }
+     .navbar-signup-button:hover{
+        display:block;
+         opacity: 1;
+         width: 26em;
+         height: 3em;
+         border-radius: 5em;
+         border:none;
+         background-color: orangered;
+         color:white;
+         transition: 1s;
+      }
+      
+    .navbar-signup-button-close{
+       display:none;
+       
+    }
+	header nav {
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 70%;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+        align-items:first baseline;
+        text-align: left;
+		justify-content: center;
+		gap: 1.2rem;
+		background-color:#292482;
+		transition: 1s;
+		transform: translateY(-100vh);
+	}
+
+	header .responsive_nav {
+		transform: none;
+	}
+
+	nav .nav-close-btn {
+		position: absolute;
+		top: 2rem;
+		right: 2rem;
+        color:#ffffff;
+	}
+
+	nav a {
+		font-size: 1.1rem;
+        text-align: left;
+        width: 100%;;
+        padding: 0.9em 0.9em ;
+        color: white;
+        margin: 0 ;
+ 
+	}
+
+    nav a:hover {
+        font-size: 1.1rem;
+        background-color: #fff;
+        width: 100%;
+        padding: 0.9em 0.9em ;
+        color: #292482;
+
+    }
+    
+}
+
