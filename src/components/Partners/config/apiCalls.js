@@ -210,7 +210,7 @@ export const PartnerUploadPhoto =async(jwt, photo)=>{
             }
         )
         console.log(response)
-        return {success: true, message: "File successfullly updated"}
+        return response.data
     } catch(err){
         if (err.response){ return {success: false, message: err.response.data.message, err}; }
         else if (err.request) { console.log(err.request); } 
@@ -433,7 +433,7 @@ export const PartnerProofProfilePhoto =async(jwt, partner_unique_id)=>{
                 }
             }
         )
-        return {success: true, filename: response.data.data[0].photo}
+        return {success: true, filename: response.data}
     } catch(err){
         if (err.response){ return {success: false, message: err.response.data, err}; }
         else if (err.request) { console.log(err.request); } 

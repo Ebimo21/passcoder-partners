@@ -32,14 +32,12 @@ function PartnersAnnouncement() {
 
     const handleGetAnnouncement =async () =>{
         const response = await PartnerGetAnnouncements(jwt)
-        console.log(response)
         setAnnouncement(response?.data?.rows)
     }
 
     const handleCreateAnnouncement = async(e)=>{
         e.preventDefault()
         const response = await PartnerCreateAnnouncement(jwt, data)
-        console.log(response)
         setCreateAnnouncement(false)
 
         if(response.success){
@@ -47,7 +45,7 @@ function PartnersAnnouncement() {
         }else{
             setErrorNotification(prev=>true)
         }
-        setNotification(response.message)
+        setNotification(response?.data)
     }
     
     const FORMACTION= {
@@ -65,10 +63,8 @@ function PartnersAnnouncement() {
 
         switch(type){
             case FORMACTION.TITLE:
-                console.log(state)
                 return {...state, title: payload}
             case FORMACTION.DESCRIPTION:
-                console.log(state)
                 return {...state, description: payload}
             default:
                 return state

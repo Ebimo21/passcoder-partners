@@ -114,7 +114,10 @@ const handleUpdateBusinessDetails = async(e)=>{
           <div className='mt-10'>
               <p className='font-medium text-sm mb-2'>Your Profile Picture</p>
               <label className='inline-block' htmlFor="file-input">
-                <img src={partnerDetails?.photo} width={130} height={130} />
+                <div className='rounded-full w-20 h-20 overflow-clip'>
+                  <img src={partnerDetails?.photo} width={130} height={130} />
+
+                </div>
 
               </label>
               <input className='hidden' id='file-input' name='file-input' type="file" />

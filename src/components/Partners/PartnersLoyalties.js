@@ -41,8 +41,8 @@ function PartnersLoyalties() {
     async function getPartnerLoyaltyUsers (){
         const response = await PartnerLoyaltyUsers(jsCookie.get("jwt"))
         console.log(response)
-        console.log(response.data.rows[0].name)
-        setUsers(response.data.rows)
+        console.log(response?.data?.rows[0]?.name)
+        setUsers(response?.data?.rows)
     }
 
     const handleIssue = async(e)=>{
@@ -151,9 +151,9 @@ function PartnersLoyalties() {
                     return(
                         <tbody key={index}>
                             <tr >
-                                <td className='min-w-[200px] md:min-w-[250px] p-2 border-b-slate-200 border-b border-b-solid'><span className='flex items-center gap-2'><div>{`${user?.user_data?.firstname + " " +user?.user_data.pid}`}</div></span></td>
-                                <td className='w-20 p-2 border-b-slate-200 border-b border-b-solid'><span className={`${user.restricted? "bg-[#DEEDE5] text-[#74fa43]": "bg-[#FDF8CE] text-[#bd3c3c] "} p-1 rounded-md`}>{user?.restricted.toString()}</span></td>
-                                <td className='w-32 p-2 border-b-slate-200 border-b border-b-solid'><span >{user.points}</span></td>
+                                <td className='min-w-[200px] md:min-w-[250px] p-2 border-b-slate-200 border-b border-b-solid'><span className='flex items-center gap-2'><div>{`${user?.user_data?.firstname + " " +user?.user_data?.pid}`}</div></span></td>
+                                <td className='w-20 p-2 border-b-slate-200 border-b border-b-solid'><span className={`${user?.restricted? "bg-[#DEEDE5] text-[#74fa43]": "bg-[#FDF8CE] text-[#bd3c3c] "} p-1 rounded-md`}>{user?.restricted?.toString()}</span></td>
+                                <td className='w-32 p-2 border-b-slate-200 border-b border-b-solid'><span >{user?.points}</span></td>
                                 <td className="min-w-[150px] md:min-w-[160px] p-2 border-b-slate-200 border-b border-b-solid  "><span className='flexs items-center'>{user?.updatedAt?.date}</span></td>
                                 <td className="min-w-[150px] md:min-w-[160px] p-2 border-b-slate-200 border-b border-b-solid  "><span className='flexs items-center'>{user?.updatedAt?.date}</span></td>
                                 <td className="min-w-[100px] md:min-w-[160px] md:w-20 p-2 border-b-slate-200 border-b border-b-solid "><span className='flex flex-col items-center'><button onClick={()=>{setPId(user?.user_data?.unmasked); setIssueLoyalty(prev=>!prev);}} className='text-[#6B92FF]'>Issue Points</button><button onClick={()=>{setPId(user?.user_data?.unmasked); setCheckoutLoyalty(prev=>!prev)}} className='text-purple'>Checkout</button></span></td>
@@ -216,7 +216,7 @@ function LoyaltyRightBar (){
         const response = await PartnerActivateUser(jsCookie.get('jwt'), pId, offerId)
         .finally(e=>setLoading(false))
 
-        if(response.success){
+        if(response?.success){
             setSuccessNotification(prev=>true)
         }else{
             setErrorNotification(prev=>true)
@@ -236,9 +236,7 @@ function LoyaltyRightBar (){
 
     async function getPartnerOffers (){
         const response = await PartnerOffers(jsCookie.get("jwt"))
-        console.log(response.data.rows[0].name)
-        console.log(response.data.rows)
-        setOffers(response.data.rows)
+        setOffers(response?.data?.rows)
     }
 useEffect(()=>{
 
@@ -261,7 +259,7 @@ useEffect(()=>{
                             required>
                                 <option>Passcoder Offer</option>
                                 {offers?.map((offer, index)=>{
-                                return <option data-unique={offer.unique_id} key={index}>{offer?.name}</option>
+                                return <option data-unique={offer?.unique_id} key={index}>{offer?.name}</option>
                             })}
                         </select>
                         <p className='text-xs mt-1'>Input the User's PassCoder ID to verify their account for this offer</p>

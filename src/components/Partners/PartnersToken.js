@@ -64,12 +64,14 @@ function PartnersToken() {
         let newPayload;
         switch(type){
             case FORMACTION.ALIAS:
+                console.log(state);
                 return {...state, alias: payload}
             case FORMACTION.EXPIRATION:
                 console.log(payload)
                 newPayload = payload.replace(/[T]/, " ")
                 return {...state, expiration: newPayload}
             case FORMACTION.VALID:
+                console.log(state);
                 return {...state, valid: payload}
             case FORMACTION.CLEAR:
                 return {...state, ...initialState}

@@ -66,10 +66,13 @@ function PartnersSetting() {
 
     const handleProfilePictureUpdate =async(e)=>{
         e.preventDefault()
+        let profilePhoto = ""
+
         const el = formEl?.current?.elements[0].files[0]
         let response = await PartnerProofProfilePhoto(jwt, partnerDetails.partner_unique_id)
-        const filename = response.filename
-        let profilePhoto = ""
+        console.log(response);
+        const filename = response.filename.data[0].photo
+        console.log(filename);
         
         const sotrageRef = ref(storage, "partner/"+filename)
         const uploadTask =  uploadBytesResumable(sotrageRef,el)
@@ -77,6 +80,8 @@ function PartnersSetting() {
         uploadTask.on('state_changed', 
             (snapshot) => {
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+
             }, 
             (error) => {
                 // Handle unsuccessful uploads
@@ -84,6 +89,7 @@ function PartnersSetting() {
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
                     profilePhoto = downloadURL
+                    console.log(profilePhoto);
                     await setProfileUpload(profilePhoto)
                 });
               
@@ -95,13 +101,14 @@ function PartnersSetting() {
        const response = await PartnerUploadPhoto(jwt, profilePhoto)
         
         console.log(response)
+        setNotification(response)
 
         if(response.success){
             setSuccessNotification(prev=>true)
+
         }else{
             setErrorNotification(prev=>true)
         }
-        setNotification(response)
     }
   return (
     <div>
