@@ -15,7 +15,7 @@ function SideCheckoutLoyaltyPoints({setCheckoutPId, checkoutLoading, submit, set
                             className='p-1  border border-solid border-slate-300 w-full mt-2 rounded-md' 
                             type="text"
                             maxLength={6}
-                            minLength={6}
+                            minLength={8}
                             disabled={checkoutLoading}
                             required />
                     </div>
@@ -25,9 +25,9 @@ function SideCheckoutLoyaltyPoints({setCheckoutPId, checkoutLoading, submit, set
                         <input
                             onChange={(e)=> setCheckoutPoints(e.target.value)} 
                             className='p-1 border border-solid border-slate-300 w-full mt-2 rounded-md' 
-                            type="text"
-                            max={100}
-                            min={0}
+                            type="number"
+                            
+                            min={1}
                             disabled={checkoutLoading}
                             required />
                     </div>

@@ -34,7 +34,7 @@ function EditOffer({handleUpdate, dispatch, FORMACTION, id, formElement, callbac
             onClick={e => e.stopPropagation()}
             className='bg-[#fefefe] mx-auto rounded-lg my-[1%] max-w-sm md:max-w-[700px] p-5 md:px-20 border-none outline-none'>
             <h3 className='font-bold  mb-2'>Edit offer</h3>
-            <p className='text-sm'>Enter the details on the offer you are creating below</p>
+            {/* <p className='text-sm'>Enter the details on the offer you are creating below</p> */}
 
             <form onSubmit={(e)=>handleUpdate(e, callbackFn)} ref={formElement} className='mt-4 text-sm'>
                 <div className='flex flex-wrap'>
@@ -44,6 +44,8 @@ function EditOffer({handleUpdate, dispatch, FORMACTION, id, formElement, callbac
                         className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
                         type="text" 
                         name="name" 
+                        minLength ={3}
+                        maxLength={50}
                         defaultValue={offer?.name}
                         placeholder="Offer name"
                         required />
@@ -58,7 +60,7 @@ function EditOffer({handleUpdate, dispatch, FORMACTION, id, formElement, callbac
                             className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
                             type="number"
                             max={100}
-                            min={0} 
+                            min={1} 
                             name='discount'
                             defaultValue={offer?.discount}
                             placeholder='Enter number'
@@ -72,6 +74,7 @@ function EditOffer({handleUpdate, dispatch, FORMACTION, id, formElement, callbac
                             className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
                             type="text"
                             name='limit'
+                            min={1}
                             defaultValue={offer?.limit}
                             placeholder='Enter Number' />
                     </span>
@@ -91,6 +94,8 @@ function EditOffer({handleUpdate, dispatch, FORMACTION, id, formElement, callbac
                         name="description"
                         placeholder='Information about the offer'
                         defaultValue={offer?.description}
+                        minLength={3}
+                        maxLength={50}
                         cols="10" 
                         rows="3">
 
@@ -103,7 +108,7 @@ function EditOffer({handleUpdate, dispatch, FORMACTION, id, formElement, callbac
                         <input 
                             onChange={(e)=>dispatch({type: FORMACTION.START, payload: e.target.value})}
                             className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
-                            type="date"
+                            type="datetime-local"
                             defaultValue={offer?.start}
                             name='start' />
                     </span>
@@ -113,7 +118,7 @@ function EditOffer({handleUpdate, dispatch, FORMACTION, id, formElement, callbac
                         <input 
                             onChange={(e)=>dispatch({type: FORMACTION.END, payload: e.target.value})}
                             className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
-                            type="date"
+                            type="datetime-local"
                             defaultValue={offer?.end}
                             name='end' />
                     </span>
@@ -126,8 +131,10 @@ function EditOffer({handleUpdate, dispatch, FORMACTION, id, formElement, callbac
                         <input 
                             onChange={(e)=>dispatch({type: FORMACTION.POINTS, payload: e.target.value})}
                             className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
-                            type="text" 
+                            type="number" 
                             name='points'
+                            required
+                            min={1}
                             defaultValue={offer?.points} 
                             placeholder='Enter number' />
                     </span>
@@ -137,8 +144,11 @@ function EditOffer({handleUpdate, dispatch, FORMACTION, id, formElement, callbac
                         <input 
                             onChange={(e)=>dispatch({type: FORMACTION.STAR, payload: e.target.value})}
                             className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
-                            type="text" 
+                            type="number" 
                             name='star'
+                            min={1}
+                            max={5}
+                            required
                             defaultValue={offer?.star}
                              />
                     </span>

@@ -57,6 +57,12 @@ function App() {
             <Route path="/basic-verification" element={<BasicVerification />} />
             <Route path="/credential-verification" element={<CredentialVerification />} />
             <Route path="/government-record" element={<GovernmentRecord />} />
+
+
+            <Route path="/access/:stripped" element={ <SignIn /> } />
+            <Route path="/partners-signin-email" element={<SignInWelcome />} />
+            <Route path="/verify/email" element={ <VerifyEmail /> } />
+            <Route path="/partners-reset-token" element={<PartnerResetToken />} />
             <Route path="/partners-dashboard" element={ <PartnersDashboard /> } />
             <Route path="/partners-offers" element={ <PartnersOffers /> } />
             <Route path="/partners-loyalties" element={ <PartnersLoyalties /> } />
@@ -64,15 +70,11 @@ function App() {
             <Route path="/partners-token" element={ <PartnersToken /> } />
             <Route path="/partners-transactions" element={ <PartnerTransactions /> } />
             <Route path="/partners-business-settings" element={ <PartnersBusinessSettings /> } />
-            <Route path="/partners-signin-email" element={<SignInWelcome />} />
-            <Route path="/access/:stripped" element={ <SignIn /> } />
             <Route path="/partners-otp" element={<PartnersOtp />} />
-            <Route path="/partners-reset-token" element={<PartnerResetToken />} />
             <Route path="/partners-email-sent" element={<PartnerEmailSent />} />
             <Route path="/partners-reset-successful" element={<PartnerResetSuccesful />} />
             <Route path="/partners-signup" element={<PartnerSignUp />} />
             <Route path="/partners-announcement" element={ <PartnersAnnouncement /> } />
-            <Route path="/verify/email" element={ <VerifyEmail /> } />
             
 
             

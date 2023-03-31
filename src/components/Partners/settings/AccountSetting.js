@@ -38,11 +38,10 @@ function AccountSetting({submit, formElement, partnerDetails, refresh}) {
     // const response = await 
   }
   const handleUpdateThreshold = async(e)=>{
-    const point_threshold = e.target.elements[0].value
     e.preventDefault()
+    const point_threshold = parseInt(e.target.elements[0].value)
     const response = await PartnerUpdateThreshold(jwt, point_threshold )
     refresh(prev=>!prev)
-    console.log(response);
     if(response.success){
       setSuccessNotification(prev=>true)
   }else{
@@ -85,7 +84,6 @@ const [signupData, dispatch] = useReducer(reducer, signupForm)
 const handleLoop= (e)=>{
   const el = formEl.current.elements
     for(let i=0; i<el?.length; i++){
-      // console.log(el[i].name)
       dispatch({type: el[i].name, payload: el[i].value})
   }
   console.log(signupData)
@@ -134,6 +132,7 @@ const handleUpdateBusinessDetails = async(e)=>{
                 <input 
                   type="email"
                   name='email'
+                  required
                   // placeholder='Email'
                   defaultValue={partnerDetails?.email}
                   className='p-2 basis-6/12 text-slate-400  border border-solid border-slate-400  mt-2 outline-none '
@@ -150,6 +149,8 @@ const handleUpdateBusinessDetails = async(e)=>{
 
                 <input 
                   type="number"
+                  min={1}
+                  required
                   name='point_threshold'
                   defaultValue={partnerDetails?.point_threshold}
                   className='p-2 basis-6/12 text-slate-400 border border-solid border-slate-400  mt-2 outline-none'
@@ -166,6 +167,8 @@ const handleUpdateBusinessDetails = async(e)=>{
                                 className="p-2 basis-6/12 text-slate-400 border border-solid border-slate-400  outline-none" 
                                 type="text" 
                                 name="name"
+                                minLength={3}
+                                maxLength={50}
                                 // onChange={(e)=>dispatch({type: SIGNUPACTION.NAME, payload: e.target.value} )}
                                 // onChange={}
                                 defaultValue={partnerDetails?.name} 

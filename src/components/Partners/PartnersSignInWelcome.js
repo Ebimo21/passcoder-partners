@@ -47,6 +47,7 @@ function SignInWelcome() {
               type="email" 
               className='border-b border-b-solid border-b-slate-500 block w-full outline-none'
               value={email}
+              required
               onChange={(e)=>setEmail(e.target.value)}  />
  
             <div className=' flex flex-col items-end mt-5'>

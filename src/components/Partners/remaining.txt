@@ -1,3 +1,0 @@
-single announcement detail page
-count down for the dashboard home
-check for 401 response in protected route and logout user

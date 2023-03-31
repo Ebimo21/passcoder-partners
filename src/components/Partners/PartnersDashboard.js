@@ -37,7 +37,7 @@ function PartnersDashboard() {
     // }
     async function getPartnerOffers (){
         const response = await PartnerOffers(jwt)
-        setOffers(response.data.rows)
+        setOffers(response?.data?.rows)
     }
     const handleActivateUser =async(e)=>{
         e.preventDefault()
@@ -64,6 +64,7 @@ function PartnersDashboard() {
     useEffect(()=>{
         getPartnerDetails()
         getPartnerOffers()
+        console.log(offers?.length);
     },[])
 
   return (
@@ -99,7 +100,8 @@ function PartnersDashboard() {
                 <h2 className='text-[#262A41] text-2xl font-bold'>Verify User</h2>
                 <div>
                     <select 
-                        disabled={loading}  
+                        disabled={offers?.length === undefined || loading? true: false} 
+                        required 
                         onChange={(e)=>setOfferId(e.target.options[e.target.selectedIndex].getAttribute("data-unique"))} 
                         className=' border border-solid border-slate-400 py-3 text-xs px-5 rounded-md outline-none text-slate-500'>
                         <option defaultValue>Passcoder Offer</option>
@@ -116,11 +118,14 @@ function PartnersDashboard() {
                     className=' border border-solid border-slate-400 py-2 px-4 rounded-md outline-none text-slate-500' 
                     type="text"
                     name='pid'
+                    required
+                    minLength={6}
+                    maxLength={8}
                     placeholder='PID'
-                    disabled={loading} />
+                    disabled={offers?.length === undefined || loading? true: false} />
 
                 <button 
-                    disabled={loading} 
+                    disabled={offers?.length === undefined || loading? true: false} 
                     className={`flex items-center gap-3 justify-center text-sm bg-purple ${loading? "w-40": "w-36"} p-4 rounded-md text-white m-auto`}>Verify user {!loading&&<BiNavigation />} {loading && <TailSpin speed={3} height={24} />} </button>
 
             </div>

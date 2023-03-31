@@ -253,7 +253,7 @@ export const PartnerComplianceCertificate =async(jwt, registration_certificate)=
             }
         )
         console.log(response.data)
-        return {success: true, filename: response.data[0].registration_certificate}
+        return response.data
     } catch(err){
         if (err.response){ return {success: false, message: err.response.data.message, err}; }
         else if (err.request) { console.log(err.request); } 
@@ -485,12 +485,12 @@ export const PartnerProof =async(jwt, partner_unique_id)=>{
     }
 }
 
-export const PartnerResetOtp =async({email})=>{
+export const PartnerResetOtp =async(email)=>{
     try {
         const response = await axios.post(`
-            ${host}${authRoute}resent/verification/email`,
+            ${host}${authRoute}reset/token`,
             {
-                email
+                email: email
             }, 
             {
 
@@ -498,7 +498,7 @@ export const PartnerResetOtp =async({email})=>{
         )
         return response.data
     } catch(err){
-        if (err.response){ return {success: false, message: err.response.data, err}; }
+        if (err.response){ return {success: false, message: err.response.data.message, err, data: err.response.data.data}; }
         else if (err.request) { console.log(err.request); } 
         else { console.log('Error: ', err.message); }
     }
@@ -581,7 +581,7 @@ export const PartnerSignupRoute =async({name, email, description, city, state, c
             
         return response.data
     } catch(err){
-        if (err.response){ return err; }
+        if (err.response){ return {success: false, message: err.response.data.message, err, data: err.response.data};}
         else if (err.request) { console.log(err.request); } 
         else { console.log('Error: ', err.message); }
     }
@@ -635,7 +635,7 @@ export const PartnerUniqueOffer =async(jwt, offer_id)=>{
     }
 }
 
-export const PartnerAddOffer =async(jwt, {name, discount, single, points, star})=>{
+export const PartnerAddOffer =async(jwt, {name, discount, start, end, single, points, star})=>{
     try {
         const response = await axios.post(
             `${host}partner/offer/add`, 
@@ -644,7 +644,9 @@ export const PartnerAddOffer =async(jwt, {name, discount, single, points, star})
                 discount, 
                 single, 
                 points, 
-                star
+                star,
+                start, 
+                end
             },
             {
                 headers: {"passcoder-access-token":jwt}}
@@ -984,7 +986,7 @@ export const PartnerDeleteToken =async(jwt, unique_id)=>{
     }
 }
 
-export const PartnerUpdateTokenDetails =async(jwt,token_id, unique_id, {alias, description, valid})=>{
+export const PartnerUpdateTokenDetails =async(jwt,token_id, unique_id, {alias, expiration, valid})=>{
     try {
         const response = await axios.put(
             `${host}partner/token/update/details`,
@@ -992,7 +994,7 @@ export const PartnerUpdateTokenDetails =async(jwt,token_id, unique_id, {alias, d
                 token: token_id, 
                 unique_id, 
                 alias, 
-                description, 
+                expiration, 
                 valid}, 
             {
                 headers: {

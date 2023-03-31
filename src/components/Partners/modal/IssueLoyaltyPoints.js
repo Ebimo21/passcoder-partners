@@ -20,6 +20,8 @@ function IssueLoyaltyPoints({submit, id, setPoints, loading, show, onClose}) {
                             className='p-2   border border-solid border-slate-300 w-full mt-2  rounded-md outline-none' 
                             type="text" 
                             value={id}
+                            min={6}
+                            max={8}
                             disabled
                             required />
                     </div>
@@ -30,8 +32,8 @@ function IssueLoyaltyPoints({submit, id, setPoints, loading, show, onClose}) {
                             onChange={(e)=>setPoints(Number(e.target.value))}
                             className='p-2 border border-solid border-slate-300  w-full mt-2 rounded-md outline-none' 
                             type="number"
-                            max={100}
-                            min={0}
+
+                            min={1}
                             disabled={loading}
                             required />
                     </div>

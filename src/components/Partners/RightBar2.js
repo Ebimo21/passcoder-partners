@@ -46,9 +46,9 @@ function RightBar2({setLoyaltyPId, setCheckoutPId, loyaltyLoading, checkoutLoadi
 
     async function getPartnerOffers (){
         const response = await PartnerOffers(jsCookie.get("jwt"))
-        console.log(response.data.rows[0].name)
-        console.log(response.data.rows)
-        setOffers(response.data.rows)
+        console.log(response?.data?.rows[0]?.name)
+        console.log(response?.data?.rows)
+        setOffers(response?.data?.rows)
     }
 useEffect(()=>{
 
@@ -100,6 +100,7 @@ useEffect(()=>{
                             onChange={(e)=>setPId(e.target.value)}
                             type="text"
                             minLength={6} 
+                            maxLength={8}
                             className='py-2 bg-transparent px-4 text-xs text-slate-500 border border-solid border-slate-400 w-full mt-4 outline-none rounded-md' 
                             placeholder='PID'
                             required />

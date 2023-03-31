@@ -55,19 +55,19 @@ function PartnersToken() {
 
     const initialState = {
         alias: "",
-        expiration: "",
+        expiration: 0,
         valid: true
     }
 
     const reducer =(state, action)=>{
         const {type, payload} = action
-
+        let newPayload;
         switch(type){
             case FORMACTION.ALIAS:
                 return {...state, alias: payload}
             case FORMACTION.EXPIRATION:
-                const newPayload = payload.replace(/[T]/, " ")
-                console.log(state)
+                console.log(payload)
+                newPayload = payload.replace(/[T]/, " ")
                 return {...state, expiration: newPayload}
             case FORMACTION.VALID:
                 return {...state, valid: payload}
@@ -111,14 +111,7 @@ function PartnersToken() {
 
     const handleCallback = async(e, callback)=>{
         e.preventDefault()
-        const el = formEl?.current?.elements
-        console.log(el)
-
-        for(let i=0; i<el?.length; i++){
-            console.log(el[i].name)
-            console.log(state)
-            dispatch({type: el[i].name, payload: el[i].defaultValue})
-        }
+        
 
         callback()
     }

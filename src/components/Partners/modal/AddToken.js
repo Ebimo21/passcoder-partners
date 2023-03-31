@@ -19,6 +19,9 @@ function AddToken({ show, onClose, submit, dispatch, action}) {
                         className="border border-slate-200 border-solid p-3 outline-none rounded-md basis-full mt-2" 
                         type="text" 
                         name="alias" 
+                        required
+                        minLength={3}
+                        maxLength={150}
                         placeholder="Token Alias" />
                 </div>
                 <div className='flex flex-wrap mt-5'>

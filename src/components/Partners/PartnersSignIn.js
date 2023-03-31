@@ -5,27 +5,21 @@ import {FaDatabase} from 'react-icons/fa'
 import Congratulations from "./modal/Congratulations"
 import Error from "./modal/Error"
 import { PartnerAccessDetails, PartnerLoginEmail, PartnerLoginToken } from './config/apiCalls'
-import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { useParams } from 'react-router-dom'
-import UsePartnerDetails from './context/partnerDetails.context'
-
-// useSearchParams
-
 
 function SignIn() {
-  const params = useParams()
-  const [details, setdetails] = useState("")
-
   const navigate = useNavigate()
-  const [loading, setLoading] = useState(false)
+  const params = useParams()
+  
+  const [details, setdetails] = useState("")
   const [successNotification, setSuccessNotification] = useState(false)
   const [errorNotification, setErrorNotification] = useState(false)
-  const [ notification, setNotification] = useState("")
+  const [notification, setNotification] = useState("")
   const [signInWithEmail, setSignInWithEmail] = useState(false)
   const [signInWithToken, setSignInWithToken] = useState(true)
   const [email, setEmail] = useState("")
-
 
   const handleSignInToggle = ()=>{
     setSignInWithToken(prev=>!prev)
@@ -35,15 +29,12 @@ function SignIn() {
     ROLE: "role",
     TOKEN: "token"
   }
-
-  const loginForm = {
+  const initialState = {
     role: "ADMIN",
     token: ""
   }
-
   const reducer= (state, action) =>{
     const {type, payload} = action
-
     switch(type){
       case FORMACTION.ROLE:
         return{...state, role: payload}
@@ -53,85 +44,78 @@ function SignIn() {
         return state
     }
   }
-
-  const [state, dispatch] = useReducer(reducer, loginForm)
+  const [state, dispatch] = useReducer(reducer, initialState)
 
   const handleEmailLogin=async(e)=>{
     e.preventDefault()
     const response = await PartnerLoginEmail(email, params.stripped)
+    setNotification(response.message)
     if(response.success){
-      setNotification(response.message)
       setSuccessNotification(true)
       setTimeout(() => {
         navigate("/partners-otp");
-      }, 3000);
+      }, 4000);
     }else{
-      setNotification(response.message)
       setErrorNotification(true)
     }
-
   }
 
   const handleSignIn=async(e)=>{
     e.preventDefault()
     const result =await PartnerLoginToken(state, params.stripped)
+    setNotification(result.message)
     if(result.success){
-      setNotification(result.message)
       setSuccessNotification(true)
-      
       setTimeout(() => {
         navigate("/partners-dashboard");
-
-      }, 3000)
+      }, 4000)
     }else{
-      setNotification(result.message)
       setErrorNotification(true)
     }
-
-}
-  
-useEffect(()=>{
-  async function getAccessDetails (){
-    const response = await PartnerAccessDetails(params.stripped)
-    setdetails(response.data)
-}
-
-getAccessDetails()
-},[signInWithEmail, signInWithToken])
+  }
+  useEffect(()=>{
+    async function getAccessDetails (){
+      const response = await PartnerAccessDetails(params.stripped)
+      setdetails(response.data)
+    }
+    getAccessDetails()
+  },[signInWithEmail, signInWithToken])
 
   return (
     <AuthPagesBase>
       <div className='w-[300px] md:w-[400px]'>
       
-      {signInWithToken && 
-        <SignInWithToken
-          dispatch={dispatch}
-          FORMACTION={FORMACTION}
-          toggle={handleSignInToggle}
-          login={handleSignIn}
-          navigate={navigate}
-          />}
-      {signInWithEmail && 
-        <SignInWithEmail 
-          navigate={navigate}
-          setEmail={setEmail}
-          email={email}
-          login={handleEmailLogin}
-          business={details?.name}
-          toggle={handleSignInToggle}
-          />}
+        {signInWithToken && 
+          <SignInWithToken
+            dispatch={dispatch}
+            FORMACTION={FORMACTION}
+            toggle={handleSignInToggle}
+            login={handleSignIn}
+            navigate={navigate}
+            business={details?.name}
+            />}
+        {signInWithEmail && 
+          <SignInWithEmail 
+            navigate={navigate}
+            setEmail={setEmail}
+            email={email}
+            login={handleEmailLogin}
+            business={details?.name}
+            toggle={handleSignInToggle}
+            />}
       </div>
 
       <Error 
         lead={notification} 
-        sub=""
+        sub={""}
         show={errorNotification}
-        onClose={()=>setErrorNotification(false)} />
-      
+        onClose={()=>setErrorNotification(false)} 
+        />
       <Congratulations 
         lead={notification} 
         show={successNotification}
-        onClose={()=>setSuccessNotification(false)}/>
+        onClose={()=>setSuccessNotification(false)}
+      />
     </AuthPagesBase>
   )
 }
@@ -171,19 +155,21 @@ const SignInWithEmail = ({toggle, business, login, setEmail, email, navigate}) =
   )
 }
 
-const SignInWithToken = ({ dispatch, FORMACTION, toggle, login, navigate}) =>{
+const SignInWithToken = ({ dispatch, FORMACTION, business, toggle, login, navigate}) =>{
 
   
   
   return (
     <>
-    <h3 className='text-2xl font-bold mb-2'>Sign In</h3>
+    <h3 className='text-2xl font-bold mb-2'>Sign In, <span className='text-purple font-bold'>{business}</span></h3>
         <p>Don’t have an account, <span onClick={()=>navigate("/partners-signup")} className='cursor-pointer text-purple font-semibold'>Sign up</span></p>
 
         <form onSubmit={login} className='mt-10 md:mt-14'>
             <label>Role</label>
             <select name='role' 
-              onChange={(e)=>dispatch({type: FORMACTION.ROLE, payload: e.target.value})} className='mb-10 mt-2 border-b border-b-solid border-b-slate-500 block w-full outline-none'>
+              onChange={(e)=>dispatch({type: FORMACTION.ROLE, payload: e.target.value})} 
+              className='mb-10 mt-2 border-b border-b-solid border-b-slate-500 block w-full outline-none'
+              required>
                 <option defaultValue>ADMIN</option>
                 <option >USER</option>
             </select>
@@ -191,7 +177,10 @@ const SignInWithToken = ({ dispatch, FORMACTION, toggle, login, navigate}) =>{
             <label>Token</label>
             <input 
               onChange={(e)=>dispatch({type: FORMACTION.TOKEN, payload: e.target.value})}
-              name="token" type="text" className='border-b border-b-solid border-b-slate-500 block w-full outline-none'  />
+              name="token" 
+              type="text" 
+              className='border-b border-b-solid border-b-slate-500 block w-full outline-none'
+              required  />
  
             <div className=' flex flex-col items-end mt-5'>
               <span onClick={()=>navigate("/partners-reset-token")} className='cursor-pointer text-pink text-xs text-purple font-semibold mb-6'>Forgot Token?</span>

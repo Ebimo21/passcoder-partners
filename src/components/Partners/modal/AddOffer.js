@@ -23,7 +23,10 @@ function AddOffer({handleSubmit, dispatch, FORMACTION, show, onClose}) {
                         className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
                         type="text" 
                         name="name"
-                        placeholder="Offer name" />
+                        placeholder="Offer name"
+                        required
+                        minLength={3}
+                        maxLength={50} />
                 </div>
 
                 <div className='flex flex-wrap md:flex-nowrap justify-between gap-4 md:gap-0  mt-4'>
@@ -32,8 +35,11 @@ function AddOffer({handleSubmit, dispatch, FORMACTION, show, onClose}) {
                         <input
                             onChange={(e)=>dispatch({type: FORMACTION.DISCOUNT, payload: e.target.value})} 
                             className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
-                            type="text" 
+                            type="number" 
                             name='discount' 
+                            required
+                            min={1}
+                            max={100}
                             placeholder='Enter number' />
                     </span>
 
@@ -42,16 +48,19 @@ function AddOffer({handleSubmit, dispatch, FORMACTION, show, onClose}) {
                         <input 
                             onChange={(e)=>dispatch({type: FORMACTION.LIMIT, payload: e.target.value})}
                             className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
-                            type="text"
+                            type="number"
                             name='limit'
-                            placeholder='Enter Number' />
+                            placeholder='Enter Number'
+                            required
+                            min={1} />
                     </span>
                 </div>
 
                 <input 
                     onChange={(e)=>dispatch({type: FORMACTION.SINGLE, payload: !e.target.checked})} 
                     type="checkbox"
-                    name='single' /> <label>Multiple use</label>
+                    name='single'
+                     /> <label>Multiple use</label>
 
                 <div className='flex flex-wrap mt-4'>
                     <label>Description</label>
@@ -60,7 +69,9 @@ function AddOffer({handleSubmit, dispatch, FORMACTION, show, onClose}) {
                         className='p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' 
                         name="description"
                         placeholder='Information about the offer'
-                        cols="10" 
+                        cols="10"
+                        min={3}
+                        required 
                         rows="3">
 
                     </textarea>
@@ -72,8 +83,9 @@ function AddOffer({handleSubmit, dispatch, FORMACTION, show, onClose}) {
                         <input 
                             onChange={(e)=>dispatch({type: FORMACTION.START, payload: e.target.value})}
                             className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
-                            type="date"
-                            name='start' />
+                            type="datetime-local"
+                            name='start'
+                             />
                     </span>
 
                     <span className='flex flex-col '>
@@ -81,7 +93,7 @@ function AddOffer({handleSubmit, dispatch, FORMACTION, show, onClose}) {
                         <input 
                             onChange={(e)=>dispatch({type: FORMACTION.END, payload: e.target.value})}
                             className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
-                            type="date"
+                            type="datetime-local"
                             name='end' />
                     </span>
                     
@@ -93,8 +105,10 @@ function AddOffer({handleSubmit, dispatch, FORMACTION, show, onClose}) {
                         <input 
                             onChange={(e)=>dispatch({type: FORMACTION.POINTS, payload: e.target.value})}
                             className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
-                            type="text" 
-                            name='points' 
+                            type="number" 
+                            name='points'
+                            required
+                            min={1} 
                             placeholder='Enter number' />
                     </span>
 
@@ -107,6 +121,7 @@ function AddOffer({handleSubmit, dispatch, FORMACTION, show, onClose}) {
                             name='star'
                             min={1}
                             max={5}
+                            required
                              />
                     </span>
                 </div>

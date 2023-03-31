@@ -94,6 +94,7 @@ function PartnersAnnouncement() {
                             className='p-1  border border-solid border-slate-300 w-full mt-2 rounded-md' 
                             placeholder='PID'
                             minLength={6}
+                            maxLength={8}
                             required />
 
                         <button 

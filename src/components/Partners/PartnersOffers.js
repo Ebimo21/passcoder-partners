@@ -75,25 +75,28 @@ function PartnersOffers() {
 
     const reducer =(state, action)=>{
         const {type, payload} = action
+        let newPayload;
         switch(type){
             case FORMACTION.NAME:
                 return {...state, name: payload}
             case FORMACTION.DISCOUNT:
-                return {...state, discount: payload}
+                return {...state, discount: parseInt(payload)}
             case FORMACTION.LIMIT:
-                return {...state, limit: payload}
+                return {...state, limit: parseInt(payload)}
             case FORMACTION.SINGLE:
                 return {...state, single: payload}
             case FORMACTION.DESCRIPTION:
                 return {...state, description: payload}
             case FORMACTION.START:
-                return {...state, start: payload}
+                newPayload = payload.replace(/[T]/, " ")
+                return {...state, start: newPayload}
             case FORMACTION.END:
-                return {...state, end: payload}
+                newPayload = payload.replace(/[T]/, " ")
+                return {...state, end: newPayload}
             case FORMACTION.POINTS:
-                return {...state, points: payload}
+                return {...state, points: parseInt(payload)}
             case FORMACTION.STAR:
-                return {...state, star: payload}
+                return {...state, star: parseInt(payload)}
             case FORMACTION.CLEAR:
                 return {...state, ...offerForm}
             default:
@@ -104,7 +107,6 @@ function PartnersOffers() {
     const [state, dispatch] = useReducer(reducer, offerForm )
     const handleSubmit= async(e)=>{
         e.preventDefault()
-        // console.log(state)
         setCreateOfferModal(false)
         const response = await PartnerAddOffer(jsCookie.get("jwt"), state)
 

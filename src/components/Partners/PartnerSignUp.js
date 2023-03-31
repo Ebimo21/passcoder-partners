@@ -11,7 +11,9 @@ function PartnerSignUp() {
 
     const [loginSuccess, setLoginSuccess] = useState(false)
     const [loginError, setLoginError] = useState(false)
-    const [ notification, setNotification] = useState("")
+    const [successNotification, setSuccessNotification] = useState(false)
+    const [errorNotification, setErrorNotification] = useState(false)
+    const [notification, setNotification] = useState("")
 
     const signupForm ={
         name: "",
@@ -53,18 +55,16 @@ function PartnerSignUp() {
     const handleSignup = async(e)=>{
         e.preventDefault()
         const response = await PartnerSignupRoute(signupData)
+        setNotification(response)
         console.log(response)
-
         if(response.success){
-            setNotification(response.message)
-            setLoginSuccess(true)
-            setTimeout(() => {
-              navigate("/partners-signin");
-            }, 4000);
-          }else{
-            setNotification(response.message)
-            setLoginError(true)
-          }
+        setSuccessNotification(true)
+        setTimeout(() => {
+            navigate("/partners-sigin");
+        }, 4000)
+        }else{
+        setErrorNotification(true)
+        }
     }
 
     const closeModal =()=>{
@@ -81,29 +81,76 @@ function PartnerSignUp() {
             <form onSubmit={handleSignup} className='mt-4 flex flex-col gap-2'>
                 <div className='flex flex-col gap-1'>
                     <label>Business Name</label>
-                    <input onChange={(e)=>dispatch({type: SIGNUPACTION.NAME, payload: e.target.value} )} className=' p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' type="text" name="name" placeholder='Enter Business Name'  />
+                    <input 
+                        onChange={(e)=>dispatch({type: SIGNUPACTION.NAME, payload: e.target.value} )} 
+                        className=' p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' 
+                        type="text" 
+                        name="name" 
+                        minLength={3}
+                        maxLength={50}
+                        placeholder='Enter Business Name'
+                        required  />
                 </div>
                 <div className='flex flex-col gap-1'>
                     <label>Business Email</label>
-                    <input onChange={(e)=>dispatch({type: SIGNUPACTION.EMAIL, payload: e.target.value} )} className=' p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' type="email" name="email" placeholder='Enter Business Email'  />
+                    <input 
+                    onChange={(e)=>dispatch({type: SIGNUPACTION.EMAIL, payload: e.target.value} )} 
+                    className=' p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' 
+                    type="email" 
+                    name="email" 
+                    required
+                    placeholder='Enter Business Email'  />
                 </div>
                 <div className='flex flex-col gap-1'>
                     <label>Description`</label>
-                    <textarea onChange={(e)=>dispatch({type: SIGNUPACTION.DESCRIPTION, payload: e.target.value} )} className='p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' cols="10" rows="3" name='description' placeholder='Tell us what your business is all about.' ></textarea>
+                    <textarea 
+                        onChange={(e)=>dispatch({type: SIGNUPACTION.DESCRIPTION, payload: e.target.value} )} 
+                        className='p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' 
+                        cols="10" 
+                        rows="3" 
+                        name='description' 
+                        placeholder='Tell us what your business is all about.'
+                        minLength={3}
+                        maxLength={500}
+                        required ></textarea>
                 </div>
 
                 <div className='flex gap-4'>
                     <div className='flex flex-col gap-1'>
                         <label>City</label>
-                        <input onChange={(e)=>dispatch({type: SIGNUPACTION.CITY, payload: e.target.value} )} className=' p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' type="text" name="city" placeholder='City'  />
+                        <input 
+                            onChange={(e)=>dispatch({type: SIGNUPACTION.CITY, payload: e.target.value} )} 
+                            className=' p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' 
+                            type="text" 
+                            name="city" 
+                            placeholder='City'
+                            maxLength={50}
+                            minLength={3}
+                            required  />
                     </div>
                     <div className='flex flex-col gap-1'>
                         <label>State</label>
-                        <input onChange={(e)=>dispatch({type: SIGNUPACTION.STATE, payload: e.target.value} )} className=' p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' type="text" name="state" placeholder='State'  />
+                        <input 
+                            onChange={(e)=>dispatch({type: SIGNUPACTION.STATE, payload: e.target.value} )} 
+                            className=' p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' 
+                            type="text" 
+                            name="state" 
+                            placeholder='State'
+                            maxLength={50}
+                            minLength={3}
+                            required  />
                     </div>
                     <div className='flex flex-col gap-1'>
                         <label>Country</label>
-                        <input onChange={(e)=>dispatch({type: SIGNUPACTION.COUNTRY, payload: e.target.value} )} className=' p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' type="text" name="country" placeholder='Country'  />
+                        <input 
+                            onChange={(e)=>dispatch({type: SIGNUPACTION.COUNTRY, payload: e.target.value} )} 
+                            className=' p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' 
+                            type="text" 
+                            name="country" 
+                            placeholder='Country'
+                            maxLength={50}
+                            minLength={3}
+                            required  />
                     </div>
                 </div>
         <div className=' flex flex-col items-end mt-5'>
@@ -112,13 +159,20 @@ function PartnerSignUp() {
             </form>
         </div>
 
-        {loginError && (
-            <Error lead={notification} close={closeModal}    />
-        )}
+            {/* <Error 
+                lead={notification}
+                sub="" close={closeModal}    /> */}
+            <Error 
+            lead={notification?.message} 
+            sub={notification?.data?.data}
+            show={errorNotification}
+            onClose={()=>setErrorNotification(false)}/>
 
-        {loginSuccess && (
-            <Congratulations lead={notification}/>
-        )}
+            <Congratulations 
+                lead={notification}
+                show={successNotification}
+                onClose={()=>setSuccessNotification(false)}
+                />
     </AuthPagesBase>
   )
 }

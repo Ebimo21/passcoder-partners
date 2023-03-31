@@ -72,14 +72,6 @@ function PartnersOtp() {
       <div>
           <h3 className='text-textGrey font-bold text-lg'>OTP Verification</h3>
           <p className='w w-48 m-auto'>A one time password has been sent to your email, kindly fill it in below.</p>
-          {/* <div className='flex justify-center gap-4  mt-10'>
-            <input type="number" className='text-center w-10 h-10 rounded-full outline-none bg-[#F4F4F4] border border-solid border-purple' />
-            <input type="number" className='text-center w-10 h-10 rounded-full outline-none bg-[#F4F4F4] border border-solid border-purple' />
-            <input type="number" className='text-center w-10 h-10 rounded-full outline-none bg-[#F4F4F4] border border-solid border-purple' />
-            <input type="number" className='text-center w-10 h-10 rounded-full outline-none bg-[#F4F4F4] border border-solid border-purple' />
-            <input type="number" className='text-center w-10 h-10 rounded-full outline-none bg-[#F4F4F4] border border-solid border-purple' />
-            <input type="number" className='text-center w-10 h-10 rounded-full outline-none bg-[#F4F4F4] border border-solid border-purple' />
-          </div> */}
 
           <div className='flex justify-center gap-4  mt-10' >
               {inputFields}

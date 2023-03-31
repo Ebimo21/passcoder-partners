@@ -77,7 +77,6 @@ function PartnersSetting() {
         uploadTask.on('state_changed', 
             (snapshot) => {
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log('Upload is ' + progress + '% done');
             }, 
             (error) => {
                 // Handle unsuccessful uploads
@@ -86,7 +85,6 @@ function PartnersSetting() {
                 getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
                     profilePhoto = downloadURL
                     await setProfileUpload(profilePhoto)
-                console.log('File available at', downloadURL);
                 });
               
             }

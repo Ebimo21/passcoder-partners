@@ -25,7 +25,7 @@ function VerifyEmail() {
             setNotification(response.message)
             setSuccessNotification(true)
             
-            navigate("/access/${alias}");
+            // navigate("/access/${alias}");
             // setTimeout(() => {
             // }, 3000)
           }else{

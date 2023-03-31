@@ -8,13 +8,24 @@ function EditToken({ handleUpdate, editId, dispatch, FORMACTION, id, formElement
     const [jwt, setJwt] = useState(jsCookie.get("jwt"))
     
     useEffect(()=>{
+        const getToken = async () =>{
+            const response = await PartnerUniqueToken(jwt, id)
+            setToken(response.data)
+        }
+
         getToken()
     }, [id, show, editId])
 
-    const getToken = async () =>{
-        const response = await PartnerUniqueToken(jwt, id)
-        setToken(response.data)
-    }
+    useEffect(()=>{
+        const updateState =()=>{
+            const el = formElement?.current?.elements
+        
+            for(let i=0; i<el?.length; i++)
+                dispatch({type: el[i].name, payload: el[i].defaultValue})
+        }
+
+        updateState()
+    }, [token])
 
 
     if(!show) {return null}
@@ -33,6 +44,8 @@ function EditToken({ handleUpdate, editId, dispatch, FORMACTION, id, formElement
                         className="border text-slate-400 border-slate-200 border-solid px-2 py-2 rounded-md basis-full mt-2" 
                         type="text" 
                         name="alias"
+                        minLength={3}
+                        maxLength={150}
                         defaultValue={token?.alias}
                         placeholder="Token Alias"
                         required />
@@ -48,10 +61,12 @@ function EditToken({ handleUpdate, editId, dispatch, FORMACTION, id, formElement
                         <p>Token</p>
                         <div className='flex flex-wrap gap-4'>
                             <span className='bg-slate-500 p-2 rounded-md text-white text-center text-xs'>{token?.token?.slice(10)}</span>
-                            <div className='flex items-center gap-3'><input 
+                            <div className='flex items-center gap-3'>
+                                <input 
                                     defaultChecked={token?.valid}
                                     onChange={(e)=>{dispatch({type: FORMACTION.VALID, payload: e.target.checked})}}
-                                    type="checkbox" /> <span>Activated</span></div>
+                                    type="checkbox"
+                                         /> <span>Activated</span></div>
                         </div>
                     </span>
 
@@ -60,13 +75,21 @@ function EditToken({ handleUpdate, editId, dispatch, FORMACTION, id, formElement
 
                 <div className='flex mt-4 justify-between'>
                     <span className='flex flex-col'>
-                        <label>Start Date</label>
-                        <input className="border text-slate-400 border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" type="date" />
+                        <label>Expiration</label>
+                        
+                        <input 
+                            onChange={(e)=>dispatch({type: FORMACTION.EXPIRATION, payload: e.target.value})}
+                            className="border text-slate-400 border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
+                            type="datetime-local"
+                            defaultValue={token?.expiration}
+                            name='expiration' />
                     </span>
 
                     <span className='flex flex-col '>
                         <label>End Date</label>
-                        <input className="border text-slate-400 border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" type="date" />
+                        <input 
+                            className="border text-slate-400 border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
+                            type="date" />
                     </span>
 
                     

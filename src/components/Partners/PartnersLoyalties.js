@@ -268,7 +268,8 @@ useEffect(()=>{
                         <input 
                             onChange={(e)=>setPId(e.target.value)}
                             type="text"
-                            minLength={6} 
+                            minLength={6}
+                            maxLength={8} 
                             className='py-1 px-4 text-slate-500 border border-solid border-slate-400 w-fullz mt-2 outline-none  rounded-md' 
                             placeholder='PID'
                             required />

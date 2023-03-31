@@ -18,6 +18,9 @@ function CreateAnnouncement({handleSubmit, dispatch, FORMACTION,  show, onClose}
                         type="text" 
                         onChange={(e)=>dispatch({type: FORMACTION.TITLE, payload: e.target.value})}
                         name="title" 
+                        required
+                        minLength={3}
+                        maxLength={50}
                         placeholder="Enter Announcement Title" />
                 </div>
 
@@ -27,6 +30,8 @@ function CreateAnnouncement({handleSubmit, dispatch, FORMACTION,  show, onClose}
                         onChange={(e)=>{dispatch({type: FORMACTION.DESCRIPTION, payload: e.target.value}); console.log(e.target.value)}}
                         className='p-2 border border-solid border-slate-400 block w-full outline-none rounded-md '
                         name='description'
+                        required
+                        minLength={3}
                         placeholder='Enter announcement'
                         cols="10" 
                         rows="10">

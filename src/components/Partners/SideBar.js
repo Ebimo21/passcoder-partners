@@ -97,10 +97,7 @@ function SideBar({show, onClose, upgrade, setUpgrade, partnerDetails}) {
 
         </div>
 
-        {/* <PartnersUpgradeAccount
-            show={upgrade}
-            onClose={()=>setUpgrade(false)}
-            /> */}
+      
     </div>
   )
 }

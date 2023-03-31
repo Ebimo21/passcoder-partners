@@ -25,9 +25,9 @@ function SideIssueLoyaltyPoints({setLoyaltyPId, loyaltyLoading, submit, setLoyal
                         <input
                             onChange={(e)=> setLoyaltyPoints(e.target.value)} 
                             className='p-1 border border-solid border-slate-300 w-full mt-2 rounded-md' 
-                            type="text"
-                            max={100}
-                            min={0}
+                            type="number"
+                            
+                            min={1}
                             disabled={loyaltyLoading}
                             required />
                     </div>
