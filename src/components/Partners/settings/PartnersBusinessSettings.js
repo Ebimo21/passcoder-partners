@@ -11,6 +11,7 @@ import jsCookie from 'js-cookie'
 import Congratulations from '../modal/Congratulations'
 import Error from '../modal/Error'
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage"
+import { all_states, lgaList } from '../lga'
 
 
 function PartnersBusinessSettings() {
@@ -101,7 +102,7 @@ function PartnersBusinessSettings() {
 
         const el = formElCertificate?.current?.elements[0].files[0]
         console.log(el);
-        let response = await PartnerProofComplianceDocument(jwt, partnerDetails.partner_unique_id)
+        let response = await PartnerProofComplianceDocument(jwt, partnerDetails?.partner_unique_id)
         console.log(response);
         const filename = response.filename.data[0].registration_certificate
         console.log(filename);
@@ -144,7 +145,7 @@ function PartnersBusinessSettings() {
         let profilePhoto = ""
         
         const el = formElDocument?.current?.elements[0].files[0]
-        let response = await PartnerProofComplianceDocument(jwt, partnerDetails.partner_unique_id)
+        let response = await PartnerProofComplianceDocument(jwt, partnerDetails?.partner_unique_id)
         const filename = response.filename.data[1].registration_document
         
         const sotrageRef = ref(storage, "partner/"+filename)
@@ -283,7 +284,7 @@ function PartnersBusinessSettings() {
 
                     <form onSubmit={handleRegistrationCertificate} ref={formElCertificate} >
           <div className='mt-10'>
-              <p className='font-medium text-sm mb-2'>Registration Certificate</p>
+              <p className='font-medium text-sm mb-2'>Registration Certificate {partnerDetails?.verified.toString()}</p>
               <label className='inline-block' htmlFor="certificate-input">
                 <img src={partnerDetails?.registration_certificate} width={130} height={130} />
 
@@ -293,6 +294,7 @@ function PartnersBusinessSettings() {
                 id='certificate-input' 
                 name='certificate-input' 
                 type="file"
+                
                 required />
           </div>
           <button className='p-2 rounded-md bg-purple text-white mt-20'>Upload</button>
@@ -306,7 +308,8 @@ function PartnersBusinessSettings() {
                 <img src={partnerDetails?.registration_document} width={130} height={130} />
 
               </label>
-              <input 
+              <input
+                
                 className='hidden' 
                 id='document-input' 
                 name='document-input' 

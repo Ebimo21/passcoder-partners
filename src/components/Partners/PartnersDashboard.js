@@ -7,7 +7,7 @@ import {BiNavigation} from "react-icons/bi"
 import { MdOutlineLocalOffer } from 'react-icons/md'
 import { FaUsers } from 'react-icons/fa'
 import { GiToken } from 'react-icons/gi'
-import { Partner, PartnerActivateUser, PartnerOffers } from './config/apiCalls'
+import { Partner, PartnerActivateUser, PartnerMetrics, PartnerOffers } from './config/apiCalls'
 import jsCookie from 'js-cookie'
 import Error from './modal/Error'
 import TailSpin from 'react-loading-icons/dist/esm/components/tail-spin'
@@ -22,6 +22,7 @@ function PartnersDashboard() {
     const [jwt, setJwt]= useState(jsCookie.get("jwt"))
     const [pId, setPId]= useState()
     const [partnerDetails, setPartnerDetails] = useState()
+    const [partnerMetrics, setPartnerMetrics] = useState("")
     const [offerId, setOfferId] = useState()
     const [offers, setOffers] = useState()
     const [successNotification, setSuccessNotification] = useState()
@@ -57,14 +58,21 @@ function PartnersDashboard() {
         setUpgradeModal(false)
     }
 
+    async function getPartnerMetrics (){
+        const response = await PartnerMetrics(jwt)
+        console.log(response.data);
+        setPartnerMetrics(response?.data)
+    }
     async function getPartnerDetails (){
         const response = await Partner(jwt)
         setPartnerDetails(response.data)
     }
+
+    
     useEffect(()=>{
         getPartnerDetails()
+        getPartnerMetrics()
         getPartnerOffers()
-        console.log(offers?.length);
     },[])
 
   return (
@@ -85,11 +93,11 @@ function PartnersDashboard() {
 
         <div className='flex flex-wrap gap-5 md:gap-0 justify-between mt-5'>
             <div className='basis-full md:basis-2/5 p-6 md:p-2 rounded-md pattern-bg text-white'>
-                <span className='font-bold'>295</span>
+                <span className='font-bold'>{partnerMetrics?.total_general_users}</span>
                 <p className='text-[10px] mt-2 '>Your users</p>
             </div>
             <div className='basis-full md:basis-2/5 p-6 md:p-2 rounded-md pattern-bg text-white'>
-                <span className='font-bold'>30,937</span>
+                <span className='font-bold'>{partnerMetrics?.total_partner_users}</span>
                 <p className='text-[10px] mt-2 '>Platform total users</p>
             </div>
 

@@ -5,6 +5,7 @@ import { PartnerSignupRoute } from './config/apiCalls'
 import {useNavigate} from "react-router-dom"
 import Congratulations from './modal/Congratulations'
 import Error from './modal/Error'
+import { all_states, lgaList } from './lga'
 
 function PartnerSignUp() {
     const navigate = useNavigate();
@@ -14,6 +15,7 @@ function PartnerSignUp() {
     const [successNotification, setSuccessNotification] = useState(false)
     const [errorNotification, setErrorNotification] = useState(false)
     const [notification, setNotification] = useState("")
+    const [cityOptions, setCityOptions] = useState([])
 
     const signupForm ={
         name: "",
@@ -31,6 +33,11 @@ function PartnerSignUp() {
         STATE: "state",
         COUNTRY: "country"
     }
+    const handleSelectStateChange = (e) =>{
+        
+
+
+      }
     const reducer=(state, action)=>{
         const {type, payload} = action
         switch(type){
@@ -43,6 +50,7 @@ function PartnerSignUp() {
             case SIGNUPACTION.CITY:
                 return {...state, city: payload}
             case SIGNUPACTION.STATE:
+                setCityOptions(lgaList[payload])
                 return {...state, state: payload}
             case SIGNUPACTION.COUNTRY:
                 return {...state, country: payload}
@@ -71,6 +79,8 @@ function PartnerSignUp() {
         setLoginSuccess(false)
         setLoginError(false)
       }
+
+      
 
   return (
     <AuthPagesBase>
@@ -117,40 +127,57 @@ function PartnerSignUp() {
 
                 <div className='flex gap-4'>
                     <div className='flex flex-col gap-1'>
-                        <label>City</label>
-                        <input 
-                            onChange={(e)=>dispatch({type: SIGNUPACTION.CITY, payload: e.target.value} )} 
-                            className=' p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' 
-                            type="text" 
-                            name="city" 
-                            placeholder='City'
-                            maxLength={50}
-                            minLength={3}
-                            required  />
-                    </div>
+                            <label>State</label>
+                            <select
+                                onChange={(e)=>dispatch({type: SIGNUPACTION.STATE, payload: e.target.value} )} 
+                                className=' p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' 
+                                // onChange={handleSelectStateChange}
+                                >
+                                {all_states?.map((item, index)=>{
+                                    return(
+                                        <option>{item}</option>
+                                        // <options>{item}</options>
+                                    )
+                                })}
+                            </select>
+                            {/* <input 
+                                onChange={(e)=>dispatch({type: SIGNUPACTION.STATE, payload: e.target.value} )} 
+                                className=' p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' 
+                                type="text" 
+                                name="state" 
+                                placeholder='State'
+                                maxLength={50}
+                                minLength={3}
+                                required  /> */}
+                        </div>
+
                     <div className='flex flex-col gap-1'>
-                        <label>State</label>
-                        <input 
-                            onChange={(e)=>dispatch({type: SIGNUPACTION.STATE, payload: e.target.value} )} 
-                            className=' p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' 
-                            type="text" 
-                            name="state" 
-                            placeholder='State'
-                            maxLength={50}
-                            minLength={3}
-                            required  />
+                        <label>City</label>
+                        <select
+                            onChange={(e)=>dispatch({type: SIGNUPACTION.CITY, payload: e.target.value} )}
+                            className=' p-2 border border-solid border-slate-400 block w-32 outline-none rounded-md ' 
+                            name='city'
+                            required>
+                            {cityOptions.map((item, index)=>{
+                                return (
+                                    <option key={index} value={item}>{item}</option>
+                                )
+                            })}
+                        </select>
+                        
                     </div>
+                    
                     <div className='flex flex-col gap-1'>
                         <label>Country</label>
-                        <input 
+                        <select
                             onChange={(e)=>dispatch({type: SIGNUPACTION.COUNTRY, payload: e.target.value} )} 
-                            className=' p-2 border border-solid border-slate-400 block w-full outline-none rounded-md ' 
-                            type="text" 
-                            name="country" 
-                            placeholder='Country'
-                            maxLength={50}
-                            minLength={3}
-                            required  />
+                            className=' p-2 border border-solid border-slate-400 block w-40 outline-none rounded-md '
+                            required
+                            name="country"
+                            >
+                            <option defaultValue>Select Country</option>
+                            <option >Nigeria</option>
+                        </select>
                     </div>
                 </div>
         <div className=' flex flex-col items-end mt-5'>

@@ -69,7 +69,7 @@ function PartnersSetting() {
         let profilePhoto = ""
 
         const el = formEl?.current?.elements[0].files[0]
-        let response = await PartnerProofProfilePhoto(jwt, partnerDetails.partner_unique_id)
+        let response = await PartnerProofProfilePhoto(jwt, partnerDetails?.partner_unique_id)
         console.log(response);
         const filename = response.filename.data[0].photo
         console.log(filename);

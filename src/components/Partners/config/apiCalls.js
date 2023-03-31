@@ -57,7 +57,7 @@ export const Partner =async(jwt)=>{
 export const PartnerMetrics =async(jwt)=>{
     try {
         const response = await axios.get(
-            `${host}partner/`, 
+            `${host}partner/metrics`, 
             {
                 headers: {
                     "passcoder-access-token": jwt
@@ -625,7 +625,14 @@ export const PartnerRequests =async(jwt)=>{
 
 export const PartnerUniqueOffer =async(jwt, offer_id)=>{
     try {
-        const response = await axios.get(`${host}partner/offer`, {params: {token: jwt, unique_id: offer_id}})
+        const response = await axios.get(`${host}partner/offer`, 
+        {params: 
+            {
+                token: jwt, 
+                unique_id: offer_id
+            }
+        }
+        )
         
         return response.data
     } catch(err){
