@@ -1,0 +1,139 @@
+.upgrade-container{
+    text-align: left;
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    flex-wrap: wrap-reverse;
+    background-color: rgb(41 36 130);
+    color: white;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 80px;
+}
+
+.upgrade-container > div {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    flex-basis: 100%;
+
+}
+
+.upgrade-container > div >div {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.upgrade-container > div > div> span {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 0 12px;
+    
+}
+
+.upgrade-container > div > div > span:nth-child(1){
+    border-right: 1px solid white;
+}
+
+.upgrade-container > div > div > span:nth-child(2){
+    border-right: 1px solid white;
+}
+
+.upgrade-container button {
+    flex-basis: 100%;
+    border-radius: 6px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 8px 20px;
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.deleteModal > div p  {
+    font-weight: 700;
+    margin-top: 20px; 
+    text-align: center;
+}
+
+.deleteModal > div > div > img {
+    display: block;
+    margin: auto;
+    margin-top: 8px;
+
+
+}
+
+.deleteModal > div > div:nth-child(3){
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+    width: 256px;
+    margin-top: 20px;
+}
+.deleteModal button:nth-child(1){
+    padding: 8px;
+    width: 96px;
+    border-radius: 6px;
+}
+
+.deleteModal button:nth-child(2){
+    padding: 8px;
+    color: rgb(3 68 96 );
+    width: 96px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 8px;
+    align-items: center;
+
+}
+
+.issuePoints, .checkoutPoints{
+    font-size: 12px;
+    margin-top: 16px;
+}
+
+.issuePoints label, .checkoutPoints label{
+    font-weight: 700;
+}
+
+.issuePoints input, .checkoutPoints input {
+    padding: 8px;
+    border: 2px solid rgb(203 213 225);
+    width: 100%;
+    margin-top: 8px;
+    border-radius: 6px;
+    outline: none;
+}
+
+.issuePoints div, .issuePoints button, .checkoutPoints div, .checkoutPoints button{
+    margin-top: 12px;
+}
+
+.issuePoints button, .checkoutPoints button {
+    padding: 6px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+}
+
+
+
+@media (min-width: 768px) {
+    .upgrade-container {
+        gap: 0px;
+    }
+
+    .upgrade-container > div {
+        flex-basis: 66.666667%;
+    }
+
+    .upgrade-container button {
+        flex-basis: 33.333333%;
+        margin: 0;
+    }
+}
