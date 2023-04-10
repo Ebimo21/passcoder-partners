@@ -12,6 +12,8 @@ import EditToken from '../components/modals/EditToken';
 import Congratulations from '../components/modals/Congratulations';
 import Error from '../components/modals/Error';
 import AddToken from '../components/modals/AddToken';
+import Delete from '../icons/Delete';
+import ConfirmDelete from '../components/modals/ConfirmDelete';
 
 export default function Team(){
     const [render, setRender ] = useState(false)
@@ -26,9 +28,12 @@ export default function Team(){
     const [showMenu, setShowMenu] = useState(false);
     const [tokens, setTokens] = useState([]);
 
+    const [ deleteModal, setDeleteModal] = useState();
+
     const handleCreateToken = async (e)=>{
         e.preventDefault();
         const response = await PartnerAddToken(state);
+        setRender(false);
         setAddTokenModal(false);
 
         if(response.success){
@@ -82,9 +87,9 @@ export default function Team(){
     }
 
     const [state, dispatch] = useReducer(reducer, initialState);
-
-    const handleDeleteToken =async(id)=>{
-        const response = await PartnerDeleteToken(id);
+    const [tokenToDelete, setTokenToDelete] = useState();
+    const handleDeleteToken =async()=>{
+        const response = await PartnerDeleteToken(tokenToDelete);
         if(response.success){
             setSuccessNotification(prev=>true);
         }else{
@@ -170,17 +175,23 @@ export default function Team(){
                             <td className='xui-opacity-5'>
                             <span>{item?.expiration}</span>
                             </td>
-                            <td className=''>
+                            <td style={
+                            {
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "10px",
+                            }
+                        }>
                                 <span
                                         data-tokenid={item?.token}
                                         data-uniqueid={item?.unique_id}
                                         onClick={(e)=>{setEditTokenModal(prev=>!prev); setEditId(e.target.getAttribute("data-uniqueid")); setTokenId(e.target.getAttribute("data-tokenid"))}}
-                                                xui-modal-open="editToken" className='xui-cursor-pointer xui-font-sz-90 psc-text'>Edit</span>
+                                                xui-modal-open="editToken" className='xui-cursor-pointer psc-text xui-d-inline-flex xui-flex-ai-center xui-btn psc-btn-blue xui-bdr-rad-half xui-font-sz-85'>Edit</span>
 
 <span
                                 data-offer={item?.unique_id} 
-                                onClick={ (e)=>handleDeleteToken(item?.unique_id)}
-                                xui-modal-open="deleteOffer" className='xui-cursor-pointer xui-font-sz-90 psc-text'>Delete</span>
+                                onClick={ (e)=>{ setTokenToDelete(item?.unique_id); setDeleteModal(prev=>!prev) }}
+                                xui-modal-open="deleteOffer" className='xui-cursor-pointer xui-font-sz-90 psc-text'><Delete/></span>
                         </td>
                         </tr>
                     )
@@ -210,6 +221,8 @@ export default function Team(){
             </div>
             </section>
         </Content>
+        {deleteModal&&<ConfirmDelete show={deleteModal} onClose={()=>setDeleteModal(false)} lead='Confirm Delete' deleted={handleDeleteToken} />}
+
         <section className='xui-modal' xui-modal="viewMore">
             <div className='xui-modal-content xui-max-h-500 xui-overflow-auto'>
                 <div className='xui-d-flex xui-flex-dir-column xui-lg-flex-dir-row'>

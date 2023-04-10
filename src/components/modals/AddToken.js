@@ -12,8 +12,8 @@ function AddToken({ show, onClose, submit, dispatch, action}) {
             <p>Token will be generated automatically</p>
 
 
-            <form onSubmit={submit} className="mt-5">
-                <div className='flex flex-wrap'>
+            <form onSubmit={submit} className="xui-form xui-mt--1">
+                <div className='xui-mt-3 xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60'>
                     <label>Token Alias</label>
                     <div className="xui-d-flex xui-flex-ai-center">
                             <input
@@ -53,9 +53,10 @@ function AddToken({ show, onClose, submit, dispatch, action}) {
 
                     
                 </div>
+                <div className='xui-mt-1 xui-d-flex'>
+                    <button className='xui-btn psc-btn-blue xui-font-sz-80'>Create </button>
 
-
-                <button className='ml-auto mt-10 rounded-md flex items-center gap-2 bg-purple text-white p-2 px-6'>Create </button>
+                </div>
             </form>
 
 

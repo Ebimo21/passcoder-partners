@@ -41,12 +41,12 @@ export default function SignupSuccess(){
                     <Arrowleft width="18" height="18" />
                 </Link>
                 <h2 className="xui-font-sz-125 xui-w-fluid-80">Check your email</h2>
-                <p className="xui-font-sz-90 xui-mt-half"><span className="xui-opacity-5">We have sent an email with token reset information to </span><span className="psc-text">{userEmail}</span></p>
+                <p className="xui-font-sz-90 xui-mt-half"><span className="xui-opacity-5">We have sent an email with a verification link to </span><span className="psc-text">{userEmail}</span></p>
                 {/* <p className="xui-font-sz-90 xui-mt-half"><span className="xui-opacity-5">We have sent an email with token reset information to </span><span className="psc-text">n****e@e***e.com</span></p> */}
                 <p className="xui-font-sz-80 xui-my-4 xui-w-fluid-60"><span className="xui-opacity-7">Didn’t receive the email? Check spam or promotion folder</span></p>
                 <div className="xui-d-flex xui-flex-jc-flex-end">
                     <div>
-                        <span className="xui-font-sz-80"><span onClick={ResendEmailToken} className="psc-text xui-font-w-bold">Resend token</span></span>
+                        <button className="xui-d-inline-flex xui-flex-ai-center xui-btn psc-btn-blue-alt xui-bdr-rad-half xui-font-sz-85"><span onClick={ResendEmailToken} className="psc-text xui-font-w-bold">Resend token</span></button>
                     </div>
                 </div>
                 <div className="xui-form-box xui-d-flex xui-flex-jc-flex-end">

@@ -1,20 +1,17 @@
-// import Filter from '../icons/Filter';
-import Boxes from '../assets/images/boxes.png';
-import FlowerPlant from '../assets/images/flower-plant.png';
-import Star from '../icons/Star';
+
 import Navbar from '../components/Navbar';
 import Content from '../components/Content';
 import Arrowright from '../icons/Arrowright';
 import Arrowleft from '../icons/Arrowleft';
 import {useState, useEffect} from "react"
-import { PartnerAddLoyaltyPoints, PartnerCheckoutLoyaltyPoints, PartnerLoyaltyUsers } from '../config/apiCalls';
+import { PartnerAddLoyaltyPoints, PartnerAddUserToAnnouncementList, PartnerCheckoutLoyaltyPoints, PartnerLoyaltyUsers } from '../config/apiCalls';
 import Screen from '../components/Screen';
 import { BiNavigation } from 'react-icons/bi';
 import TailSpin from 'react-loading-icons/dist/esm/components/tail-spin';
 import Error from '../components/modals/Error';
 import Congratulations from '../components/modals/Congratulations';
-import SideIssueLoyaltyPoints from '../components/SideIssueLoyaltyPoints';
-import SideCheckoutLoyaltyPoints from '../components/SideCheckoutLoyaltyPoints';
+import aside from '../assets/images/frame1.png'
+
 
 export default function Loyalty(){
     // const [partnerDetails] = UsePartnerDetails()
@@ -34,10 +31,24 @@ export default function Loyalty(){
     const [errorNotification, setErrorNotification]= useState(false);
     const [notification, setNotification] = useState("");
     const [users, setUsers]= useState([]);
-    const [showMenu, setShowMenu] = useState(false);
 
     const [loyaltyLoading, setLoyaltyLoading] = useState(false);
     const [loyaltyPId, setLoyaltyPId] = useState("");
+    const [pid, setPid] = useState("");
+
+    // const [loading, setLoading] = useState(false);
+
+
+    const handleAddUserToList =async(e)=>{
+        e.preventDefault();
+        setLoading(true)
+        const response = await PartnerAddUserToAnnouncementList(pid)
+        .finally(e=>setLoading(false))
+        setNotification(response?.data);
+
+        if(response.success)setSuccessNotification(true);
+        else setErrorNotification(true);
+    }
     
     async function getPartnerLoyaltyUsers (){
         const response = await PartnerLoyaltyUsers();
@@ -279,41 +290,42 @@ export default function Loyalty(){
             </div>
         </section>
         <div className="aside psc-bg-light-blue xui-py-2 xui-px-1-half">
-                <p className='xui-opacity-5 xui-font-sz-90 xui-line-height-1-half xui-w-fluid-80'>Issue loyalty points directly to your new and existing Passcoder users.</p>
-                <div className='xui-d-grid xui-grid-col-1 xui-lg-grid-col-2 xui-grid-gap-1 xui-mt-1-half'>
-                    <button onClick={handleLoyaltyRightBar} className='xui-btn-block psc-btn-blue-alt xui-bdr-rad-half xui-font-sz-85'>Loyalty</button>
-                    <button onClick={handleCheckoutRightBar} className='xui-btn-block psc-btn-blue-alt xui-bdr-rad-half xui-font-sz-85'>Check out</button>
+                {/* */}
+
+                <div className="aside psc-bg-light-blue xui-py-2 xui-px-1-half">
+            <div className='hidden p-5 md:flex flex-col justify-between w-[250px] bg-[#F9FAFC] h-screen text-xs'>
+                <div>
+                    <img src={aside} />
+
+                    <form onSubmit={handleAddUserToList} className='xui-form xui-max-w-450 xui-mx-auto'>
+                        <h2 className='font-semibold'>Add User</h2>
+                        <p className='text-xs mt-1'>Input the user’s Passcoder ID to add them to your list</p>
+                        <input 
+                        style={{
+                            marginTop:  "20px"
+                        }}
+                            onChange={(e)=>setPid(e.target.value)} 
+                            type="text" 
+                            className='xui-bdr-rad-half' 
+                            placeholder='PID'
+                            minLength={6}
+                            maxLength={8}
+                            required />
+                        
+                        <div className='xui-form-box'>
+
+                        <button
+
+                            className='xui-d-inline-flex xui-flex-ai-center xui-btn psc-btn-blue xui-bdr-rad-half xui-font-sz-85'>
+                                Add User
+                                {!loading&&<BiNavigation />} 
+                            {loading && <TailSpin stroke='#fff' speed={3} height={14} />}
+                        </button>
+                                </div>
+                    </form>
                 </div>
-
-                {loyalty 
-                &&<SideIssueLoyaltyPoints
-                    submit={handleIssueLoyalty}
-                    setLoyaltyPId={setLoyaltyPId}
-                    loyaltyLoading={loyaltyLoading}
-                    setLoyaltyPoints={setLoyaltyPoints} />}
-
-                {checkout 
-                    &&<SideCheckoutLoyaltyPoints
-                        submit={handleCheckoutLoyalty}
-                        setCheckoutPId={setCheckoutPId}
-                        setCheckoutPoints={setCheckoutPoints}
-                        checkoutLoading={checkoutLoading} />}
-
-                <div className='xui-mt-5'>
-                    <div className='xui-d-flex xui-flex-ai-baseline xui-flex-jc-space-between'>
-                        <div className='xui-pl-1'>
-                            <img className='xui-img-100' src={Boxes} alt='boxes' />
-                        </div>
-                        <div className='xui-pr-1'>
-                            <img className='xui-img-100' src={FlowerPlant} alt='flower plant' />
-                        </div>
-                    </div>
-                    <div className='psc-bg-light-blue-ii xui-px-1 xui-pt-5 xui-pb-1 xui-mt--4'>
-                        <h4 className='xui-font-sz-90 xui-mt-half'>Earn more with offers</h4>
-                        <p className='xui-opacity-4 xui-font-sz-85 xui-line-height-1-half xui-mt-half xui-w-fluid-90'>Premium partners can earn more and attract more customers with amazing offers. Create yours now.</p>
-                        <button className='xui-btn-block psc-btn-blue-alt xui-bdr-rad-half xui-font-sz-85 xui-mt-2'>Create an offer</button>
-                    </div>
-                </div>
+            </div>
+            </div>
             </div>
 
             {errorNotification && <Error 

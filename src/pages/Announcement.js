@@ -13,6 +13,8 @@ import CreateAnnouncement from '../components/modals/CreateAnnouncement';
 import aside from '../assets/images/frame1.png'
 import Congratulations from '../components/modals/Congratulations';
 import Error from '../components/modals/Error';
+import { BiNavigation } from 'react-icons/bi';
+import TailSpin from 'react-loading-icons/dist/esm/components/tail-spin';
 
 
 export default function Announcement(){
@@ -25,10 +27,14 @@ export default function Announcement(){
     const [errorNotification, setErrorNotification] = useState(false);
     const [pid, setPid] = useState("");
     const [showMenu, setShowMenu] = useState(false);
+    const [loading, setLoading] = useState(false);
+
 
     const handleAddUserToList =async(e)=>{
         e.preventDefault();
-        const response = await PartnerAddUserToAnnouncementList(pid);
+        setLoading(true)
+        const response = await PartnerAddUserToAnnouncementList(pid)
+        .finally(e=>setLoading(false))
         setNotification(response?.data);
 
         if(response.success)setSuccessNotification(true);
@@ -110,6 +116,7 @@ export default function Announcement(){
                 </div>
                 <div className='xui-table-responsive'>
                     <table className='xui-table xui-font-sz-90'>
+                    <thead>
                     <tr className='xui-text-left xui-opacity-6'>
                         <th className='xui-min-w-20'>S/N</th>
                         <th className='xui-min-w-300'>Name</th>
@@ -118,6 +125,8 @@ export default function Announcement(){
                         <th className='xui-min-w-20'>Status</th>
                         <th className='xui-min-w-100'>Actions</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     {announcement?.map((item, index)=>{
                         return(
                             <tr key={index} className=''>
@@ -140,6 +149,7 @@ export default function Announcement(){
                             </tr>
                         )
                     })}
+                    </tbody>
                     </table>
                 </div>
                 <div className='xui-d-flex xui-flex-jc-flex-end xui-py-1 xui-font-sz-85 xui-opacity-5 xui-mt-1'>
@@ -180,23 +190,31 @@ export default function Announcement(){
                 <div>
                     <img src={aside} />
 
-                    <form onSubmit={handleAddUserToList} className='bg-[#EDF0F6] p-2 text-sm'>
+                    <form onSubmit={handleAddUserToList} className='xui-form xui-max-w-450 xui-mx-auto'>
                         <h2 className='font-semibold'>Add User</h2>
                         <p className='text-xs mt-1'>Input the user’s Passcoder ID to add them to your list</p>
                         <input 
+                        style={{
+                            marginTop:  "20px"
+                        }}
                             onChange={(e)=>setPid(e.target.value)} 
                             type="text" 
-                            className='p-1  border border-solid border-slate-300 w-full mt-2 rounded-md' 
+                            className='xui-bdr-rad-half' 
                             placeholder='PID'
                             minLength={6}
                             maxLength={8}
                             required />
+                        
+                        <div className='xui-form-box'>
 
-                        <button 
-                            className='flex items-center gap-2 justify-center bg-purple px-4 py-2  m-auto 
-                            rounded-md border border-solid border-purple text-white mt-3'>
-                                Add User 
+                        <button
+
+                            className='xui-d-inline-flex xui-flex-ai-center xui-btn psc-btn-blue xui-bdr-rad-half xui-font-sz-85'>
+                                Add User
+                                {!loading&&<BiNavigation />} 
+                            {loading && <TailSpin stroke='#fff' speed={3} height={14} />}
                         </button>
+                                </div>
                     </form>
                 </div>
             </div>
