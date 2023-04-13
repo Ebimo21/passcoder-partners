@@ -35,7 +35,7 @@ export default function Settings(){
     const handleIssueLoyalty = async(e)=>{
         e.preventDefault()
         setLoyaltyLoading(true)
-        const response = await PartnerAddLoyaltyPoints(loyaltyPId, loyaltyPoints)
+        const response = await PartnerAddLoyaltyPoints(loyaltyPId.toUpperCase(), loyaltyPoints)
         .finally(e=>setLoyaltyLoading(false))
 
         if(response.success){
@@ -50,7 +50,7 @@ export default function Settings(){
         e.preventDefault()
 
         setLoyaltyLoading(true)
-        const response = await PartnerAddLoyaltyPoints(loyaltyPId, loyaltyPoints)
+        const response = await PartnerAddLoyaltyPoints(loyaltyPId.toUpperCase(), loyaltyPoints)
         .finally(e=>setLoyaltyLoading(false))
 
         if(response.success){
@@ -131,7 +131,7 @@ export default function Settings(){
         <>
         <Screen aside="false" navbar="false">
             <Content>
-                <Navbar placeholder="Search something..." />
+                <Navbar makeHidden placeholder="Search something..." />
                 <section className="xui-bdr-w-1 xui-bdr-fade xui-bdr-s-solid xui-pt-half xui-pb-1 xui-px-1 xui-font-sz-85 psc-tabs-holder">
                     <div onClick={() => setTab("accountProfile")} className={"xui-cursor-pointer xui-py-1 xui-px-half es-tab-card " + (tab === "accountProfile" ? "active" : "")}>
                         <span>Account Profile</span>

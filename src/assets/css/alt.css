@@ -121,9 +121,18 @@
     border: none;
 }
 
+.packages{
+    display: none;
+
+}
+
 
 
 @media (min-width: 768px) {
+
+    .packages {
+        display: flex;
+    }
     .upgrade-container {
         gap: 0px;
     }

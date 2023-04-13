@@ -35,6 +35,8 @@ export default function Loyalty(){
     const [loyaltyLoading, setLoyaltyLoading] = useState(false);
     const [loyaltyPId, setLoyaltyPId] = useState("");
     const [pid, setPid] = useState("");
+    const [rowsPerPage, setRowsPerPage] = useState(10)
+    const [page, setPage] = useState(1)
 
     // const [loading, setLoading] = useState(false);
 
@@ -42,7 +44,7 @@ export default function Loyalty(){
     const handleAddUserToList =async(e)=>{
         e.preventDefault();
         setLoading(true)
-        const response = await PartnerAddUserToAnnouncementList(pid)
+        const response = await PartnerAddUserToAnnouncementList(pid.toUpperCase())
         .finally(e=>setLoading(false))
         setNotification(response?.data);
 
@@ -51,7 +53,7 @@ export default function Loyalty(){
     }
     
     async function getPartnerLoyaltyUsers (){
-        const response = await PartnerLoyaltyUsers();
+        const response = await PartnerLoyaltyUsers(page, rowsPerPage);
         setUsers(response?.data?.rows);
     }
 
@@ -59,7 +61,7 @@ export default function Loyalty(){
         e.preventDefault();
 
         setLoading(true);
-        const response = await PartnerAddLoyaltyPoints(pId, loyaltyPoints)
+        const response = await PartnerAddLoyaltyPoints(pId.toUpperCase(), loyaltyPoints)
         .finally(e=>setLoading(false));
 
         if(response.success){
@@ -85,7 +87,7 @@ export default function Loyalty(){
         e.preventDefault();
 
         setLoading(true);
-        const response = await PartnerCheckoutLoyaltyPoints(pId, loyaltyPoints)
+        const response = await PartnerCheckoutLoyaltyPoints(pId.toUpperCase(), loyaltyPoints)
         .finally(e=>setLoading(false));
 
         if(response.success){
@@ -101,7 +103,7 @@ export default function Loyalty(){
     const handleIssueLoyalty = async(e)=>{
         e.preventDefault();
         setLoyaltyLoading(true);
-        const response = await PartnerAddLoyaltyPoints(loyaltyPId, loyaltyPoints)
+        const response = await PartnerAddLoyaltyPoints(loyaltyPId.toUpperCase(), loyaltyPoints)
         .finally(e=>setLoyaltyLoading(false));
 
         if(response.success){
@@ -116,7 +118,7 @@ export default function Loyalty(){
         e.preventDefault();
 
         setCheckoutLoading(true);
-        const response = await PartnerCheckoutLoyaltyPoints(checkoutPId, checkoutPoints)
+        const response = await PartnerCheckoutLoyaltyPoints(checkoutPId.toUpperCase(), checkoutPoints)
         .finally(e=>setCheckoutLoading(false));
         
         if(response.success){
@@ -132,7 +134,33 @@ export default function Loyalty(){
     
     useEffect(()=>{
         getPartnerLoyaltyUsers()
-    }, [])
+    }, []);
+
+    const handleSelectRows = async (e) =>{
+
+        const row = e.target.value;
+        setRowsPerPage(row);
+        const response = await PartnerLoyaltyUsers(page, row);
+        setUsers(response.data.rows)
+
+    }
+
+    const handleGetNextPage = async() =>{
+        setPage(page=>page+1)
+        console.log(page);
+        const response = await PartnerLoyaltyUsers(page+1, rowsPerPage);
+        setUsers(response.data.rows);
+    }
+    
+    const handleGetPreviousPage = async() =>{
+        setPage(page=>page-1)
+        if(!page===1){
+            setPage(page=>page-1)
+
+        }
+        const response = await PartnerLoyaltyUsers(page-1, rowsPerPage);
+        setUsers(response.data.rows);
+    }
     return(
         <>
         <Screen aside="true" navbar="false">
@@ -200,7 +228,7 @@ export default function Loyalty(){
             <div className='xui-d-flex xui-flex-jc-flex-end xui-py-1 xui-font-sz-85 xui-opacity-5 xui-mt-1'>
                 <div className='xui-d-inline-flex xui-flex-ai-center'>
                     <span>Rows per page:</span>
-                    <select className='psc-select-rows-per-page xui-ml-half'>
+                    <select onChange={handleSelectRows} className='psc-select-rows-per-page xui-ml-half'>
                         <option value={10}>10</option>
                         <option value={25}>25</option>
                         <option value={50}>50</option>
@@ -210,12 +238,12 @@ export default function Loyalty(){
                     <span><span className='xui-font-w-bold'>11 - 20</span> of 194</span>
                 </div>
                 <div className='xui-d-inline-flex xui-flex-ai-center xui-mx-1'>
-                    <div className='xui-mr-half xui-cursor-pointer'>
+                    <button disabled={page<2} onClick={handleGetPreviousPage} className='xui-mr-half xui-cursor-pointer'>
                         <Arrowleft width="18" height="18" />
-                    </div>
-                    <div className='xui-ml-half xui-cursor-pointer'>
+                    </button>
+                    <button onClick={handleGetNextPage} className='xui-ml-half xui-cursor-pointer'>
                         <Arrowright width="18" height="18" />
-                    </div>
+                    </button>
                 </div>
             </div>
             </section>

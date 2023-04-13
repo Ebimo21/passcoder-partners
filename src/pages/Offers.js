@@ -43,9 +43,12 @@ export default function Offers(){
     const [loyalty, setLoyalty]= useState(false);
     const [checkout, setCheckout] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
+    const [rowsPerPage, setRowsPerPage] = useState(10)
+    const [page, setPage] = useState(1)
     
     async function getPartnerOffers (){
-        const response = await PartnerOffers();
+        const response = await PartnerOffers(page, rowsPerPage);
+        console.log(response);
         setOffers(response.data.rows);
     }
     const offerForm = {
@@ -54,8 +57,8 @@ export default function Offers(){
         limit: 0,
         single: true,
         description: "",
-        start: "",
-        end: "",
+        // start: "",
+        // end: "",
         points: 0,
         star: 0,
     }
@@ -105,19 +108,19 @@ export default function Offers(){
     const [state, dispatch] = useReducer(reducer, offerForm );
     const handleSubmit= async(e)=>{
         e.preventDefault();
-        setCreateOfferModal(false);
         console.log(state);
         const response = await PartnerAddOffer(state);
+        setNotification(response);
+        setRender(false);
 
         if(response.success){
             setSuccessNotification(prev=>true);
         }else{
             setErrorNotification(prev=>true);
         }
-        setNotification(response);
         dispatch({type: FORMACTION.CLEAR});
 
-    
+        getPartnerOffers()
     }
 
     const handleCallbackUpdate = async(e) =>{
@@ -138,7 +141,7 @@ export default function Offers(){
         e.preventDefault();
 
         setLoyaltyLoading(true);
-        const response = await PartnerAddLoyaltyPoints(loyaltyPId, parseInt(loyaltyPoints))
+        const response = await PartnerAddLoyaltyPoints(loyaltyPId.toUpperCase(), parseInt(loyaltyPoints))
         .finally(e=>setLoyaltyLoading(false));
 
         if(response.success){
@@ -151,7 +154,7 @@ export default function Offers(){
     const handleCheckoutLoyalty = async(e)=>{
         e.preventDefault();
         setCheckoutLoading(true);
-        const response = await PartnerAddLoyaltyPoints(loyaltyPId, loyaltyPoints)
+        const response = await PartnerAddLoyaltyPoints(loyaltyPId.toUpperCase(), loyaltyPoints)
         .finally(e=>setCheckoutLoading(false));
         if(response.success){
             setSuccessNotification(prev=>true);
@@ -175,6 +178,8 @@ export default function Offers(){
             setErrorNotification(prev=>true);
         }
         setNotification(response);
+
+        getPartnerOffers()
 
     }
 
@@ -229,7 +234,7 @@ export default function Offers(){
     const handleActivateUser =async(e)=>{
         e.preventDefault()
         setLoading(true)
-        const response = await PartnerActivateUser(pId, offerId)
+        const response = await PartnerActivateUser(pId.toUpperCase(), offerId)
         .finally(e=>setLoading(false))
 
         if(response.success){
@@ -238,6 +243,37 @@ export default function Offers(){
             setErrorNotification(prev=>true)
         }
         setNotification(response)
+    }
+
+    const handleLimitRecord = (e) =>{
+        const size = e.target.value
+        console.log(size);
+    }
+
+    const handleSelectRows = async (e) =>{
+
+        const row = e.target.value;
+        setRowsPerPage(row);
+        const response = await PartnerOffers(page, row);
+        setOffers(response.data.rows)
+
+    }
+
+    const handleGetNextPage = async() =>{
+        setPage(page=>page+1)
+        console.log(page);
+        const response = await PartnerOffers(page+1, rowsPerPage);
+        setOffers(response.data.rows);
+    }
+    
+    const handleGetPreviousPage = async() =>{
+        setPage(page=>page-1)
+        if(!page===1){
+            setPage(page=>page-1)
+
+        }
+        const response = await PartnerOffers(page-1, rowsPerPage);
+        setOffers(response.data.rows);
     }
     return(
         <>
@@ -314,7 +350,7 @@ export default function Offers(){
             <div className='xui-d-flex xui-flex-jc-flex-end xui-py-1 xui-font-sz-85 xui-opacity-5 xui-mt-1'>
                 <div className='xui-d-inline-flex xui-flex-ai-center'>
                     <span>Rows per page:</span>
-                    <select className='psc-select-rows-per-page xui-ml-half'>
+                    <select onChange={handleSelectRows} className='psc-select-rows-per-page xui-ml-half'>
                         <option value={10}>10</option>
                         <option value={25}>25</option>
                         <option value={50}>50</option>
@@ -324,12 +360,12 @@ export default function Offers(){
                     <span><span className='xui-font-w-bold'>11 - 20</span> of 194</span>
                 </div>
                 <div className='xui-d-inline-flex xui-flex-ai-center xui-mx-1'>
-                    <div className='xui-mr-half xui-cursor-pointer'>
+                    <button disabled={page<2} onClick={handleGetPreviousPage} className='xui-mr-half xui-cursor-pointer'>
                         <Arrowleft width="18" height="18" />
-                    </div>
-                    <div className='xui-ml-half xui-cursor-pointer'>
+                    </button>
+                    <button onClick={handleGetNextPage} className='xui-ml-half xui-cursor-pointer'>
                         <Arrowright width="18" height="18" />
-                    </div>
+                    </button>
                 </div>
             </div>
             </section>

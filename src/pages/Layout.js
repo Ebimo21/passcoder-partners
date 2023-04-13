@@ -11,6 +11,8 @@ import { Partner, PartnersLogOut } from "../config/apiCalls";
 import { useState, useEffect } from "react";
 import Key from "../icons/Key";
 import Team from "../icons/Team";
+import Alarm from "../icons/Alarm";
+import Token from "../icons/Token";
 
 function Truncate(string, len){
     
@@ -53,7 +55,7 @@ export default function Layout(){
                 <img className='xui-img-30' src={Logo} alt='logo' />
                 <div className='xui-pl-1'>
                     <p className='xui-font-w-bold'>Passcoder</p>
-                    <span className='xui-font-sz-70 xui-opacity-7'>for business</span>
+                    <span className='xui-font-sz-70 xui-opacity-7'>for partner</span>
                 </div>
                 </div>
             </Link>
@@ -94,7 +96,7 @@ export default function Layout(){
             </Link>
             <Link to='/announcement' className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 " + (loc.pathname === '/announcement' ? 'active' : '')}>
                 <div className="icon">
-                    <Swap width="20" height="20" />
+                    <Alarm width="24" height="24" />
                 </div>
                 <div className="name xui-ml-half">
                     <span>Announcement</span>
@@ -110,7 +112,7 @@ export default function Layout(){
             </Link>
             <Link to='/team' className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 " + (loc.pathname === '/team' ? 'active' : '')}>
                 <div className="icon">
-                    <Swap width="20" height="20" />
+                    <Token width="20" height="20" />
                 </div>
                 <div className="name xui-ml-half">
                     <span>Team</span>

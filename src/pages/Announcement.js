@@ -28,6 +28,8 @@ export default function Announcement(){
     const [pid, setPid] = useState("");
     const [showMenu, setShowMenu] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [rowsPerPage, setRowsPerPage] = useState(10)
+    const [page, setPage] = useState(1)
 
 
     const handleAddUserToList =async(e)=>{
@@ -42,7 +44,7 @@ export default function Announcement(){
     }
 
     const handleGetAnnouncement =async () =>{
-        const response = await PartnerGetAnnouncements();
+        const response = await PartnerGetAnnouncements(page, rowsPerPage);
         setAnnouncement(response?.data?.rows);
         console.log(response?.data?.rows);
     }
@@ -100,6 +102,32 @@ export default function Announcement(){
         
 
     }, [render]);
+
+    const handleSelectRows = async (e) =>{
+
+        const row = e.target.value;
+        setRowsPerPage(row);
+        const response = await PartnerGetAnnouncements(page, row);
+        setAnnouncement(response.data.rows)
+
+    }
+
+    const handleGetNextPage = async() =>{
+        setPage(page=>page+1)
+        console.log(page);
+        const response = await PartnerGetAnnouncements(page+1, rowsPerPage);
+        setAnnouncement(response.data.rows);
+    }
+    
+    const handleGetPreviousPage = async() =>{
+        setPage(page=>page-1)
+        if(!page===1){
+            setPage(page=>page-1)
+
+        }
+        const response = await PartnerGetAnnouncements(page-1, rowsPerPage);
+        setAnnouncement(response.data.rows);
+    }
     return(
         <>
         <Screen aside="true" Navbar="false" >
@@ -155,7 +183,7 @@ export default function Announcement(){
                 <div className='xui-d-flex xui-flex-jc-flex-end xui-py-1 xui-font-sz-85 xui-opacity-5 xui-mt-1'>
                     <div className='xui-d-inline-flex xui-flex-ai-center'>
                         <span>Rows per page:</span>
-                        <select className='psc-select-rows-per-page xui-ml-half'>
+                        <select onChange={handleSelectRows} className='psc-select-rows-per-page xui-ml-half'>
                             <option value={10}>10</option>
                             <option value={25}>25</option>
                             <option value={50}>50</option>
@@ -165,12 +193,12 @@ export default function Announcement(){
                         <span><span className='xui-font-w-bold'>11 - 20</span> of 194</span>
                     </div>
                     <div className='xui-d-inline-flex xui-flex-ai-center xui-mx-1'>
-                        <div className='xui-mr-half xui-cursor-pointer'>
+                        <button disabled={page<2} onClick={handleGetPreviousPage} className='xui-mr-half xui-cursor-pointer'>
                             <Arrowleft width="18" height="18" />
-                        </div>
-                        <div className='xui-ml-half xui-cursor-pointer'>
+                        </button>
+                        <button onClick={handleGetNextPage} className='xui-ml-half xui-cursor-pointer'>
                             <Arrowright width="18" height="18" />
-                        </div>
+                        </button>
                     </div>
                 </div>
                 </section>

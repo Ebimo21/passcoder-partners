@@ -42,10 +42,10 @@ export default function App(){
         <Route path='/' element={<Access />}>
           <Route path="/access/:stripped" element={<SignIn />} />
           <Route path="/verify/otp-verification" element={<OTPVerification />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/verify/email" element={<VerifyEmail />} />
-          <Route path="signup" element={<Signup />} />
-          <Route path="signup-success" element={<SignupSuccess />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/signup-success" element={<SignupSuccess />} />
 
           <Route path="token-success" element={<TokenSuccess />} />
 

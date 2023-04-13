@@ -617,16 +617,22 @@ export const PartnerSignupRoute =async({name, email, description, city, state, c
     }
 }
 
-export const PartnerOffers =async()=>{
+export const PartnerOffers =async(page=1, size=10)=>{
     try {
         const response = await axios.get(
             `${host}partner/offers`, 
             {
+                params: {
+                  page: page,
+                  size: size  
+                },
+
                 headers: {
                     "passcoder-access-token": jwt
                 }
             }
         )
+        console.log(response)
         return response.data;
     } catch(err){
         if (err.response){ return {success: false, message: err.response.data.message, err}; }
@@ -676,6 +682,7 @@ export const PartnerUniqueOffer =async(offer_id)=>{
 }
 
 export const PartnerAddOffer =async({name, discount, start, limit, end, single, points, star})=>{
+    const date = new Date();
     try {
         const response = await axios.post(
             `${host}partner/offer/add`, 
@@ -687,7 +694,7 @@ export const PartnerAddOffer =async({name, discount, start, limit, end, single, 
                 limit, 
                 star,
                 start, 
-                end
+                end,
             },
             {
                 headers: {"passcoder-access-token":jwt}}
@@ -791,11 +798,15 @@ export const PartnerCreateAnnouncement =async({title, description})=>{
         else { console.log('Error: ', err.message); }
     }
 }
-export const PartnerGetAnnouncements =async()=>{
+export const PartnerGetAnnouncements =async(page=1, size=10)=>{
     try {
         const response = await axios.get(
             `${host}partner/announcements`, 
             {
+                params: {
+                    page: page,
+                    size: size  
+                  },
                 headers: {
                     "passcoder-access-token": jwt
                 }
@@ -851,11 +862,16 @@ export const PartnerActivateUser =async(pid, offer_unique_id)=>{
     }
 }
 
-export const PartnerLoyaltyUsers =async()=>{
+export const PartnerLoyaltyUsers =async(page=1, size=10)=>{
     try {
         const response = await axios.get(
             `${host}partner/app/users`, 
             {
+                params: {
+                    page: page,
+                    size: size  
+                  },
+
                 headers: { 
                     "passcoder-access-token": jwt 
                 }
@@ -981,11 +997,16 @@ export const PartnerAddToken =async({alias, expiration, valid})=>{
 
 }
 
-export const PartnerGetTokens =async()=>{
+export const PartnerGetTokens =async(page=1, size=10)=>{
     try {
         const response = await axios.get(
             `${host}partner/tokens`, 
             {
+                params: {
+                    page: page,
+                    size: size  
+                  },
+                  
                 headers: { 
                     "passcoder-access-token": jwt 
                 }
