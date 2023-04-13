@@ -7,18 +7,20 @@ import Congratulations from "../../components/modals/Congratulations";
 import Error from "../../components/modals/Error";
 
 export default function MerchantProfile({partnerDetails}){
-    const storage = getStorage()
-    let navigate = useNavigate()
+    const storage = getStorage();
+    let navigate = useNavigate();
     
-    const formEl = useRef()
-    const formElCertificate = useRef()
-    const formElDocument = useRef()
+    const formEl = useRef();
+    const formElCertificate = useRef();
+    const formElDocument = useRef();
     
-    const [showMenu, setShowMenu] = useState(false)
-    const [thresholdPoint, setThresholdPoint] = useState(0)
-    const [successNotification, setSuccessNotification] = useState()
-    const [errorNotification, setErrorNotification] = useState()
-    const [notification, setNotification] = useState("")
+    const [showMenu, setShowMenu] = useState(false);
+    const [thresholdPoint, setThresholdPoint] = useState(0);
+    const [successNotification, setSuccessNotification] = useState();
+    const [errorNotification, setErrorNotification] = useState();
+    const [notification, setNotification] = useState("");
+    const [selectedCertificate, setSelectedCertificate] = useState("");
+    const [selectedDocument, setSelectedDocument] = useState("");
 
     const signupForm ={
         company_name: "",
@@ -35,70 +37,81 @@ export default function MerchantProfile({partnerDetails}){
         COMPANY_ADDRESS: "company_address"
     }
     const reducer=(state, action)=>{
-        const {type, payload} = action
+        const {type, payload} = action;
         switch(type){
             case SIGNUPACTION.COMPANY_NAME:
-                return {...state, company_name: payload}
+                return {...state, company_name: payload};
             case SIGNUPACTION.COMPANY_EMAIL:
-                return {...state, company_email: payload}
+                return {...state, company_email: payload};
             case SIGNUPACTION.COMPANY_RC_NUMBER:
-                return {...state, company_rc_number: payload}
+                return {...state, company_rc_number: payload};
             case SIGNUPACTION.COMPANY_TYPE:
-                return {...state, company_type: payload}
+                return {...state, company_type: payload};
             case SIGNUPACTION.COMPANY_ADDRESS:
-                return {...state, company_address: payload}
+                return {...state, company_address: payload};
             default:
-                return state
+                return state;
         }
     }
-    const [state, dispatch] = useReducer(reducer, signupForm)
+    const [state, dispatch] = useReducer(reducer, signupForm);
     
     const handleLoop= (e)=>{
         // updates the state to the fetch details 
-      const el = formEl?.current?.elements
+      const el = formEl?.current?.elements;
       for(let i=0; i<el?.length; i++){
-          dispatch({type: el[i].name, payload: el[i].value})
+          dispatch({type: el[i].name, payload: el[i].value});
         }
     }
     const handleUpdateBusinessDetails = async(e)=>{
-        e.preventDefault()
-        const response = await PartnerComplianceDetails(state)
+        e.preventDefault();
+        const response = await PartnerComplianceDetails(state);
         if(response.success){
-            setNotification(response)
-            setSuccessNotification(true)
+            setNotification(response);
+            setSuccessNotification(true);
         }else{
-            setNotification(response)
-            setErrorNotification(true)
+            setNotification(response);
+            setErrorNotification(true);
         }   
     }
     const handleUpdateThreshold = async(e)=>{
-        e.preventDefault()
-        const response = await PartnerUpdateThreshold(thresholdPoint)
+        e.preventDefault();
+        const response = await PartnerUpdateThreshold(thresholdPoint);
         
-        setNotification(response)
+        setNotification(response);
         if(response.success){
-            setSuccessNotification(true)
+            setSuccessNotification(true);
         }else{
-            setErrorNotification(true)
+            setErrorNotification(true);
         }
     }
+
+    const handleSelectCertificate = (e) =>{
+        const el = e.target.files[0];
+        setSelectedCertificate(el.name)
+    }
+
+    const handleSelectedDocument = (e)=>{
+        const el = e.target.files[0];
+        setSelectedDocument(el.name);
+    }
     const handleRegistrationCertificate =async(e)=>{
-        e.preventDefault()
-        let profilePhoto = ""
+        e.preventDefault();
+        setSelectedCertificate("");
+        let profilePhoto = "";
 
         const el = formElCertificate?.current?.elements[0].files[0]
         console.log(el);
-        let lastDot = el.name.lastIndexOf('.')
-        let ext = el.name.substring(lastDot + 1) 
-        let response = await PartnerProofComplianceDocument(partnerDetails?.partner_unique_id)
+        let lastDot = el.name.lastIndexOf('.');
+        let ext = el.name.substring(lastDot + 1);
+        let response = await PartnerProofComplianceDocument(partnerDetails?.partner_unique_id);
         console.log(response);
-        const filename = response.filename.data[0].registration_certificate
+        const filename = response.filename.data[0].registration_certificate;
         console.log(filename);
         
-        const imagePath = "partners/"+filename + "." + ext;
+        const imagePath = "/partners/"+filename + "." + ext;
 
-        const sotrageRef = ref(storage, imagePath)
-        const uploadTask =  uploadBytesResumable(sotrageRef,el)
+        const sotrageRef = ref(storage, imagePath);
+        const uploadTask =  uploadBytesResumable(sotrageRef,el);
 
         uploadTask.on('state_changed', 
             (snapshot) => {
@@ -110,39 +123,40 @@ export default function MerchantProfile({partnerDetails}){
             }, 
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
-                    profilePhoto = downloadURL
+                    profilePhoto = downloadURL;
                     console.log(profilePhoto);
-                    await setRegistrationCertificateUpload(profilePhoto, imagePath)
+                    await setRegistrationCertificateUpload(profilePhoto, imagePath);
                 });
             }
         )
     }
     const setRegistrationCertificateUpload = async(profilePhoto, imagePath) =>{
-       const response = await PartnerComplianceCertificate(profilePhoto, imagePath)
-       console.log(response)
+       const response = await PartnerComplianceCertificate(profilePhoto, imagePath);
+       console.log(response);
 
-       setNotification(response)
+       setNotification(response);
         if(response.success){
-            setSuccessNotification(prev=>true)
+            setSuccessNotification(prev=>true);
         }else{
-            setErrorNotification(prev=>true)
+            setErrorNotification(prev=>true);
         }
     }
     //works
     const handleRegistrationDocument =async(e)=>{
-        e.preventDefault()
-        let profilePhoto = ""
+        e.preventDefault();
+        setSelectedDocument("");
+        let profilePhoto = "";
         
         const el = formElDocument?.current?.elements[0].files[0]
-        let lastDot = el.name.lastIndexOf('.')
-        let ext = el.name.substring(lastDot + 1) 
-        let response = await PartnerProofComplianceDocument(partnerDetails?.partner_unique_id)
-        const filename = response.filename.data[1].registration_document
+        let lastDot = el.name.lastIndexOf('.');
+        let ext = el.name.substring(lastDot + 1);
+        let response = await PartnerProofComplianceDocument(partnerDetails?.partner_unique_id);
+        const filename = response.filename.data[1].registration_document;
 
-        const imagePath = "partners/"+filename + "." + ext;
+        const imagePath = "/partners/"+filename + "." + ext;
         
-        const sotrageRef = ref(storage, imagePath)
-        const uploadTask =  uploadBytesResumable(sotrageRef,el)
+        const sotrageRef = ref(storage, imagePath);
+        const uploadTask =  uploadBytesResumable(sotrageRef,el);
 
         uploadTask.on('state_changed', 
             (snapshot) => {
@@ -154,25 +168,25 @@ export default function MerchantProfile({partnerDetails}){
             }, 
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
-                    profilePhoto = downloadURL
-                    await setRegistrationDocumentUpload(profilePhoto, imagePath)
+                    profilePhoto = downloadURL;
+                    await setRegistrationDocumentUpload(profilePhoto, imagePath);
                 });
             }
         )
     }
 
     const setRegistrationDocumentUpload = async(profilePhoto, imagePath) =>{
-       const response = await PartnerComplianceDocument(profilePhoto, imagePath)
-       setNotification(response)
+       const response = await PartnerComplianceDocument(profilePhoto, imagePath);
+       setNotification(response);
         if(response.success){
-            setSuccessNotification(prev=>true)
+            setSuccessNotification(prev=>true);
         }else{
-            setErrorNotification(prev=>true)
+            setErrorNotification(prev=>true);
         }
     }
     useEffect(()=>{
-        handleLoop()
-    },[partnerDetails])
+        handleLoop();
+    },[partnerDetails]);
     
     return(
         <div>
@@ -240,7 +254,7 @@ export default function MerchantProfile({partnerDetails}){
         </form>
         <form onSubmit={handleRegistrationCertificate} ref={formElCertificate}>
             <div className="xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60 xui-mt-3">
-            <p>Registration Document</p>
+            <p>Registration Certificate</p>
 
                 <label htmlFor="certificate-input">
 
@@ -250,6 +264,7 @@ export default function MerchantProfile({partnerDetails}){
                 </div>
                 </label>
                 <input 
+                    onChange={handleSelectCertificate}
                     style={
                         {
                             display: "none"
@@ -259,7 +274,8 @@ export default function MerchantProfile({partnerDetails}){
                     name='certificate-input' 
                     type="file"
                     required />
-
+                {selectedCertificate && <p className="xui-text-center   xui-mt-half">Selected File Name: <span className="xui-font-sz-80 xui-opacity-5 xui-mt-half">{selectedCertificate}</span></p>}
+                {/* <p className="xui-text-center xui-font-sz-80 xui-opacity-5 xui-mt-half">{selectedCertificate}</p> */}
                 <p className="xui-text-center xui-font-sz-80 xui-opacity-5 xui-mt-half">Click to change picture</p>
                 <div className="xui-mt-1 xui-d-flex">
                     <button className="xui-btn psc-btn-blue xui-font-sz-80">Save Changes</button>
@@ -268,7 +284,7 @@ export default function MerchantProfile({partnerDetails}){
         </form>
         <form onSubmit={handleRegistrationDocument} ref={formElDocument}>
             <div className="xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60 xui-mt-3">
-                <p>Registration Certificate</p>
+                <p>Registration Document</p>
                 <label htmlFor="document-input">
 
                 <div className="xui-opacity-6 xui-w-fluid-100 xui-h-250 xui-bdr-s-dashed xui-bdr-w-1 xui-bdr-black xui-bdr-rad-1 xui-mt-1 xui-d-flex xui-flex-dir-column xui-flex-ai-center xui-flex-jc-center xui-cursor-pointer">
@@ -277,6 +293,7 @@ export default function MerchantProfile({partnerDetails}){
                 </div>
                 </label>
                 <input
+                    onChange={handleSelectedDocument}
                     style={
                         {
                             display: "none"
@@ -288,6 +305,7 @@ export default function MerchantProfile({partnerDetails}){
                     name='document-input' 
                     type="file"
                     required />
+                {selectedDocument && <p className="xui-text-center   xui-mt-half">Selected File Name: <span className="xui-font-sz-80 xui-opacity-5 xui-mt-half">{selectedDocument}</span></p>}
                 <p className="xui-text-center xui-font-sz-80 xui-opacity-5 xui-mt-half">Click to change picture</p>
                 <div className="xui-mt-1 xui-d-flex">
                     <button className="xui-btn psc-btn-blue xui-font-sz-80">Save Changes</button>

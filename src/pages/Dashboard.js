@@ -17,8 +17,10 @@ import Team from '../icons/Team';
 import Key from '../icons/Key';
 import "../assets/css/alt.css"
 import PartnersUpgradeAccount from '../components/modals/PartnersUpgradeAccount';
+import ConfirmUser from '../components/modals/ConfirmUser';
 
 export default function Dashboard(){
+     const [activationSuccessNotification, setActivationSuccessNotification] = useState(false);
      const [loading, setLoading] = useState(false);
      const [pId, setPId]= useState();
      const [partnerDetails, setPartnerDetails] = useState();
@@ -58,12 +60,12 @@ export default function Dashboard(){
      const handleActivateUser =async(e)=>{
          e.preventDefault();
          setLoading(true);
-         const response = await PartnerActivateUser(pId, offerId);
+         const response = await PartnerActivateUser(pId.toUpperCase(), offerId);
          console.log(response);
          setLoading(false);
          
          if(response.success){
-             setSuccessNotification(prev=>true);
+             setActivationSuccessNotification(prev=>true);
          }else{
              setErrorNotification(prev=>true);
          }
@@ -105,7 +107,7 @@ export default function Dashboard(){
     e.preventDefault();
 
     setLoyaltyLoading(true);
-    const response = await PartnerAddLoyaltyPoints(loyaltyPId, parseInt(loyaltyPoints))
+    const response = await PartnerAddLoyaltyPoints(loyaltyPId.toUpperCase(), parseInt(loyaltyPoints))
     .finally(e=>setLoyaltyLoading(false));
 
     if(response.success){
@@ -118,7 +120,7 @@ export default function Dashboard(){
 const handleCheckoutLoyalty = async(e)=>{
     e.preventDefault();
     setLoyaltyLoading(true);
-    const response = await PartnerAddLoyaltyPoints(loyaltyPId, loyaltyPoints);
+    const response = await PartnerAddLoyaltyPoints(checkoutPId.toUpperCase(), checkoutPoints);
     if(response.success){
         setSuccessNotification(prev=>true);
     }else{
@@ -267,6 +269,8 @@ const handleCheckoutLoyalty = async(e)=>{
     show={errorNotification}
     onClose={()=>setErrorNotification(false)} 
     />}
+
+{activationSuccessNotification && <ConfirmUser data="" show={activationSuccessNotification} onClose={()=>setActivationSuccessNotification(false)} />}
     {successNotification && <Congratulations 
     lead={notification?.message} 
     show={successNotification}

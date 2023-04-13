@@ -92,9 +92,9 @@ function Signup() {
         <div  className=" psc-flip-card xui-max-w-900 xui-w-fluid-100 xui-mt-2 xui-md-mt-none">
         <div className="psc-flip-card-inner xui-w-fluid-100">
             <div className="psc-flip-card-front xui-bg-white xui-bdr-rad-half xui-w-fluid-100 xui-p-2-half xui-pb-3 xui-text-black">
-                <h2 className="xui-font-sz-125 xui-w-fluid-80">Sign Up</h2>
+                <h2 className="xui-font-sz-125 xui-w-fluid-80">Sign Up  for Passscoder Business</h2>
                 {/* <p className="xui-opacity-5 xui-font-sz-90 xui-mt-half">Already have an account? <span className="psc-text">Sign In</span></p> */}
-                <p className="xui-font-sz-80 xui-my-2"><span className="xui-opacity-7">Already have an account?</span> <Link to={`/access/${stripped}`} className="xui-font-w-bold psc-text xui-text-dc-none">Sign In</Link></p>
+                <p className="xui-font-sz-80 xui-my-2"><span className="xui-opacity-7">Already have an account?</span> <Link to={`${stripped ? "/access/" +stripped: "#"}`} className="xui-font-w-bold psc-text xui-text-dc-none">Use your private access url</Link></p>
                 <form className="xui-form xui-mt--1" onSubmit={handleSignup}>
                     <div className=" xui-form-box xui-w-fluid-100 xui-lg-w-fluid-100">
                         <label>Business Name</label>
@@ -196,10 +196,15 @@ function Signup() {
                     </div>
                     
                     </div>
+
+                    <div className='flex items-center gap-3'>
+                        <input type='checkbox' required />
+                        <p>By signing up you agree to our <Link to="#">terms and conditions</Link> </p>
+                    </div>
                     
                     <div className="xui-form-box xui-d-flex xui-flex-jc-flex-end">
                         <button  className="xui-d-inline-flex xui-flex-ai-center xui-btn psc-btn-blue xui-bdr-rad-half xui-font-sz-85">
-                            <span className="xui-mr-half">Continue</span>
+                            <span className="xui-mr-half">Get Access</span>
                             <Arrowright width="12" height="12" />
                         </button>
                     </div>

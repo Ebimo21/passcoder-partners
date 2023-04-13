@@ -27,6 +27,8 @@ export default function Team(){
     const [editId, setEditId] = useState("");
     const [showMenu, setShowMenu] = useState(false);
     const [tokens, setTokens] = useState([]);
+    const [rowsPerPage, setRowsPerPage] = useState(10)
+    const [page, setPage] = useState(1)
 
     const [ deleteModal, setDeleteModal] = useState();
 
@@ -47,7 +49,7 @@ export default function Team(){
 
     }
     const getTokens = async()=>{
-        const response = await PartnerGetTokens();
+        const response = await PartnerGetTokens(page, rowsPerPage);
         console.log(response.data);
         setTokens(response.data.rows);
     }
@@ -137,6 +139,32 @@ export default function Team(){
         
 
     }, [render]);
+
+    const handleSelectRows = async (e) =>{
+
+        const row = e.target.value;
+        setRowsPerPage(row);
+        const response = await PartnerGetTokens(page, row);
+        setTokens(response.data.rows)
+
+    }
+
+    const handleGetNextPage = async() =>{
+        setPage(page=>page+1)
+        console.log(page);
+        const response = await PartnerGetTokens(page+1, rowsPerPage);
+        setTokens(response.data.rows);
+    }
+    
+    const handleGetPreviousPage = async() =>{
+        setPage(page=>page-1)
+        if(!page===1){
+            setPage(page=>page-1)
+
+        }
+        const response = await PartnerGetTokens(page-1, rowsPerPage);
+        setTokens(response.data.rows);
+    }
     return(
         <>
         <Screen aside="true" navbar="false">
@@ -201,7 +229,7 @@ export default function Team(){
             <div className='xui-d-flex xui-flex-jc-flex-end xui-py-1 xui-font-sz-85 xui-opacity-5 xui-mt-1'>
                 <div className='xui-d-inline-flex xui-flex-ai-center'>
                     <span>Rows per page:</span>
-                    <select className='psc-select-rows-per-page xui-ml-half'>
+                    <select onChange={handleSelectRows} className='psc-select-rows-per-page xui-ml-half'>
                         <option value={10}>10</option>
                         <option value={25}>25</option>
                         <option value={50}>50</option>
@@ -211,12 +239,12 @@ export default function Team(){
                     <span><span className='xui-font-w-bold'>11 - 20</span> of 194</span>
                 </div>
                 <div className='xui-d-inline-flex xui-flex-ai-center xui-mx-1'>
-                    <div className='xui-mr-half xui-cursor-pointer'>
+                    <button disabled={page<2} onClick={handleGetPreviousPage} className='xui-mr-half xui-cursor-pointer'>
                         <Arrowleft width="18" height="18" />
-                    </div>
-                    <div className='xui-ml-half xui-cursor-pointer'>
+                    </button>
+                    <button onClick={handleGetNextPage} className='xui-ml-half xui-cursor-pointer'>
                         <Arrowright width="18" height="18" />
-                    </div>
+                    </button>
                 </div>
             </div>
             </section>
