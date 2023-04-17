@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
-function CreateAnnouncement({handleSubmit, dispatch, FORMACTION,  show}) {
-    
+function CreateAnnouncement({handleSubmit, dispatch, FORMACTION, state,  show}) {
+
     if(!show) {return null}
 
   return (
@@ -12,7 +14,7 @@ function CreateAnnouncement({handleSubmit, dispatch, FORMACTION,  show}) {
             <p className='text-sm'>Keep your business above all. Let your users know the latest update and do many more.</p>
 
             <form className="xui-form xui-mt--1" onSubmit={handleSubmit}>
-                <div className="xui-mt-3 xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60">
+                <div className="xui-mt-3 xui-form-box xui-w-fluid-100 xui-lg-w-fluid-100">
                     <label>Subject</label>
                     <div className="xui-d-flex xui-flex-ai-center">
                         <input
@@ -26,11 +28,12 @@ function CreateAnnouncement({handleSubmit, dispatch, FORMACTION,  show}) {
                             style={{width: "calc(100%)"}}/>
                     </div>
                 </div>
-                <div className="xui-mt-3 xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60">
+                <div className="xui-mt-3 xui-form-box xui-w-fluid-100 xui-lg-w-fluid-100">
 
                     <div className='flex flex-wrap mt-4'>
                         <label>Description</label>
-                        <textarea
+                        <ReactQuill modules={modules} formats={formats} theme='snow' value={state.description} onChange={(e)=> dispatch({type: FORMACTION.DESCRIPTION, payload:e})} />
+                        {/* <textarea
                             onChange={(e)=>dispatch({type: FORMACTION.DESCRIPTION, payload: e.target.value})}
                             name="announcement"
                             placeholder='Enter Announcement'
@@ -41,7 +44,7 @@ function CreateAnnouncement({handleSubmit, dispatch, FORMACTION,  show}) {
                             resize="none"
                             >
 
-                        </textarea>
+                        </textarea> */}
                     </div>
                 </div>
                 <div className="xui-mt-1 xui-d-flex">
@@ -55,5 +58,42 @@ function CreateAnnouncement({handleSubmit, dispatch, FORMACTION,  show}) {
     </div>
   )
 }
+
+const modules = {
+    toolbar: [
+      [{ header: '1' }, { header: '2' }, { font: [] }],
+      [{ size: [] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [
+        { list: 'ordered' },
+        { list: 'bullet' },
+        { indent: '-1' },
+        { indent: '+1' },
+      ],
+      ['link'],
+      ['clean'],
+    ],
+    clipboard: {
+      // toggle to add extra line breaks when pasting HTML:
+      matchVisual: false,
+    },
+  }
+
+  const formats = [
+    'header',
+    'font',
+    'size',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'list',
+    'bullet',
+    'indent',
+    'link',
+    // 'image',
+    // 'video',
+  ]
 
 export default CreateAnnouncement

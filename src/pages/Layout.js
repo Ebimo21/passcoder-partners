@@ -13,6 +13,8 @@ import Key from "../icons/Key";
 import Team from "../icons/Team";
 import Alarm from "../icons/Alarm";
 import Token from "../icons/Token";
+import "../assets/css/alt.css"
+import PartnersUpgradeAccount from "../components/modals/PartnersUpgradeAccount";
 
 function Truncate(string, len){
     
@@ -25,10 +27,13 @@ export default function Layout(){
 
     const [partnerDetails, setPartnerDetails] = useState()
     const loc = useLocation();
+
+    const [upgradeModal, setUpgradeModal] = useState(true);
     
     async function getPartnerDetails (){
         const response = await Partner()
         setPartnerDetails(response.data)
+        console.log(response.data.stripped);
     }
 
     useEffect(()=>{
@@ -41,8 +46,13 @@ export default function Layout(){
     const handleLogout = ()=>{
          PartnersLogOut();
          setTimeout(() => {
-            navigate(`/signup`);
+            navigate(`/access/${partnerDetails.stripped}`);
           }, 4000);
+    }
+
+    const handleAccountUpgrade = async (e)=>{
+        e.preventDefault();
+        setUpgradeModal(false);
     }
     return(
         <>
@@ -69,7 +79,7 @@ export default function Layout(){
                 <span className='xui-d-inline-block xui-font-sz-70 xui-opacity-5'>{Truncate(partnerDetails?.email, 18)}</span>
             </div>
             </div>
-            <Link to='/' className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 " + (loc.pathname === '/' ? 'active' : '')}>
+            <Link  to='/' className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 menu-side " + (loc.pathname === '/' ? 'active' : '')}>
                 <div className="icon">
                     <Category width="20" height="20" />
                 </div>
@@ -77,7 +87,7 @@ export default function Layout(){
                     <span>Dashboard</span>
                 </div>
             </Link>
-            <Link to='/offers' className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 " + (loc.pathname === '/offers' ? 'active' : '')}>
+            <Link to='/offers' className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 menu-side " + (loc.pathname === '/offers' ? 'active' : '')}>
                 <div className="icon">
                     {/* <Swap width="20" height="20" /> */}
                     <Tag />
@@ -86,7 +96,7 @@ export default function Layout(){
                     <span>Offers</span>
                 </div>
             </Link>
-            <Link to='/loyalty' className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 " + (loc.pathname === '/loyalty' ? 'active' : '')}>
+            <Link to='/loyalty' className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 menu-side " + (loc.pathname === '/loyalty' ? 'active' : '')}>
                 <div className="icon">
                     <Team />
                 </div>
@@ -94,7 +104,7 @@ export default function Layout(){
                     <span>Loyalty</span>
                 </div>
             </Link>
-            <Link to='/announcement' className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 " + (loc.pathname === '/announcement' ? 'active' : '')}>
+            <Link to='/announcement' className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 menu-side " + (loc.pathname === '/announcement' ? 'active' : '')}>
                 <div className="icon">
                     <Alarm width="24" height="24" />
                 </div>
@@ -102,7 +112,7 @@ export default function Layout(){
                     <span>Announcement</span>
                 </div>
             </Link>
-            <Link to='/transaction' className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 " + (loc.pathname === '/transaction' ? 'active' : '')}>
+            <Link to='/transaction' className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 menu-side " + (loc.pathname === '/transaction' ? 'active' : '')}>
                 <div className="icon">
                     <Swap width="20" height="20" />
                 </div>
@@ -110,7 +120,7 @@ export default function Layout(){
                     <span>Transaction</span>
                 </div>
             </Link>
-            <Link to='/team' className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 " + (loc.pathname === '/team' ? 'active' : '')}>
+            <Link to='/team' className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 menu-side " + (loc.pathname === '/team' ? 'active' : '')}>
                 <div className="icon">
                     <Token width="20" height="20" />
                 </div>
@@ -118,7 +128,7 @@ export default function Layout(){
                     <span>Team</span>
                 </div>
             </Link>
-            <Link to='/settings' className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6" + (loc.pathname === '/settings' ? 'active' : '')}>
+            <Link to='/settings' className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 menu-side" + (loc.pathname === '/settings' ? 'active' : '')}>
                 <div className="icon">
                     <Setting />
                 </div>
@@ -126,16 +136,16 @@ export default function Layout(){
                     <span>Settings</span>
                 </div>
             </Link> 
-            <div className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6" }>
+            <div className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 menu-side" }>
                 <div className="icon">
                     <Key />
                 </div>
-                <div className="name xui-ml-half">
+                <div xui-modal-open="upgrade" className="name xui-ml-half">
                     <span>Upgrade</span>
                 </div>
             </div> 
             <div className="bottom-fixed xui-mt--5">
-                <div className="xui-text-inherit link-box xui-font-sz-90 xui-opacity-6">
+                <div className="xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 menu-side">
                     <div className="icon">
                         <Logout width="20" height="20" />
                     </div>
@@ -148,6 +158,10 @@ export default function Layout(){
         </div>
         <Outlet />
         </section>
+
+        {upgradeModal && <PartnersUpgradeAccount
+        show={upgradeModal}
+        handleSubmit={handleAccountUpgrade} /> }
         </>
     );
 }

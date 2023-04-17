@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Wallet from "../icons/Wallet";
 import Arrowright from "../icons/Arrowright";
-import { PartnerLoginVerifyOtp } from "../config/apiCalls";
+import { PartnerLoginEmail, PartnerLoginVerifyOtp } from "../config/apiCalls";
 import Error from "../components/modals/Error";
 import Congratulations from "../components/modals/Congratulations";
 
@@ -35,6 +35,20 @@ export default function OTPVerification(){
     }
 
   };
+
+  const handleResendOtp=async(e)=>{
+    e.preventDefault();
+    console.log("hi");
+    const response = await PartnerLoginEmail(email, stripped);
+    console.log(response);
+    
+    setNotification(response.data.message);
+    if(response.success){
+      setSuccessNotification(true);
+    }else{
+      setErrorNotification(true);
+    }
+  }
 
   const handleInput = (index, event) => {
     const { value } = event.target;
@@ -85,7 +99,7 @@ export default function OTPVerification(){
                     <div class="otp-field xui-d-flex xui-flex-jc-center xui-my-2">
                         {inputFields}
                     </div>
-                    <p className="xui-font-sz-80 xui-my-2 xui-text-center"><span className="xui-opacity-7">Didn't get it?</span> <span className="xui-font-w-bold psc-text xui-text-dc-none">Resend OTP</span></p>
+                    <p className="xui-font-sz-80 xui-my-2 xui-text-center"><span className="xui-opacity-7">Didn't get it?</span> <span onClick={handleResendOtp} className="xui-font-w-bold psc-text xui-text-dc-none xui-cursor-pointer">Resend OTP</span></p>
                     <div className="xui-mt-5 xui-d-flex xui-flex-jc-flex-end">
                         <button className="xui-d-inline-flex xui-flex-ai-center xui-btn psc-btn-blue xui-bdr-rad-half xui-font-sz-85">
                             <span className="xui-mr-half">Sign in</span>

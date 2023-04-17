@@ -8,7 +8,7 @@ export let jwt = jsCookie.get('jwt')
 // const jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJ0bmVyX3VuaXF1ZV9pZCI6Im9qcm9ySkxVeTVkZ3JUQlJORnVUIiwicGFydG5lcl91c2VyX3Rva2VuIjoiOTI3Zjk1MDAzNDM3ZTdkOWMxZmE0MDk4YjQ1ZGQ3MGM1NDk5NTNkZSIsInBhcnRuZXJfbmFtZSI6Ik5hb21pIEpvc2VwaCAoQXBhcGEgfCBMYWdvcykiLCJwYXJ0bmVyX3JvbGUiOiJBRE1JTiIsImlhdCI6MTY4MDI1MjM5NSwiZXhwIjoxNjgwODU3MTk1fQ.xjOras-lm6S3zd8GCtZW9Pt38c9TZ9rnsE5bzixS4rI"
 export const hostRoute =async()=>{
     try {
-        const response = await axios.get(`${host}`)
+        const response = await axios.post(`${host}`)
         return response.data
     } catch(err){
         if (err.response){ return {success: false, message: err.response.data.message, err}; }
@@ -20,7 +20,7 @@ export const hostRoute =async()=>{
 }
 export const PartnerPremiumPackages =async()=>{
     try {
-        const response = await axios.get(`${host}partner/premium/packages`)
+        const response = await axios.post(`${host}partner/premium/packages`)
         return response.data
     } catch(err){
         if (err.response){ return {success: false, message: err.response.data.message, err}; }
@@ -32,8 +32,11 @@ export const PartnerPremiumPackages =async()=>{
 }
 export const Partner =async()=>{
     try {
-        const response = await axios.get(
+        const response = await axios.post(
             `${host}partner/`, 
+            {
+
+            },
             {
                 headers: { 
                     "passcoder-access-token": jwt 
@@ -54,8 +57,9 @@ export const Partner =async()=>{
 
 export const PartnerMetrics =async()=>{
     try {
-        const response = await axios.get(
+        const response = await axios.post(
             `${host}partner/metrics`, 
+            {},
             {
                 headers: {
                     "passcoder-access-token": jwt
@@ -71,31 +75,34 @@ export const PartnerMetrics =async()=>{
     // returns {success, message, data} on success
 
 }
-export const PartnerGetStripped =async()=>{
-    try {
-        const response = await axios.get(`
-        ${host}partner/`, 
-        {
-            headers: {
-                "passcoder-access-token": jwt 
-            }})
-        return response.data.data.stripped
-    } catch(err){
-        if (err.response){ return {success: false, message: err.response.data.message, err}; }
-        else if (err.request) { console.log("fatal error"); } 
-        else { console.log('Error: ', err.message); }
-    }
-    // returns {success, message, data} on success
+// export const PartnerGetStripped =async()=>{
+//     try {
+//         const response = await axios.get(`
+//         ${host}partner/`, 
+//         {
+//             headers: {
+//                 "passcoder-access-token": jwt 
+//             }})
+//         return response.data.data.stripped
+//     } catch(err){
+//         if (err.response){ return {success: false, message: err.response.data.message, err}; }
+//         else if (err.request) { console.log("fatal error"); } 
+//         else { console.log('Error: ', err.message); }
+//     }
+//     // returns {success, message, data} on success
 
-}
+// }
 export const PartnerAccessDetails =async(stripped)=>{
     try {
-        const response = await axios.get(
+        const response = await axios.post(
             `${host}partner/access/details`, 
             {
-                params: {
+                
                     stripped: stripped
-                }
+                
+            },
+            {
+
             }
         )
         return response.data
@@ -109,8 +116,12 @@ export const PartnerAccessDetails =async(stripped)=>{
 }
 export const PartnerDetail =async()=>{
     try {
-        const response = await axios.get(`${host}partner`, 
-        { headers: { "passcoder-access-token": jwt }})
+        const response = await axios.post(
+            `${host}partner`, 
+            {
+
+            },
+            { headers: { "passcoder-access-token": jwt }})
         return response.data
     } catch(err){
         if (err.response){ return {success: false, message: err.response.data.message, err}; }
@@ -123,7 +134,7 @@ export const PartnerDetail =async()=>{
 
 export const PartnerPackage =async()=>{
     try {
-        const response = await axios.get(`${host}partner/premium/packages`)
+        const response = await axios.post(`${host}partner/premium/packages`)
         return response.data
     } catch(err){
         if (err.response){ return {success: false, message: err.response.data.message, err}; }
@@ -619,14 +630,15 @@ export const PartnerSignupRoute =async({name, email, description, city, state, c
 
 export const PartnerOffers =async(page=1, size=10)=>{
     try {
-        const response = await axios.get(
+        const response = await axios.post(
             `${host}partner/offers`, 
             {
                 params: {
                   page: page,
                   size: size  
                 },
-
+            },
+            {
                 headers: {
                     "passcoder-access-token": jwt
                 }
@@ -643,8 +655,9 @@ export const PartnerOffers =async(page=1, size=10)=>{
 
 export const PartnerRequests =async()=>{
     try {
-        const response = await axios.get(
+        const response = await axios.post(
             `${host}partner/requests`, 
+            {},
             {
                 headers: {
                     "passcoder-access-token": jwt
@@ -661,11 +674,12 @@ export const PartnerRequests =async()=>{
 
 export const PartnerUniqueOffer =async(offer_id)=>{
     try {
-        const response = await axios.get(`${host}partner/offer`, 
-        {params: 
-            { 
+        const response = await axios.post(`${host}partner/offer`,
+         
+        {
                 unique_id: offer_id
-            },
+        },
+        {
             headers: {
                 "passcoder-access-token": jwt
             }
@@ -800,13 +814,15 @@ export const PartnerCreateAnnouncement =async({title, description})=>{
 }
 export const PartnerGetAnnouncements =async(page=1, size=10)=>{
     try {
-        const response = await axios.get(
+        const response = await axios.post(
             `${host}partner/announcements`, 
             {
                 params: {
                     page: page,
                     size: size  
                   },
+                },
+            {
                 headers: {
                     "passcoder-access-token": jwt
                 }
@@ -823,8 +839,9 @@ export const PartnerGetAnnouncements =async(page=1, size=10)=>{
 
 export const PartnerGetAnnouncement =async()=>{
     try {
-        const response = await axios.get(
+        const response = await axios.post(
             `${host}partner/announcement`, 
+            {},
             {
                 headers: {
                     "passcoder-access-token": jwt
@@ -864,13 +881,16 @@ export const PartnerActivateUser =async(pid, offer_unique_id)=>{
 
 export const PartnerLoyaltyUsers =async(page=1, size=10)=>{
     try {
-        const response = await axios.get(
+        const response = await axios.post(
             `${host}partner/app/users`, 
             {
                 params: {
                     page: page,
                     size: size  
-                  },
+                  }
+                
+            },
+            {
 
                 headers: { 
                     "passcoder-access-token": jwt 
@@ -940,7 +960,7 @@ export const PartnerCheckoutLoyaltyPoints =async(pid, points)=>{
 
 export const PartnerUpgrade =async()=>{
     try {
-        const response = await axios.post(`${host}partner/app/users`, {}, {
+        const response = await axios.post(`${host}partner/upgrade`, {}, {
         headers: { "passcoder-access-token": passcoder_access_key }})
         
         return response.data
@@ -955,8 +975,9 @@ export const PartnerUpgrade =async()=>{
 
 export const PartnerTransactions =async()=>{
     try {
-        const response = await axios.get(
+        const response = await axios.post(
             `${host}partner/transactions`, 
+            {},
             {
                 headers: { 
                     "passcoder-access-token": jwt 
@@ -999,14 +1020,16 @@ export const PartnerAddToken =async({alias, expiration, valid})=>{
 
 export const PartnerGetTokens =async(page=1, size=10)=>{
     try {
-        const response = await axios.get(
+        const response = await axios.post(
             `${host}partner/tokens`, 
             {
                 params: {
                     page: page,
                     size: size  
-                  },
-                  
+                  }
+            },
+            {
+
                 headers: { 
                     "passcoder-access-token": jwt 
                 }
@@ -1097,12 +1120,12 @@ export const PartnerUpdateToken =async(unique_id, )=>{
 
 export const PartnerUniqueToken = async(token )=>{
     try {
-        const response = await axios.get(
+        const response = await axios.post(
             `${host}partner/token`, 
             { 
-            params: {
-                token:token
-            }  ,              
+            token:token
+        },
+        {             
               headers: 
               {
                 "passcoder-access-token": jwt,

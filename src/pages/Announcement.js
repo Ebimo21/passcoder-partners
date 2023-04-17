@@ -29,7 +29,8 @@ export default function Announcement(){
     const [showMenu, setShowMenu] = useState(false);
     const [loading, setLoading] = useState(false);
     const [rowsPerPage, setRowsPerPage] = useState(10)
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(1);
+    const [announcementLoading, setAnnouncmentLoading] = useState(true);
 
 
     const handleAddUserToList =async(e)=>{
@@ -44,7 +45,9 @@ export default function Announcement(){
     }
 
     const handleGetAnnouncement =async () =>{
-        const response = await PartnerGetAnnouncements(page, rowsPerPage);
+        setAnnouncmentLoading(true);
+        const response = await PartnerGetAnnouncements(page, rowsPerPage)
+        .finally((res)=>setAnnouncmentLoading(false));
         setAnnouncement(response?.data?.rows);
         console.log(response?.data?.rows);
     }
@@ -104,28 +107,37 @@ export default function Announcement(){
     }, [render]);
 
     const handleSelectRows = async (e) =>{
+        setAnnouncmentLoading(true);
 
         const row = e.target.value;
         setRowsPerPage(row);
-        const response = await PartnerGetAnnouncements(page, row);
+        const response = await PartnerGetAnnouncements(page, row)
+        .finally((res)=>setAnnouncmentLoading(false));
         setAnnouncement(response.data.rows)
 
     }
 
     const handleGetNextPage = async() =>{
+        setAnnouncmentLoading(true);
         setPage(page=>page+1)
         console.log(page);
-        const response = await PartnerGetAnnouncements(page+1, rowsPerPage);
+        const response = await PartnerGetAnnouncements(page+1, rowsPerPage)
+        .finally((res)=>setAnnouncmentLoading(false));
+
         setAnnouncement(response.data.rows);
+
     }
     
     const handleGetPreviousPage = async() =>{
+        setAnnouncmentLoading(true);
         setPage(page=>page-1)
         if(!page===1){
             setPage(page=>page-1)
 
         }
-        const response = await PartnerGetAnnouncements(page-1, rowsPerPage);
+        const response = await PartnerGetAnnouncements(page-1, rowsPerPage)
+        .finally((res)=>setAnnouncmentLoading(false));
+
         setAnnouncement(response.data.rows);
     }
     return(
@@ -155,7 +167,7 @@ export default function Announcement(){
                     </tr>
                     </thead>
                     <tbody>
-                    {announcement?.map((item, index)=>{
+                    { !announcementLoading && announcement?.map((item, index)=>{
                         return(
                             <tr key={index} className=''>
                                 <td className='xui-opacity-5'>
@@ -179,18 +191,23 @@ export default function Announcement(){
                     })}
                     </tbody>
                     </table>
+
+                        
+                    {announcementLoading && (
+                    <div style={{display: "flex", justifyContent: "center", alignItems: "center", gap: "20px"}} className="xui-mt-2"><p>Announcements Loading... </p><TailSpin stroke='black'  color='#fff' /></div>
+                )}
                 </div>
                 <div className='xui-d-flex xui-flex-jc-flex-end xui-py-1 xui-font-sz-85 xui-opacity-5 xui-mt-1'>
                     <div className='xui-d-inline-flex xui-flex-ai-center'>
                         <span>Rows per page:</span>
                         <select onChange={handleSelectRows} className='psc-select-rows-per-page xui-ml-half'>
-                            <option value={10}>10</option>
-                            <option value={25}>25</option>
+                            <option value={20}>20</option>
                             <option value={50}>50</option>
+                            <option value={100}>100</option>
                         </select>
                     </div>
                     <div className='xui-mx-1 xui-lg-mx-2'>
-                        <span><span className='xui-font-w-bold'>11 - 20</span> of 194</span>
+                        <span><span className='xui-font-w-bold'>1</span> of 2</span>
                     </div>
                     <div className='xui-d-inline-flex xui-flex-ai-center xui-mx-1'>
                         <button disabled={page<2} onClick={handleGetPreviousPage} className='xui-mr-half xui-cursor-pointer'>
@@ -208,6 +225,7 @@ export default function Announcement(){
             handleSubmit={handleCreateAnnouncement}
             dispatch={dispatch}
             FORMACTION={FORMACTION} 
+            state={data}
             show={render} 
             />}
             <section className='xui-modal' xui-modal="viewMore">

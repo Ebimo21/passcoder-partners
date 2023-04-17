@@ -14,6 +14,7 @@ import Error from '../components/modals/Error';
 import AddToken from '../components/modals/AddToken';
 import Delete from '../icons/Delete';
 import ConfirmDelete from '../components/modals/ConfirmDelete';
+import TailSpin from 'react-loading-icons/dist/esm/components/tail-spin';
 
 export default function Team(){
     const [render, setRender ] = useState(false)
@@ -28,7 +29,8 @@ export default function Team(){
     const [showMenu, setShowMenu] = useState(false);
     const [tokens, setTokens] = useState([]);
     const [rowsPerPage, setRowsPerPage] = useState(10)
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(1);
+    const [tokenLoading, setTokenLoading] = useState(true);
 
     const [ deleteModal, setDeleteModal] = useState();
 
@@ -49,7 +51,10 @@ export default function Team(){
 
     }
     const getTokens = async()=>{
-        const response = await PartnerGetTokens(page, rowsPerPage);
+        setTokenLoading(true);
+        const response = await PartnerGetTokens(page, rowsPerPage)
+        .finally((res)=>setTokenLoading(false));
+
         console.log(response.data);
         setTokens(response.data.rows);
     }
@@ -141,28 +146,36 @@ export default function Team(){
     }, [render]);
 
     const handleSelectRows = async (e) =>{
-
+        setTokenLoading(true);
         const row = e.target.value;
         setRowsPerPage(row);
-        const response = await PartnerGetTokens(page, row);
+        const response = await PartnerGetTokens(page, row)
+        .finally((res)=>setTokenLoading(false));
+
         setTokens(response.data.rows)
 
     }
 
     const handleGetNextPage = async() =>{
+        setTokenLoading(true);
         setPage(page=>page+1)
         console.log(page);
-        const response = await PartnerGetTokens(page+1, rowsPerPage);
+        const response = await PartnerGetTokens(page+1, rowsPerPage)
+        .finally((res)=>setTokenLoading(false));
+
         setTokens(response.data.rows);
     }
     
     const handleGetPreviousPage = async() =>{
+        setTokenLoading(true);
         setPage(page=>page-1)
         if(!page===1){
             setPage(page=>page-1)
 
         }
-        const response = await PartnerGetTokens(page-1, rowsPerPage);
+        const response = await PartnerGetTokens(page-1, rowsPerPage)
+        .finally((res)=>setTokenLoading(false));
+
         setTokens(response.data.rows);
     }
     return(
@@ -187,7 +200,7 @@ export default function Team(){
                     <th className='xui-min-w-200'>Expiration</th>
                     <th className='xui-min-w-150'>Actions</th>
                 </tr>
-                {tokens?.map((item, index)=>{
+                {!tokenLoading && tokens?.map((item, index)=>{
                     return(
                         <tr key={index} className=''>
                             <td className='xui-opacity-5'>
@@ -225,18 +238,22 @@ export default function Team(){
                     )
                 })}
                 </table>
+
+                {tokenLoading && (
+                    <div style={{display: "flex", justifyContent: "center", alignItems: "center", gap: "20px"}} className="xui-mt-2"><p>Tokens Loading... </p><TailSpin stroke='black'  color='#fff' /></div>
+                )}
             </div>
             <div className='xui-d-flex xui-flex-jc-flex-end xui-py-1 xui-font-sz-85 xui-opacity-5 xui-mt-1'>
                 <div className='xui-d-inline-flex xui-flex-ai-center'>
                     <span>Rows per page:</span>
                     <select onChange={handleSelectRows} className='psc-select-rows-per-page xui-ml-half'>
-                        <option value={10}>10</option>
-                        <option value={25}>25</option>
+                        <option value={20}>20</option>
                         <option value={50}>50</option>
+                        <option value={100}>100</option>
                     </select>
                 </div>
                 <div className='xui-mx-1 xui-lg-mx-2'>
-                    <span><span className='xui-font-w-bold'>11 - 20</span> of 194</span>
+                    <span><span className='xui-font-w-bold'>1</span> of 2</span>
                 </div>
                 <div className='xui-d-inline-flex xui-flex-ai-center xui-mx-1'>
                     <button disabled={page<2} onClick={handleGetPreviousPage} className='xui-mr-half xui-cursor-pointer'>

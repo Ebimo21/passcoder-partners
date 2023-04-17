@@ -37,6 +37,7 @@ export default function Loyalty(){
     const [pid, setPid] = useState("");
     const [rowsPerPage, setRowsPerPage] = useState(10)
     const [page, setPage] = useState(1)
+    const [loyaltyUsersLoading, setLoyaltyUsersLoading] = useState(true)
 
     // const [loading, setLoading] = useState(false);
 
@@ -53,7 +54,10 @@ export default function Loyalty(){
     }
     
     async function getPartnerLoyaltyUsers (){
-        const response = await PartnerLoyaltyUsers(page, rowsPerPage);
+        setLoyaltyUsersLoading(true);
+        const response = await PartnerLoyaltyUsers(page, rowsPerPage)
+        .finally((res)=>setLoyaltyUsersLoading(false));
+
         setUsers(response?.data?.rows);
     }
 
@@ -137,28 +141,35 @@ export default function Loyalty(){
     }, []);
 
     const handleSelectRows = async (e) =>{
-
+        
+        setLoyaltyUsersLoading(true);
         const row = e.target.value;
         setRowsPerPage(row);
-        const response = await PartnerLoyaltyUsers(page, row);
+        const response = await PartnerLoyaltyUsers(page, row)
+        .finally((res)=>setLoyaltyUsersLoading(false));
         setUsers(response.data.rows)
 
     }
 
     const handleGetNextPage = async() =>{
+        setLoyaltyUsersLoading(true);
         setPage(page=>page+1)
         console.log(page);
-        const response = await PartnerLoyaltyUsers(page+1, rowsPerPage);
+        const response = await PartnerLoyaltyUsers(page+1, rowsPerPage)
+        .finally((res)=>setLoyaltyUsersLoading(false));
         setUsers(response.data.rows);
     }
     
     const handleGetPreviousPage = async() =>{
-        setPage(page=>page-1)
+        setPage(page=>page-1);
+        setLoyaltyUsersLoading(true);
         if(!page===1){
             setPage(page=>page-1)
 
         }
-        const response = await PartnerLoyaltyUsers(page-1, rowsPerPage);
+        const response = await PartnerLoyaltyUsers(page-1, rowsPerPage)
+        .finally((res)=>setLoyaltyUsersLoading(false));
+
         setUsers(response.data.rows);
     }
     return(
@@ -182,7 +193,7 @@ export default function Loyalty(){
                     <th className='xui-min-w-200'>Last Authenticated</th>
                     <th className='xui-min-w-150'>Actions</th>
                 </tr>
-                {users?.map((item, index)=>{
+                {!loyaltyUsersLoading && users?.map((item, index)=>{
                     return (
                         <tr key={index} className=''>
                             <td className='xui-opacity-5 xui-text-left'>
@@ -222,20 +233,24 @@ export default function Loyalty(){
                         </tr>
                     )
                 })}
-                
                 </table>
+
+                {loyaltyUsersLoading && (
+                    <div style={{display: "flex", justifyContent: "center", alignItems: "center", gap: "20px"}} className="xui-mt-2"><p>Users Loading... </p><TailSpin stroke='black'  color='#fff' /></div>
+                )}
+                
             </div>
             <div className='xui-d-flex xui-flex-jc-flex-end xui-py-1 xui-font-sz-85 xui-opacity-5 xui-mt-1'>
                 <div className='xui-d-inline-flex xui-flex-ai-center'>
                     <span>Rows per page:</span>
                     <select onChange={handleSelectRows} className='psc-select-rows-per-page xui-ml-half'>
-                        <option value={10}>10</option>
-                        <option value={25}>25</option>
+                        <option value={20}>20</option>
                         <option value={50}>50</option>
+                        <option value={100}>100</option>
                     </select>
                 </div>
                 <div className='xui-mx-1 xui-lg-mx-2'>
-                    <span><span className='xui-font-w-bold'>11 - 20</span> of 194</span>
+                    <span><span className='xui-font-w-bold'>1</span> of 2</span>
                 </div>
                 <div className='xui-d-inline-flex xui-flex-ai-center xui-mx-1'>
                     <button disabled={page<2} onClick={handleGetPreviousPage} className='xui-mr-half xui-cursor-pointer'>

@@ -145,13 +145,13 @@ const handleCheckoutLoyalty = async(e)=>{
                     <div className='xui-bg-pos-center xui-bg-sz-cover xui-bdr-rad-half xui-overflow-hidden' style={{backgroundImage: "url('https://res.cloudinary.com/xnyder/image/upload/v1679054785/passcoder-for-business/17-athletics_y2m7nj.png')"}}>
                     <div className='xui-py-1 xui-px-2 xui-overlay xui-h-fluid-100'>
                         {/* <h3 className='xui-font-sz-180 xui-font-w-normal'>{partnerMetrics?.total_general_users}</h3> */}
-                        <h3 className='xui-font-sz-180 xui-font-w-normal'>{partnerMetrics?.total_partner_users}</h3>
+                        <h3 className='xui-font-sz-180 xui-font-w-normal'>{partnerMetrics? partnerMetrics?.total_partner_users: "0"}</h3>
                         <span className='xui-font-sz-90'>Your users</span>
                     </div>
                     </div>
                     <div className='xui-bg-pos-center xui-bg-sz-cover xui-bdr-rad-half xui-overflow-hidden' style={{backgroundImage: "url('https://res.cloudinary.com/xnyder/image/upload/v1679054785/passcoder-for-business/17-athletics_y2m7nj.png')"}}>
                     <div className='xui-py-1 xui-px-2 xui-overlay xui-h-fluid-100'>
-                        <h3 className='xui-font-sz-180 xui-font-w-normal'>{partnerMetrics?.total_general_users}</h3>
+                        <h3 className='xui-font-sz-180 xui-font-w-normal'>{partnerMetrics? partnerMetrics?.total_general_users : "0"}</h3>
                         {/* <h3 className='xui-font-sz-180 xui-font-w-normal'>{partnerMetrics?.total_partner_users}</h3> */}
                         <span className='xui-font-sz-90'>Passcoder Total Users</span>
                     </div>
@@ -202,7 +202,7 @@ const handleCheckoutLoyalty = async(e)=>{
                                 
                             </button>
                             </div>
-                            <span className='xui-opacity-4 xui-font-sz-80 xui-font-w-700 xui-open-sidebar'>Click to open right sidebar (take if off later)</span>
+                            {/* <span className='xui-opacity-4 xui-font-sz-80 xui-font-w-700 xui-open-sidebar'>Click to open right sidebar (take if off later)</span> */}
                         </form>
 
                         <div
