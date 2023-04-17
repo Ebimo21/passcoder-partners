@@ -140,7 +140,7 @@ function PartnersUpgradeAccount({show, handleSubmit}) {
                   gap: "4px",
                   alignItems: "center",
                   color: 'white',
-                  padding: "4px",
+                  padding: "8px",
                   backgroundColor: "#292482"
                   
                 }}

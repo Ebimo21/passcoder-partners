@@ -127,6 +127,15 @@
 }
 
 
+.menu-side:hover {
+
+    color: white;
+    opacity: 1;
+    background-color: transparent;
+    font-weight: 700;
+
+}
+
 
 @media (min-width: 768px) {
 

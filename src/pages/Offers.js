@@ -24,6 +24,7 @@ export default function Offers(){
     const [offerToDelete, setOfferToDelete] = useState("");
     const [offerId, setOfferId] = useState();
     const [loading, setLoading] = useState(false);
+    const [offerLoading, setOfferLoading] = useState(true);
     const [render, setRender] = useState(false);
     const [editId, setEditId] = useState("");
     const [pId, setPId] = useState("");
@@ -47,9 +48,11 @@ export default function Offers(){
     const [page, setPage] = useState(1)
     
     async function getPartnerOffers (){
-        const response = await PartnerOffers(page, rowsPerPage);
+        const response = await PartnerOffers(page, rowsPerPage)
+        .finally((res)=>setOfferLoading(false));
         console.log(response);
         setOffers(response.data.rows);
+        
     }
     const offerForm = {
         name: "",
@@ -251,28 +254,35 @@ export default function Offers(){
     }
 
     const handleSelectRows = async (e) =>{
+        setOfferLoading(true);
 
         const row = e.target.value;
         setRowsPerPage(row);
-        const response = await PartnerOffers(page, row);
+        const response = await PartnerOffers(page, row)
+        .finally((res)=>setOfferLoading(false));
+
         setOffers(response.data.rows)
 
     }
 
     const handleGetNextPage = async() =>{
+        setOfferLoading(true);
         setPage(page=>page+1)
         console.log(page);
-        const response = await PartnerOffers(page+1, rowsPerPage);
+        const response = await PartnerOffers(page+1, rowsPerPage)
+        .finally((res)=>setOfferLoading(false));
         setOffers(response.data.rows);
     }
     
     const handleGetPreviousPage = async() =>{
+        setOfferLoading(true);
         setPage(page=>page-1)
-        if(!page===1){
+        if(page!==1){
             setPage(page=>page-1)
 
         }
-        const response = await PartnerOffers(page-1, rowsPerPage);
+        const response = await PartnerOffers(page-1, rowsPerPage)
+        .finally((res)=>setOfferLoading(false));
         setOffers(response.data.rows);
     }
     return(
@@ -300,7 +310,7 @@ export default function Offers(){
                     <th className='xui-min-w-100'>Stars</th>
                     <th className='xui-min-w-150'>Actions</th>
                 </tr>
-                {offers?.map((item, index)=>{
+                {!offerLoading && offers?.map((item, index)=>{
                     return (
                     <tr key={index} className=''>
                         <td className='xui-opacity-5'>
@@ -346,18 +356,21 @@ export default function Offers(){
                     )})
                 }
                 </table>
+                {offerLoading && (
+                    <div style={{display: "flex", justifyContent: "center", alignItems: "center", gap: "20px"}} className="xui-mt-2"><p>Offers Loading... </p><TailSpin stroke='black'  color='#fff' /></div>
+                )}
             </div>
             <div className='xui-d-flex xui-flex-jc-flex-end xui-py-1 xui-font-sz-85 xui-opacity-5 xui-mt-1'>
                 <div className='xui-d-inline-flex xui-flex-ai-center'>
                     <span>Rows per page:</span>
                     <select onChange={handleSelectRows} className='psc-select-rows-per-page xui-ml-half'>
-                        <option value={10}>10</option>
-                        <option value={25}>25</option>
+                        <option value={20}>20</option>
                         <option value={50}>50</option>
+                        <option value={100}>100</option>
                     </select>
                 </div>
                 <div className='xui-mx-1 xui-lg-mx-2'>
-                    <span><span className='xui-font-w-bold'>11 - 20</span> of 194</span>
+                    <span><span className='xui-font-w-bold'>1</span> of 2</span>
                 </div>
                 <div className='xui-d-inline-flex xui-flex-ai-center xui-mx-1'>
                     <button disabled={page<2} onClick={handleGetPreviousPage} className='xui-mr-half xui-cursor-pointer'>

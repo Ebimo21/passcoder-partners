@@ -5,6 +5,9 @@ import Arrowright from "../icons/Arrowright";
 import { PartnerAccessDetails, PartnerLoginEmail, PartnerLoginToken } from "../config/apiCalls";
 import Congratulations from "../components/modals/Congratulations";
 import Error from "../components/modals/Error";
+import Arrowleft from "../icons/Arrowleft";
+import EyeClose from "../icons/EyeClose";
+import EyeOpen from "../icons/EyeOpen";
 
 export default function SignIn(){
     const [flipped, setFlipped] = useState(false);
@@ -30,6 +33,7 @@ export default function SignIn(){
   const [signInWithEmail, setSignInWithEmail] = useState(false);
   const [signInWithToken, setSignInWithToken] = useState(true);
   const [email, setEmail] = useState("");
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
 
   const handleSignInToggle = ()=>{
     setSignInWithToken(prev=>!prev);
@@ -146,9 +150,12 @@ export default function SignIn(){
                         </select>
                     </div>
                     <div className="xui-form-box">
+                        <div style={{display: "flex", alignItems: "center"}}>
                         <input
                             onChange={(e)=>dispatch({type: FORMACTION.TOKEN, payload: e.target.value})}
-                            className="xui-font-sz-90" type="password" placeholder="Token"></input>
+                            className="xui-font-sz-90" type={passwordVisibility? "text" : "password" } placeholder="Token" />
+                              <span className="xui-cursor-pointer" onClick={()=>setPasswordVisibility(prev=>!prev)} style={{ display: "block", width: "10px", height: "10px"}}>{!passwordVisibility?<EyeClose width="20px" />: <EyeOpen width="20px" />} </span>
+                        </div>
                     </div>
                     <div className="xui-d-flex xui-flex-ai-center xui-flex-jc-space-between">
                         <div className="xui-d-inline-flex xui-flex-ai-center">

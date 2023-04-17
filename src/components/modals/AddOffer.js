@@ -11,7 +11,7 @@ function AddOffer({handleSubmit, dispatch, FORMACTION, show}) {
                 <h3>Add Offer</h3>
 
                 <form className="xui-form xui-mt--1" onSubmit={handleSubmit}>
-                    <div className="xui-mt-3 xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60">
+                    <div className="xui-mt-3 xui-form-box xui-w-fluid-100 xui-lg-w-fluid-100">
                         <label>Name</label>
                         <div className="xui-d-flex xui-flex-ai-center">
                             <input
@@ -26,7 +26,7 @@ function AddOffer({handleSubmit, dispatch, FORMACTION, show}) {
                         </div>
                     </div>
                     
-                    <div className="xui-mt--1 xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60">
+                    <div className="xui-mt--1 xui-form-box xui-w-fluid-100 xui-lg-w-fluid-100">
                         <label>Discount you are offering</label>
                         <div className="xui-d-flex xui-flex-ai-center">
                             <input

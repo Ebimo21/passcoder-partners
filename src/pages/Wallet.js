@@ -267,13 +267,13 @@ export default function Wallet(){
                     <div className='xui-d-inline-flex xui-flex-ai-center'>
                         <span>Rows per page:</span>
                         <select className='psc-select-rows-per-page xui-ml-half'>
-                            <option value={10}>10</option>
-                            <option value={25}>25</option>
+                            <option value={20}>20</option>
                             <option value={50}>50</option>
+                            <option value={100}>100</option>
                         </select>
                     </div>
                     <div className='xui-mx-1 xui-lg-mx-2'>
-                        <span><span className='xui-font-w-bold'>11 - 20</span> of 194</span>
+                        <span><span className='xui-font-w-bold'>1</span> of 2</span>
                     </div>
                     <div className='xui-d-inline-flex xui-flex-ai-center xui-mx-1'>
                         <div className='xui-mr-half xui-cursor-pointer'>
