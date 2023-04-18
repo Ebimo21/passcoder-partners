@@ -37,7 +37,9 @@ export default function Loyalty(){
     const [pid, setPid] = useState("");
     const [rowsPerPage, setRowsPerPage] = useState(10)
     const [page, setPage] = useState(1)
-    const [loyaltyUsersLoading, setLoyaltyUsersLoading] = useState(true)
+    const [loyaltyUsersLoading, setLoyaltyUsersLoading] = useState(true);
+    const [issueLoyaltyModal, setIssueLoyaltyModal] = useState(false);
+    const [checkoutLoyaltyModal, setCheckoutLoyaltyModal] = useState(false);
 
     // const [loading, setLoading] = useState(false);
 
@@ -63,6 +65,7 @@ export default function Loyalty(){
 
     const handleIssue = async(e)=>{
         e.preventDefault();
+        setIssueLoyaltyModal(false);
 
         setLoading(true);
         const response = await PartnerAddLoyaltyPoints(pId.toUpperCase(), loyaltyPoints)
@@ -89,6 +92,7 @@ export default function Loyalty(){
     
     const handleCheckout = async(e)=>{
         e.preventDefault();
+        setCheckoutLoyaltyModal(false);
 
         setLoading(true);
         const response = await PartnerCheckoutLoyaltyPoints(pId.toUpperCase(), loyaltyPoints)
@@ -225,8 +229,8 @@ export default function Loyalty(){
                                             
                                         }
                                     } className='flex flex-col items-center'>
-                                    <span xui-modal-open="issuePoints" className='xui-cursor-pointer xui-font-sz-90 psc-text' onClick={()=>{setPId(item?.user_data?.unmasked); setIssueLoyalty(prev=>!prev);}} >Issue Points</span>
-                                    <span xui-modal-open="checkoutPoints" className='xui-cursor-pointer xui-font-sz-90 psc-text' onClick={()=>{setPId(item?.user_data?.unmasked); setCheckoutLoyalty(prev=>!prev)}} >Checkout</span>
+                                    <span xui-modal-open="issuePoints" className='xui-cursor-pointer xui-font-sz-90 psc-text' onClick={()=>{setPId(item?.user_data?.unmasked); setIssueLoyalty(prev=>!prev); setIssueLoyaltyModal(prev=>!prev)}} >Issue Points</span>
+                                    <span xui-modal-open="checkoutPoints" className='xui-cursor-pointer xui-font-sz-90 psc-text' onClick={()=>{setPId(item?.user_data?.unmasked); setCheckoutLoyalty(prev=>!prev); setCheckoutLoyaltyModal(prev=>!prev)}} >Checkout</span>
                                 </span>
                                 {/* <span xui-modal-open="viewMore" className='xui-cursor-pointer xui-font-sz-90 psc-text'>View more</span> */}
                             </td>
@@ -263,75 +267,11 @@ export default function Loyalty(){
             </div>
             </section>
         </Content>
-        <section className='xui-modal' xui-modal="issuePoints">
-            <div className='xui-modal-content xui-max-h-500 xui-overflow-auto'>
-                <div className='issuePoints'>
-                <label>Issue Loyalty Points - fill details below</label>
-            <form onSubmit={handleIssue} className='mt-2'>
-                    <div>
-                        <label>Passcoder ID</label>
-                        <input
-                            // onChange={(e)=>setPId(e.target.value)} 
-                            className='p-2   border border-solid border-slate-300 w-full mt-2  rounded-md outline-none' 
-                            type="text" 
-                            value={pId}
-                            min={6}
-                            max={8}
-                            disabled
-                            required />
-                    </div>
-                    
-                    <div className='mt-3'>
-                        <label>Loyalty Points to add</label>
-                        <input 
-                            onChange={(e)=>setLoyaltyPoints(Number(e.target.value))}
-                            className='p-2 border border-solid border-slate-300  w-full mt-2 rounded-md outline-none' 
-                            type="number"
 
-                            min={1}
-                            disabled={loading}
-                            required />
-                    </div>
-
-                    <button  className={`xui-d-inline-flex xui-flex-ai-center xui-btn psc-btn-blue xui-bdr-rad-half xui-font-sz-85`}>Continue {!loading&&<BiNavigation />} {loading && <TailSpin speed={3} height={24} />} </button>
-                </form>
-                </div>
-            </div>
-        </section>
-        <section className='xui-modal' xui-modal="checkoutPoints">
-            <div className='xui-modal-content xui-max-h-500 xui-overflow-auto'>
-                <div className='checkoutPoints'>
-                <label>Checkout with Loyalty Points - fill details below</label>
-            <form onSubmit={handleCheckout} className='mt-2'>
-                    <div>
-                        <label>Passcoder ID</label>
-                        <input
-                            // onChange={(e)=>setPId(e.target.value)} 
-                            className='p-2 border border-solid border-slate-300 w-full mt-2 rounded-md outline-none' 
-                            type="text" 
-                            value={pId}
-                            minLength={6}
-                            maxLength={8}
-                            disabled
-                            required />
-                    </div>
-                    
-                    <div className='mt-3'>
-                        <label>Loyalty Points to subtract</label>
-                        <input 
-                            onChange={(e)=>setLoyaltyPoints(Number(e.target.value))}
-                            className='p-2 border border-solid border-slate-300 w-full mt-2 rounded-md outline-none' 
-                            type="number"
-                            min={1}
-                            disabled={loading}
-                            required />
-                    </div>
-
-                    <button className={`${loading? "w-28": "w-20"} flex items-center gap-2 justify-center mt-3 rounded-md bg-purple text-white p-3`}>Continue {!loading&&<BiNavigation />} {loading && <TailSpin speed={3} height={24} />} </button>
-                </form>
-                </div>
-            </div>
-        </section>
+        {issueLoyaltyModal && <IssueLoyaltyPointsModal handleIssue={handleIssue} pId={pId} setLoyaltyPoints={setLoyaltyPoints} loading={loading} />}
+        {checkoutLoyaltyModal && <CheckoutLoyaltyPointsModal handleCheckout={handleCheckout} pId={pId} setLoyaltyPoints={setLoyaltyPoints} loading={loading} />}
+        
+        
         <div className="aside psc-bg-light-blue xui-py-2 xui-px-1-half">
                 {/* */}
 
@@ -385,4 +325,84 @@ export default function Loyalty(){
         </Screen>
         </>
     );
+}
+
+
+const IssueLoyaltyPointsModal = ({handleIssue, pId, setLoyaltyPoints, loading}) =>{
+    return (
+        <section className='xui-modal' xui-modal="issuePoints">
+            <div className='xui-modal-content xui-max-h-500 xui-overflow-auto'>
+                <div className='issuePoints'>
+                <label>Issue Loyalty Points - fill details below</label>
+            <form onSubmit={handleIssue} className='mt-2'>
+                    <div>
+                        <label>Passcoder ID</label>
+                        <input
+                            // onChange={(e)=>setPId(e.target.value)} 
+                            className='p-2   border border-solid border-slate-300 w-full mt-2  rounded-md outline-none' 
+                            type="text" 
+                            value={pId}
+                            min={6}
+                            max={8}
+                            disabled
+                            required />
+                    </div>
+                    
+                    <div className='mt-3'>
+                        <label>Loyalty Points to add</label>
+                        <input 
+                            onChange={(e)=>setLoyaltyPoints(Number(e.target.value))}
+                            className='p-2 border border-solid border-slate-300  w-full mt-2 rounded-md outline-none' 
+                            type="number"
+
+                            min={1}
+                            disabled={loading}
+                            required />
+                    </div>
+
+                    <button  className={`xui-d-inline-flex xui-flex-ai-center xui-btn psc-btn-blue xui-bdr-rad-half xui-font-sz-85`}>Continue {!loading&&<BiNavigation />} {loading && <TailSpin speed={3} height={24} />}</button>
+                </form>
+                </div>
+            </div>
+        </section>
+    )
+}
+
+const CheckoutLoyaltyPointsModal = ({handleCheckout, pId, setLoyaltyPoints, loading})=>{
+    return (
+        <section className='xui-modal' xui-modal="checkoutPoints">
+            <div className='xui-modal-content xui-max-h-500 xui-overflow-auto'>
+                <div className='checkoutPoints'>
+                <label>Checkout with Loyalty Points - fill details below</label>
+            <form onSubmit={handleCheckout} className='mt-2'>
+                    <div>
+                        <label>Passcoder ID</label>
+                        <input
+                            // onChange={(e)=>setPId(e.target.value)} 
+                            className='p-2 border border-solid border-slate-300 w-full mt-2 rounded-md outline-none' 
+                            type="text" 
+                            value={pId}
+                            minLength={6}
+                            maxLength={8}
+                            disabled
+                            required />
+                    </div>
+                    
+                    <div className='mt-3'>
+                        <label>Loyalty Points to subtract</label>
+                        <input 
+                            onChange={(e)=>setLoyaltyPoints(Number(e.target.value))}
+                            className='p-2 border border-solid border-slate-300 w-full mt-2 rounded-md outline-none' 
+                            type="number"
+                            min={1}
+                            disabled={loading}
+                            required />
+                    </div>
+
+                    <button className={`xui-d-inline-flex xui-flex-ai-center xui-btn psc-btn-blue xui-bdr-rad-half xui-font-sz-85`}>Continue {!loading&&<BiNavigation />} {loading && <TailSpin speed={3} height={24} />} </button>
+                </form>
+                </div>
+            </div>
+        </section>
+    )
 }

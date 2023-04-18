@@ -5,8 +5,9 @@ import { useReducer, useRef, useState } from "react";
 import { PartnerUpdateEmail, PartnerUpdateName, PartnerUpdateThreshold } from "../../config/apiCalls";
 import Congratulations from "../../components/modals/Congratulations";
 import Error from "../../components/modals/Error";
+import TailSpin from "react-loading-icons/dist/esm/components/tail-spin";
 
-export default function AccountProfile({submit, formElement, partnerDetails}){
+export default function AccountProfile({submit, formElement, partnerDetails, uploadingProfilePhoto, setUploadingProfilePhoto, progress}){
     const navigate = useNavigate();
   const formEl = useRef();
 
@@ -16,6 +17,7 @@ export default function AccountProfile({submit, formElement, partnerDetails}){
     const [notification, setNotification] = useState("");
     const [loginSuccess, setLoginSuccess] = useState(false);
     const [loginError, setLoginError] = useState(false);
+    const [selectedProfilePhoto, setSelectedProfilePhoto] = useState("");
 
   const handleUpdateEmail =async(e) =>{
     e.preventDefault();
@@ -102,6 +104,11 @@ const handleUpdateBusinessDetails = async(e)=>{
         setErrorNotification(true);
       }
 }
+    const handleSelectProfilePhoto = (e) =>{
+        const el = e.target.files[0];
+        setSelectedProfilePhoto("");
+        setSelectedProfilePhoto(el.name)
+    }
     return(
         <>
         <form onSubmit={submit} ref={formElement} className="xui-form xui-mt--1">
@@ -113,9 +120,13 @@ const handleUpdateBusinessDetails = async(e)=>{
                         <span className="xui-font-sz-80 xui-text-center xui-mt-1 xui-mx-auto xui-w-fluid-80">Upload your photo</span>
                     </div>
                 </label>
-                <input type={"file"} id="imageFile" style={{display:"none"}} />
+                <input onChange={handleSelectProfilePhoto} type={"file"} id="imageFile" style={{display:"none"}} required />
+                <div>
+                    {selectedProfilePhoto && <p className="xui-text-cente xui-mt-half">Selected File Name: <span className="xui-font-sz-80 xui-opacity-5 xui-mt-half">{selectedProfilePhoto}</span></p>}
+                </div>
+
                 <div className="xui-mt-1 xui-d-flex">
-                    <button className="xui-btn psc-btn-blue xui-font-sz-80">Save Changes</button>
+                    <button disabled={uploadingProfilePhoto} className="xui-btn psc-btn-blue xui-font-sz-80">{uploadingProfilePhoto?(<span>Uploading {Math.round(progress)}% <TailSpin speed={3} height={14}/></span>): "Save Changes"}</button>
                 </div>
             </div>
         </form>

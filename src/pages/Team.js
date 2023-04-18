@@ -208,7 +208,7 @@ export default function Team(){
                             </td>
                             <td className='xui-opacity-5 xui-text-left'>{item?.alias}</td>
                             <td className='xui-opacity-5 xui-font-w-bold'>
-                            <span>{item?.token?.slice(10)}</span>
+                            <span>{item?.token}</span>
                             </td>
                             <td className='xui-opacity-5 xui-font-w-bold'>
                             <span  className={`${item?.valid? "xui-badge-success": ""} xui-badge xui-font-sz-80 xui-bdr-rad-half`}>{item?.valid?"Active": "Inactive"}</span>

@@ -45,7 +45,7 @@ export default function Offers(){
     const [checkout, setCheckout] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
     const [rowsPerPage, setRowsPerPage] = useState(10)
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(1);
     
     async function getPartnerOffers (){
         const response = await PartnerOffers(page, rowsPerPage)
