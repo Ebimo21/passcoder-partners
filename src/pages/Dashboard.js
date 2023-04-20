@@ -42,6 +42,22 @@ export default function Dashboard(){
     const [checkoutPId, setCheckoutPId] = useState(false);
     const [checkoutPoints, setCheckoutPoints] = useState(0);
     const [checkoutLoading, setCheckoutLoading] = useState(false);
+    const [authenticatedUser, setAuthenticatedUser] = useState({});
+
+    // const [authData, setAuthDate] = useState(
+    //     {
+    //         name: "Emmanuel Nwoye",
+    //         offer_unique_id: "hrzTwi8nYxiWCCJq98HE",
+    //         photo: "http://fls.passcoder.io/user.png",
+    //         pid: "641C1C",
+    //         star: 3,
+    //         unique_id: "GPVSv56WVFSUEsTIYFDf",
+    //         user_partner_points: 1501,
+    //         user_points: 54,
+    //         verification_count: 0,
+    //         message: "User authenticated successfully"
+    //     }
+    // )
 
      const handleLoyalty=()=>{
         setCheckout(false)
@@ -61,6 +77,7 @@ export default function Dashboard(){
          e.preventDefault();
          setLoading(true);
          const response = await PartnerActivateUser(pId.toUpperCase(), offerId);
+         setAuthenticatedUser(response);
          console.log(response);
          setLoading(false);
          
@@ -270,7 +287,7 @@ const handleCheckoutLoyalty = async(e)=>{
     onClose={()=>setErrorNotification(false)} 
     />}
 
-{activationSuccessNotification && <ConfirmUser data="" show={activationSuccessNotification} onClose={()=>setActivationSuccessNotification(false)} />}
+{activationSuccessNotification && <ConfirmUser data={authenticatedUser?.data} message={authenticatedUser?.message} show={activationSuccessNotification} onClose={()=>setActivationSuccessNotification(false)} />}
     {successNotification && <Congratulations 
     lead={notification?.message} 
     show={successNotification}

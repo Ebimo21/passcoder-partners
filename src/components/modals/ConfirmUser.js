@@ -5,7 +5,8 @@ import {IoMdCheckmarkCircleOutline} from 'react-icons/io'
 import img1 from "../../assets/images/dp1.png";
 
 
-function ConfirmUser({onClose, show, data,}) {
+function ConfirmUser({onClose, show, data, message}) {
+
   if(!show) {return null}
 
   return (
@@ -35,7 +36,7 @@ function ConfirmUser({onClose, show, data,}) {
                 //   marginRight: "auto",
                   marginTop: "5%",
                   marginBottom: "5%",
-                  maxWidth: "500px",
+                  // maxWidth: "500px",
                   borderStyle: "none",
                   padding: "40px",
                   outline: "none"
@@ -43,29 +44,30 @@ function ConfirmUser({onClose, show, data,}) {
                 }
               }
         
-        className='bg-[#fefefe] mx-auto rounded-lg my-[5%]  max-w-xs md:max-w-[700px] p-2 md:p-5 border-none outline-none'>
+        className='xui-lg-w-600'>
             <h3 className='font-bold text-xl mb-2'>Authenticate Users</h3>
             <p>Confirm User</p>
 
-            <div className='flex flex-col items-center justify-center mt-20 gap-2'>
-                <img src={img1} width={100} />
-                <p>Ada James Hannoy</p>
-                <p>PID: <strong>1234567890</strong></p>
+            <div className='flex flex-col items-center justify-center mt-20 gap-2 xui-mt-1'>
+                <img src={data?.photo} width={100} />
+                <p className='xui-mt-1'>{data?.name}</p>
+                <p style={{marginTop: "5px", marginBottom: "10px"}}>PID: <strong>{data?.pid}</strong></p>
                 <span
                 style={{display: "flex", justifyContent: "center", gap: "8px"}} >
-                    <AiFillStar color='yellow'/>
-                    <AiFillStar color='yellow'/>
-                    <AiFillStar color='yellow'/>
-                    <AiFillStar color='yellow'/>
-                    <AiFillStar color='yellow'/>
+                  {Array(data?.star).fill(null).map((item, index)=>{
+                    return(
+                      <AiFillStar color='#E7C515'/>
+                    )
+                  })}
                 </span>
-                <p style={{display: "flex", alignItems: "center", gap: "8px"}} ><IoMdCheckmarkCircleOutline size={24} color="green"/>You have authenticated this user before!</p>
-                <p style={{display: "flex", gap: "8px", alignItems: "center"}} ><span>Total Points: <strong>777</strong></span> <span>Points with you: <strong>19</strong></span></p>
+                    
+                <p className='xui-mt-1' style={{display: "flex", alignItems: "center", gap: "8px"}} ><IoMdCheckmarkCircleOutline size={24} color="green"/>{message}</p>
+                <p className='xui-mt-1' style={{display: "flex", gap: "8px", alignItems: "center"}} ><span>Total Points: <strong>{data?.user_partner_points}</strong></span> <span>Points with you: <strong>{data?.user_points}</strong></span></p>
             </div>
 
             <div style={{display: "flex", justifyContent: "flex-end", gap: "8px"}} >
             {/* <button setOpenModal={setOpenModal} style={{marginTop: "40px", borderRadius: "2px", display:"flex", alignItems: "center", backgroundColor: "white", padding: "8px", border: "1px solid "}} className=' mt-10 rounded-md flex items-center bg-white p-2 border-solid border border-slate-300'>Back</button> */}
-            <button onClick={onClose} style={{marginTop: "40px", borderRadius: "2px", display:"flex", alignItems: "center", backgroundColor: "white", padding: "8px", border: "1px solid ", gap: "8px"}} className=' mt-10 rounded-md flex items-center gap-2 bg-purple text-white p-2'>Confirm user <MdKeyboardArrowRight/></button>
+            <button className="xui-d-inline-flex xui-flex-ai-center xui-btn psc-btn-blue xui-bdr-rad-half xui-font-sz-85 xui-mt-1" onClick={onClose} >Continue <MdKeyboardArrowRight/></button>
             </div>
 
         </div>

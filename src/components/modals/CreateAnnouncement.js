@@ -84,7 +84,7 @@ function CreateAnnouncement({handleSubmit, dispatch, FORMACTION, state,  show}) 
                         </textarea> */}
                     </div>
                 </div>
-                <div className="xui-mt-5 xui-d-flex">
+                <div className="xui-mt-7 xui-d-flex">
                     <button className="xui-btn psc-btn-blue xui-font-sz-80">Publish</button>
                 </div>
         </form>

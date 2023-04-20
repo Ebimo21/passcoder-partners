@@ -180,7 +180,7 @@ export default function Loyalty(){
         <>
         <Screen aside="true" navbar="false">
         <Content>
-        <Navbar placeholder="Search something..." />
+        <Navbar placeholder="Search something..." makeHidden={true} />
             <section className=''>
             <div className='xui-d-flex xui-flex-ai-center xui-flex-jc-space-between xui-py-1 psc-section-header'>
                 <h1 className='xui-font-sz-110 xui-font-w-normal'>Recent Activities</h1>
