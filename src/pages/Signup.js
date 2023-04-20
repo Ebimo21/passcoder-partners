@@ -144,7 +144,8 @@ function Signup() {
                             
                         }
                     }>
-                    <div className=" xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60">
+                    <div className='xui-d-grid xui-grid-col-1 xui-lg-grid-col-3 xui-md-grid-col-3 xui-grid-gap-1 xui-w-fluid-100'>
+                    <div className=" xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60 ">
                         <label>Country</label>
                         <div className="xui-d-flex xui-flex-ai-center">
                         <select
@@ -161,7 +162,7 @@ function Signup() {
                     <div
                     style={
                         {}
-                    } className=" xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60">
+                    } className=" xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60 xui-mt--1 xui-lg-mt-2">
                         <label>State</label>
                         <div className="xui-d-flex xui-flex-ai-center">
                         <select
@@ -178,7 +179,7 @@ function Signup() {
                             </select>
                         </div>
                     </div>
-                    <div className=" xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60">
+                    <div className=" xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60 xui-mt--1 xui-lg-mt-2">
                         <label>City</label>
                         <div className="xui-d-flex xui-flex-ai-center">
                         <select
@@ -193,6 +194,7 @@ function Signup() {
                             })}
                         </select>
                         </div>
+                    </div>
                     </div>
                     
                     </div>

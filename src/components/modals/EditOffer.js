@@ -34,7 +34,7 @@ function EditOffer({handleOfferUpdate, dispatch, FORMACTION, id, formElement, ha
                 <h3>Edit Offer</h3>
 
                 <form className="xui-form xui-mt--1" onSubmit={(e)=>handleOfferUpdate(e, handleCallbackUpdate)} ref={formElement}>
-                    <div className="xui-mt-3 xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60">
+                    <div className="xui-mt-3 xui-form-box xui-w-fluid-100 xui-lg-w-fluid-100">
                         <label>Name</label>
                         <div className="xui-d-flex xui-flex-ai-center">
                             <input
@@ -50,7 +50,7 @@ function EditOffer({handleOfferUpdate, dispatch, FORMACTION, id, formElement, ha
                         </div>
                     </div>
                     
-                    <div className="xui-mt-3 xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60">
+                    <div className="xui-mt--1 xui-form-box xui-w-fluid-100 xui-lg-w-fluid-100">
                         <label>Discount you are offering</label>
                         <div className="xui-d-flex xui-flex-ai-center">
                             <input
@@ -64,26 +64,30 @@ function EditOffer({handleOfferUpdate, dispatch, FORMACTION, id, formElement, ha
                                 required 
                                 style={{width: "calc(100%)"}}/>
                         </div>
-                        <label>Offer Limit</label>
-                        <div className="xui-d-flex xui-flex-ai-center">
-                        <input 
-                            onChange={(e)=>dispatch({type: FORMACTION.LIMIT, payload: e.target.value})}
-                            className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
-                            type="number"
-                            name='limit'
-                            min={1}
-                            defaultValue={offer?.offer_limit}
-                            placeholder='Enter Number'
-                            style={{width: "calc(100%)"}}/>
+                        <div className='xui-mt-1'>
+                            <label>Offer Limit</label>
+                            <div className="xui-d-flex xui-flex-ai-center">
+                            <input 
+                                onChange={(e)=>dispatch({type: FORMACTION.LIMIT, payload: e.target.value})}
+                                className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
+                                type="number"
+                                name='limit'
+                                min={1}
+                                defaultValue={offer?.offer_limit}
+                                placeholder='Enter Number'
+                                style={{width: "calc(100%)"}}/>
+                            </div>
+                        </div>
+                        
+                        <div className='xui-mt-2' style={{display: "flex", alignItems: "center", gap: "5px"}}>
+                            <input 
+                                onChange={(e)=>dispatch({type: FORMACTION.SINGLE, payload: e.target.checked? true:false})} 
+                                type="checkbox"
+                                defaultChecked={!offer?.single? true: false}
+                                name='single' /> <label style={{margin: 0}}>Single Use</label>
                         </div>
 
-                        <input 
-                            onChange={(e)=>dispatch({type: FORMACTION.SINGLE, payload: e.target.checked? true:false})} 
-                            type="checkbox"
-                            defaultChecked={!offer?.single? true: false}
-                            name='single' /> <label>Single Use</label>
-
-                        <div className='flex flex-wrap mt-4'>
+                        <div className='xui-mt-1'>
                             <label>Description</label>
                             <textarea
                                 onChange={(e)=>dispatch({type: FORMACTION.DESCRIPTION, payload: e.target.value})}
@@ -99,22 +103,20 @@ function EditOffer({handleOfferUpdate, dispatch, FORMACTION, id, formElement, ha
                             </textarea>
                         </div>
 
-                        <div className='flex mt-4 justify-between'>
-                    <span className='flex flex-col'>
+                        <div >
+                    <span className='xui-mt-1' style={{display: "block"}}>
                         <label>Start Date</label>
                         <input 
                             onChange={(e)=>dispatch({type: FORMACTION.START, payload: e.target.value})}
-                            className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
                             type="datetime-local"
                             defaultValue={offer?.start}
                             name='start' />
                     </span>
 
-                    <span className='flex flex-col '>
+                    <span className='xui-mt-1' style={{display: "block"}}>
                         <label>End Date</label>
                         <input 
                             onChange={(e)=>dispatch({type: FORMACTION.END, payload: e.target.value})}
-                            className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
                             type="datetime-local"
                             defaultValue={offer?.end}
                             name='end' />
@@ -122,12 +124,11 @@ function EditOffer({handleOfferUpdate, dispatch, FORMACTION, id, formElement, ha
                     
                 </div>
 
-                <div className='flex flex-wrap md:flex-nowrap justify-between gap-4 md:gap-0  mt-4'>
+                <div className='xui-mt-1' style={{display: "block"}}>
                     <span className='flex flex-col '>
                         <label>Minimum Passcoder Points required</label>
                         <input 
                             onChange={(e)=>dispatch({type: FORMACTION.POINTS, payload: e.target.value})}
-                            className="border border-slate-200 border-solid px-2 py-1 rounded-md basis-full mt-2" 
                             type="number" 
                             name='points'
                             required
@@ -136,7 +137,7 @@ function EditOffer({handleOfferUpdate, dispatch, FORMACTION, id, formElement, ha
                             placeholder='Enter number' />
                     </span>
 
-                    <span className='flex flex-col'>
+                    <span className='xui-mt-1' style={{display: "block"}}>
                         <label>Minimum Star Required</label>
                         <input 
                             onChange={(e)=>dispatch({type: FORMACTION.STAR, payload: e.target.value})}

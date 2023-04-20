@@ -38,6 +38,7 @@ export default function Announcement(){
         setLoading(true)
         const response = await PartnerAddUserToAnnouncementList(pid)
         .finally(e=>setLoading(false))
+        console.log(response?.data);
         setNotification(response?.data);
 
         if(response.success)setSuccessNotification(true);
@@ -144,7 +145,7 @@ export default function Announcement(){
         <>
         <Screen aside="true" Navbar="false" >
             <Content>
-            <Navbar placeholder="Search something..." />
+            <Navbar placeholder="Search something..." makeHidden={true} />
                 <p>Keep your business above all. Let your users know the latest update and do many more.</p>
                 <section className=''>
                 <div className='xui-d-flex xui-flex-ai-center xui-flex-jc-space-between xui-py-1 psc-section-header'>

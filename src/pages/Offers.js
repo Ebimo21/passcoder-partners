@@ -45,7 +45,7 @@ export default function Offers(){
     const [checkout, setCheckout] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
     const [rowsPerPage, setRowsPerPage] = useState(10)
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(1);
     
     async function getPartnerOffers (){
         const response = await PartnerOffers(page, rowsPerPage)
@@ -290,7 +290,7 @@ export default function Offers(){
         <Screen aside="true" navbar="false">
 
         <Content>
-        <Navbar placeholder="Search something..." />
+        <Navbar placeholder="Search something..." makeHidden={true}/>
             <p>Earn and attract more users to your business with offers. Create new offer, edit criteria and set eligibility standards.</p>
             <section className=''>
             <div className='xui-d-flex xui-flex-ai-center xui-flex-jc-space-between xui-py-1 psc-section-header'>
@@ -341,7 +341,7 @@ export default function Offers(){
                             {/* <span xui-modal-open="viewMore" className='xui-cursor-pointer xui-font-sz-90 psc-text'>View more</span> */}
                             <span
                                 data-offer={item?.unique_id} 
-                                onClick={ (e)=>{setEditOfferModal(prev=>!prev); setEditId(e.target.getAttribute("data-offer")) }}
+                                onClick={ (e)=>{setEditOfferModal(true); setEditId(e.target.getAttribute("data-offer")) }}
                                 xui-modal-open="editOffer" 
                                 className="xui-cursor-pointer psc-text xui-d-inline-flex xui-flex-ai-center xui-btn psc-btn-blue xui-bdr-rad-half xui-font-sz-85"
                                 >Edit</span>

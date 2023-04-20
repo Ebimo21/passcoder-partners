@@ -5,6 +5,7 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { PartnerComplianceCertificate, PartnerComplianceDetails, PartnerComplianceDocument, PartnerProofComplianceDocument, PartnerUpdateThreshold } from "../../config/apiCalls";
 import Congratulations from "../../components/modals/Congratulations";
 import Error from "../../components/modals/Error";
+import TailSpin from "react-loading-icons/dist/esm/components/tail-spin";
 
 export default function MerchantProfile({partnerDetails}){
     const storage = getStorage();
@@ -21,6 +22,11 @@ export default function MerchantProfile({partnerDetails}){
     const [notification, setNotification] = useState("");
     const [selectedCertificate, setSelectedCertificate] = useState("");
     const [selectedDocument, setSelectedDocument] = useState("");
+    const [uploadingRegistrationCertificate, setUploadingRegistrationCertificate] = useState(false);
+    const [uploadingRegistrationCertificatePercentage, setUploadingRegistrationCertificatePercentage] = useState(0);
+    const [uploadingRegistrationDocument, setUploadingRegistrationDocument] = useState(false);
+    const [uploadingRegistrationDocumentPercentage, setUploadingRegistrationDocumentPercentage] = useState(0);
+
 
     const signupForm ={
         company_name: "",
@@ -96,6 +102,7 @@ export default function MerchantProfile({partnerDetails}){
     }
     const handleRegistrationCertificate =async(e)=>{
         e.preventDefault();
+        setUploadingRegistrationCertificate(true);
         setSelectedCertificate("");
         let profilePhoto = "";
 
@@ -117,6 +124,7 @@ export default function MerchantProfile({partnerDetails}){
             (snapshot) => {
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                 console.log('Upload is ' + progress + '% done');
+                setUploadingRegistrationCertificatePercentage(progress);
             }, 
             (error) => {
                 // Handle unsuccessful uploads
@@ -125,7 +133,9 @@ export default function MerchantProfile({partnerDetails}){
                 getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
                     profilePhoto = downloadURL;
                     console.log(profilePhoto);
-                    await setRegistrationCertificateUpload(profilePhoto, imagePath);
+                    await setRegistrationCertificateUpload(profilePhoto, imagePath)
+                    .finally(res=>{setUploadingRegistrationCertificate(false); setUploadingRegistrationCertificatePercentage(0)})
+
                 });
             }
         )
@@ -144,6 +154,7 @@ export default function MerchantProfile({partnerDetails}){
     //works
     const handleRegistrationDocument =async(e)=>{
         e.preventDefault();
+        setUploadingRegistrationDocument(true);
         setSelectedDocument("");
         let profilePhoto = "";
         
@@ -162,6 +173,7 @@ export default function MerchantProfile({partnerDetails}){
             (snapshot) => {
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                 console.log('Upload is ' + progress + '% done');
+                setUploadingRegistrationDocumentPercentage(progress)
             }, 
             (error) => {
                 // Handle unsuccessful uploads
@@ -169,7 +181,9 @@ export default function MerchantProfile({partnerDetails}){
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
                     profilePhoto = downloadURL;
-                    await setRegistrationDocumentUpload(profilePhoto, imagePath);
+                    await setRegistrationDocumentUpload(profilePhoto, imagePath)
+                    .finally(res=>{setUploadingRegistrationDocument(false); setUploadingRegistrationDocumentPercentage(0)})
+
                 });
             }
         )
@@ -249,7 +263,7 @@ export default function MerchantProfile({partnerDetails}){
                 <input type={"text"} />
             </div> */}
             <div className="xui-d-flex">
-                <button className="xui-btn psc-btn-blue xui-font-sz-80">Save Changes</button>
+                <button disabled={uploadingRegistrationCertificate} className="xui-btn psc-btn-blue xui-font-sz-80">{uploadingRegistrationCertificate?(<span>Uploading {Math.round(uploadingRegistrationCertificatePercentage)}% <TailSpin speed={3} height={14}/></span>): "Save Changes"}</button>
             </div>
         </form>
         <form onSubmit={handleRegistrationCertificate} ref={formElCertificate}>
@@ -278,7 +292,7 @@ export default function MerchantProfile({partnerDetails}){
                 {/* <p className="xui-text-center xui-font-sz-80 xui-opacity-5 xui-mt-half">{selectedCertificate}</p> */}
                 <p className="xui-text-center xui-font-sz-80 xui-opacity-5 xui-mt-half">Click to change picture</p>
                 <div className="xui-mt-1 xui-d-flex">
-                    <button className="xui-btn psc-btn-blue xui-font-sz-80">Save Changes</button>
+                    <button disable={uploadingRegistrationCertificate} className="xui-btn psc-btn-blue xui-font-sz-80">{uploadingRegistrationCertificate?(<span>Uploading {Math.round(uploadingRegistrationCertificatePercentage)}% <TailSpin speed={3} height={14}/></span>): "Save Changes"}</button>
                 </div>
             </div>
         </form>
@@ -308,7 +322,7 @@ export default function MerchantProfile({partnerDetails}){
                 {selectedDocument && <p className="xui-text-center   xui-mt-half">Selected File Name: <span className="xui-font-sz-80 xui-opacity-5 xui-mt-half">{selectedDocument}</span></p>}
                 <p className="xui-text-center xui-font-sz-80 xui-opacity-5 xui-mt-half">Click to change picture</p>
                 <div className="xui-mt-1 xui-d-flex">
-                    <button className="xui-btn psc-btn-blue xui-font-sz-80">Save Changes</button>
+                    <button disabled={uploadingRegistrationDocument} className="xui-btn psc-btn-blue xui-font-sz-80">{uploadingRegistrationDocument?(<span>Uploading {Math.round(uploadingRegistrationDocumentPercentage)}% <TailSpin speed={3} height={14}/></span>): "Save Changes"}</button>
                 </div>
             </div>
         </form>

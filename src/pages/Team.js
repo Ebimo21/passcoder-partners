@@ -96,6 +96,7 @@ export default function Team(){
     const [state, dispatch] = useReducer(reducer, initialState);
     const [tokenToDelete, setTokenToDelete] = useState();
     const handleDeleteToken =async()=>{
+        setDeleteModal(false);
         const response = await PartnerDeleteToken(tokenToDelete);
         if(response.success){
             setSuccessNotification(prev=>true);
@@ -182,7 +183,7 @@ export default function Team(){
         <>
         <Screen aside="true" navbar="false">
         <Content>
-        <Navbar placeholder="Search something..." />
+        <Navbar placeholder="Search something..." makeHidden={true} />
             <section className=''>
             <div className='xui-d-flex xui-flex-ai-center xui-flex-jc-space-between xui-py-1 psc-section-header'>
                 <h1 className='xui-font-sz-110 xui-font-w-normal'>Recent Activities</h1>
@@ -208,7 +209,7 @@ export default function Team(){
                             </td>
                             <td className='xui-opacity-5 xui-text-left'>{item?.alias}</td>
                             <td className='xui-opacity-5 xui-font-w-bold'>
-                            <span>{item?.token?.slice(10)}</span>
+                            <span>{item?.token}</span>
                             </td>
                             <td className='xui-opacity-5 xui-font-w-bold'>
                             <span  className={`${item?.valid? "xui-badge-success": ""} xui-badge xui-font-sz-80 xui-bdr-rad-half`}>{item?.valid?"Active": "Inactive"}</span>

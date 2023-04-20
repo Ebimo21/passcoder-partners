@@ -30,7 +30,11 @@ export default function Settings(){
     const [notification, setNotification] = useState("")
     const [checkoutPId, setCheckoutPId] = useState(false)
     const [checkoutLoading, setCheckoutLoading] = useState(false)
-    const [showMenu, setShowMenu] = useState(false)
+    const [showMenu, setShowMenu] = useState(false);
+    const [uploadingProfilePhoto, setUploadingProfilePhoto] = useState(false);
+    const [uploadingProfilePhotoPercentage, setUploadingProfilePhotoPercentage] = useState(0);
+
+
 
     const handleIssueLoyalty = async(e)=>{
         e.preventDefault()
@@ -69,6 +73,7 @@ export default function Settings(){
 
     const handleProfilePictureUpdate =async(e)=>{
         e.preventDefault()
+        setUploadingProfilePhoto(true);
         let profilePhoto = ""
 
         const el = formEl?.current?.elements[0].files[0]
@@ -81,7 +86,7 @@ export default function Settings(){
         const filename = response.filename.data[0].photo
         console.log(filename);
         
-        const imagePath = "partners/"+filename + "." + ext;
+        const imagePath = "/partners/"+filename + "." + ext;
         const sotrageRef = ref(storage, imagePath )
         const uploadTask =  uploadBytesResumable(sotrageRef,el)
 
@@ -89,6 +94,7 @@ export default function Settings(){
             (snapshot) => {
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                 console.log('Upload is ' + progress + '% done');
+                setUploadingProfilePhotoPercentage(progress)
 
             }, 
             (error) => {
@@ -99,6 +105,7 @@ export default function Settings(){
                     profilePhoto = downloadURL
                     console.log(profilePhoto);
                     await setProfileUpload(profilePhoto, imagePath)
+                    .finally(res=>{setUploadingProfilePhoto(false); setUploadingProfilePhotoPercentage(0)})
                 });
               
             }
@@ -141,7 +148,7 @@ export default function Settings(){
                     </div>
                 </section>
                 <section className="xui-py-2">
-                    {tab === "accountProfile" && <AccountProfile partnerDetails={partnerDetails} formElement={formEl} submit={handleProfilePictureUpdate}/>}
+                    {tab === "accountProfile" && <AccountProfile partnerDetails={partnerDetails} formElement={formEl} submit={handleProfilePictureUpdate} setUploadingProfilePhoto={setUploadingProfilePhoto} uploadingProfilePhoto={uploadingProfilePhoto} progress={uploadingProfilePhotoPercentage} />}
                     {tab === "companyProfile" && <CompanyProfile partnerDetails={partnerDetails}  />}
                 </section>
             </Content>

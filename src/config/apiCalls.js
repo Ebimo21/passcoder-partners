@@ -727,12 +727,13 @@ export const PartnerDeleteOffer =async(unique_id)=>{
             `${host}partner/offer`,             
             {
                 data: {
-                    unique_id
+                    unique_id,
+                    token: jwt
                 },
                 
-                headers: {
-                    "passcoder-access-token": jwt
-                }
+                // headers: {
+                //     "passcoder-access-token": jwt
+                // }
             }
         )
         return {success: true, message: "Offer Successfully Deleted"}
@@ -871,6 +872,7 @@ export const PartnerActivateUser =async(pid, offer_unique_id)=>{
                 }
             }
         )
+        console.log(response);
         return response.data
     } catch(err){
         if (err.response){ return {success: false, message: err.response.data.message, err, data: err.response.data}; }
@@ -1048,16 +1050,17 @@ export const PartnerGetTokens =async(page=1, size=10)=>{
 
 export const PartnerDeleteToken =async(unique_id)=>{
     try {
-        const response = await axios.delete(
+        await axios.delete(
             `${host}partner/token`, 
             {
                 data: {
-                    unique_id
+                    unique_id,
+                    token: jwt
                 },
 
-                headers: {
-                    "passcoder-access-token": jwt
-                }
+                // headers: {
+                //     "passcoder-access-token": jwt
+                // }
             },
             
         )
