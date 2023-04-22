@@ -20,7 +20,7 @@ function Signup() {
     const [successNotification, setSuccessNotification] = useState(false)
     const [errorNotification, setErrorNotification] = useState(false)
     const [notification, setNotification] = useState("")
-    const [cityOptions, setCityOptions] = useState([])
+    const [cityOptions, setCityOptions] = useState(lgaList["Abia"]);
 
     const signupForm ={
         name: "",
@@ -28,7 +28,7 @@ function Signup() {
         description: "",
         city: "",
         state: "",
-        country: "",
+        country: "Nigeria",
     }
     const SIGNUPACTION ={
         NAME: "name",
@@ -38,11 +38,7 @@ function Signup() {
         STATE: "state",
         COUNTRY: "country"
     }
-    const handleSelectStateChange = (e) =>{
-        
-
-
-      }
+    
     const reducer=(state, action)=>{
         const {type, payload} = action
         switch(type){
@@ -92,7 +88,7 @@ function Signup() {
         <div  className=" psc-flip-card xui-max-w-900 xui-w-fluid-100 xui-mt-2 xui-md-mt-none">
         <div className="psc-flip-card-inner xui-w-fluid-100">
             <div className="psc-flip-card-front xui-bg-white xui-bdr-rad-half xui-w-fluid-100 xui-p-2-half xui-pb-3 xui-text-black">
-                <h2 className="xui-font-sz-125 xui-w-fluid-80">Sign Up  for Passscoder Business</h2>
+                <h2 className="xui-font-sz-125 xui-w-fluid-80">Sign Up  for Passscoder Partner</h2>
                 {/* <p className="xui-opacity-5 xui-font-sz-90 xui-mt-half">Already have an account? <span className="psc-text">Sign In</span></p> */}
                 <p className="xui-font-sz-80 xui-my-2"><span className="xui-opacity-7">Already have an account?</span> <Link to={`${stripped ? "/access/" +stripped: "#"}`} className="xui-font-w-bold psc-text xui-text-dc-none">Use your private access url</Link></p>
                 <form className="xui-form xui-mt--1" onSubmit={handleSignup}>
@@ -145,7 +141,7 @@ function Signup() {
                         }
                     }>
                     <div className='xui-d-grid xui-grid-col-1 xui-lg-grid-col-3 xui-md-grid-col-3 xui-grid-gap-1 xui-w-fluid-100'>
-                    <div className=" xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60 ">
+                    <div className=" xui-form-box xui-w-fluid-100 xui-lg-w-fluid-100 ">
                         <label>Country</label>
                         <div className="xui-d-flex xui-flex-ai-center">
                         <select
@@ -154,15 +150,15 @@ function Signup() {
                             required
                             name="country"
                             >
-                            <option defaultValue>Select Country</option>
-                            <option >Nigeria</option>
+                            {/* <option defaultValue>Select Country</option> */}
+                            <option defaultValue >Nigeria</option>
                         </select>
                         </div>
                     </div>
                     <div
                     style={
                         {}
-                    } className=" xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60 xui-mt--1 xui-lg-mt-2">
+                    } className=" xui-form-box xui-w-fluid-100 xui-lg-w-fluid-100 xui-mt--1 xui-lg-mt-2">
                         <label>State</label>
                         <div className="xui-d-flex xui-flex-ai-center">
                         <select
@@ -179,7 +175,7 @@ function Signup() {
                             </select>
                         </div>
                     </div>
-                    <div className=" xui-form-box xui-w-fluid-100 xui-lg-w-fluid-60 xui-mt--1 xui-lg-mt-2">
+                    <div className=" xui-form-box xui-w-fluid-100 xui-lg-w-fluid-100 xui-mt--1 xui-lg-mt-2">
                         <label>City</label>
                         <div className="xui-d-flex xui-flex-ai-center">
                         <select
@@ -198,11 +194,17 @@ function Signup() {
                     </div>
                     
                     </div>
+                    <p className="xui-font-sz-80 xui-my-1 xui-text-centers">
+								<div className="xui-d-inline-flex xui-flex-ai-centers">
+									<input type="checkbox" required />
+									<label for="terms_and_conditions" className="xui-ml-half" style={{ marginBottom: '0' }}>By signing up you agree to our <Link to="https://passcoder.io/terms">terms and conditions</Link> </label>
+								</div>
+							</p>
 
-                    <div className='flex items-center gap-3'>
+                    {/* <div className='flex items-center gap-3'>
                         <input type='checkbox' required />
                         <p>By signing up you agree to our <Link to="#">terms and conditions</Link> </p>
-                    </div>
+                    </div> */}
                     
                     <div className="xui-form-box xui-d-flex xui-flex-jc-flex-end">
                         <button  className="xui-d-inline-flex xui-flex-ai-center xui-btn psc-btn-blue xui-bdr-rad-half xui-font-sz-85">

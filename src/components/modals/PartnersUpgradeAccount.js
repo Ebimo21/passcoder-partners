@@ -124,8 +124,8 @@ function PartnersUpgradeAccount({show, handleSubmit}) {
                 <p className='xui-mt-1 xui-mb-1'>Payment Method: </p>
 
                 <div style={{display: "flex", gap: "20px"}} className='flex gap-4'>
-                  <span><input type="checkbox" name='card' /> <label>Credit Card</label></span>
-                  <span><input type="checkbox" name='card' /> <label>Debit Card</label></span>
+                  <span><input type="radio" name='card'  /> <label>Credit Card</label></span>
+                  <span><input type="radio" name='card' /> <label>Debit Card</label></span>
                 </div>
 
               </div>

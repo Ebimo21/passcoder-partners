@@ -13,8 +13,10 @@ import Key from "../icons/Key";
 import Team from "../icons/Team";
 import Alarm from "../icons/Alarm";
 import Token from "../icons/Token";
-import "../assets/css/alt.css"
+import "../assets/css/alt.css";
+import ConfirmDelete from "../../src/components/modals/ConfirmDelete";
 import PartnersUpgradeAccount from "../components/modals/PartnersUpgradeAccount";
+import ConfirmLogout from "../components/modals/ConfirmLogout";
 
 function Truncate(string, len){
     
@@ -25,7 +27,8 @@ function Truncate(string, len){
 export default function Layout(){
     const navigate = useNavigate();
 
-    const [partnerDetails, setPartnerDetails] = useState()
+    const [partnerDetails, setPartnerDetails] = useState();
+    const [confirmLogout, setConfirmLogout] = useState(false);
     const loc = useLocation();
 
     const [upgradeModal, setUpgradeModal] = useState(true);
@@ -136,7 +139,7 @@ export default function Layout(){
                     <span>Settings</span>
                 </div>
             </Link> 
-            <div className={"xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 menu-side" }>
+            <div className={"xui-cursor-pointer xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 menu-side" }>
                 <div className="icon">
                     <Key />
                 </div>
@@ -144,12 +147,12 @@ export default function Layout(){
                     <span>Upgrade</span>
                 </div>
             </div> 
-            <div className="bottom-fixed xui-mt--5">
+            <div className="xui-cursor-pointer bottom-fixed xui-mt--5">
                 <div className="xui-text-inherit link-box xui-font-sz-90 xui-opacity-6 menu-side">
                     <div className="icon">
                         <Logout width="20" height="20" />
                     </div>
-                    <div onClick={handleLogout} className="name xui-ml-half">
+                    <div onClick={(e)=>{setConfirmLogout(true); }} xui-modal-open="logout"  className="name xui-ml-half">
                         <span>Logout</span>
                     </div>
                 </div>
@@ -157,7 +160,10 @@ export default function Layout(){
         </div>
         </div>
         <Outlet />
+        
         </section>
+
+        {confirmLogout && <ConfirmLogout logout={handleLogout} show={confirmLogout} onClose={()=>setConfirmLogout(false)} /> }
 
         {upgradeModal && <PartnersUpgradeAccount
         show={upgradeModal}

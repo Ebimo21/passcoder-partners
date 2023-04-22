@@ -15,13 +15,16 @@ import Congratulations from '../components/modals/Congratulations';
 import Error from '../components/modals/Error';
 import { BiNavigation } from 'react-icons/bi';
 import TailSpin from 'react-loading-icons/dist/esm/components/tail-spin';
+import ViewAnnouncement from '../components/modals/ViewAnnouncement';
 
 
 export default function Announcement(){
 
     const [render, setRender] = useState(false);
     const [createAnnouncement, setCreateAnnouncement] = useState(false);
+    const [announcements, setAnnouncements] = useState([]);
     const [announcement, setAnnouncement] = useState([]);
+    const [announcementId ,setAnnouncementId] = useState();
     const [notification, setNotification] = useState("");
     const [successNotification, setSuccessNotification] = useState(false);
     const [errorNotification, setErrorNotification] = useState(false);
@@ -31,6 +34,7 @@ export default function Announcement(){
     const [rowsPerPage, setRowsPerPage] = useState(10)
     const [page, setPage] = useState(1);
     const [announcementLoading, setAnnouncmentLoading] = useState(true);
+    const [viewAnnouncement, setViewAnnouncement] = useState(false);
 
 
     const handleAddUserToList =async(e)=>{
@@ -45,13 +49,20 @@ export default function Announcement(){
         else setErrorNotification(true);
     }
 
-    const handleGetAnnouncement =async () =>{
+    const handleGetAnnouncements =async () =>{
         setAnnouncmentLoading(true);
         const response = await PartnerGetAnnouncements(page, rowsPerPage)
         .finally((res)=>setAnnouncmentLoading(false));
-        setAnnouncement(response?.data?.rows);
+        setAnnouncements(response?.data?.rows);
         console.log(response?.data?.rows);
     }
+    // const handleGetAnnouncement =async () =>{
+    //     setAnnouncmentLoading(true);
+    //     const response = await PartnerGetAnnouncements(page, rowsPerPage)
+    //     .finally((res)=>setAnnouncmentLoading(false));
+    //     setAnnouncements(response?.data?.rows);
+    //     console.log(response?.data?.rows);
+    // }
 
     const handleCreateAnnouncement = async(e)=>{
         e.preventDefault();
@@ -63,13 +74,15 @@ export default function Announcement(){
         }else{
             setErrorNotification(prev=>true);
         }
+        dispatch({type: FORMACTION.CLEAR});
         setRender(false)
         setNotification(response?.data);
     }
     
     const FORMACTION= {
         TITLE: "title",
-        DESCRIPTION: "description"
+        DESCRIPTION: "description",
+        CLEAR: "clear"
     }
 
     const initialState = {
@@ -85,13 +98,15 @@ export default function Announcement(){
                 return {...state, title: payload};
             case FORMACTION.DESCRIPTION:
                 return {...state, description: payload};
+            case FORMACTION.CLEAR:
+                return {...state, ...initialState}
             default:
                 return state;
         }
     }
 
     const [data, dispatch]= useReducer(reducer, initialState );
-    useEffect(()=>{ handleGetAnnouncement() }, []);
+    useEffect(()=>{ handleGetAnnouncements() }, []);
 
     const addAnnouncementBtnRef = useRef();
 
@@ -114,7 +129,7 @@ export default function Announcement(){
         setRowsPerPage(row);
         const response = await PartnerGetAnnouncements(page, row)
         .finally((res)=>setAnnouncmentLoading(false));
-        setAnnouncement(response.data.rows)
+        setAnnouncements(response.data.rows)
 
     }
 
@@ -125,7 +140,7 @@ export default function Announcement(){
         const response = await PartnerGetAnnouncements(page+1, rowsPerPage)
         .finally((res)=>setAnnouncmentLoading(false));
 
-        setAnnouncement(response.data.rows);
+        setAnnouncements(response.data.rows);
 
     }
     
@@ -139,7 +154,7 @@ export default function Announcement(){
         const response = await PartnerGetAnnouncements(page-1, rowsPerPage)
         .finally((res)=>setAnnouncmentLoading(false));
 
-        setAnnouncement(response.data.rows);
+        setAnnouncements(response.data.rows);
     }
     return(
         <>
@@ -168,7 +183,7 @@ export default function Announcement(){
                     </tr>
                     </thead>
                     <tbody>
-                    { !announcementLoading && announcement?.map((item, index)=>{
+                    { !announcementLoading && announcements?.map((item, index)=>{
                         return(
                             <tr key={index} className=''>
                                 <td className='xui-opacity-5'>
@@ -185,7 +200,7 @@ export default function Announcement(){
                                 <span className={`${item?.status===0? "xui-badge-danger": item?.status=== 1? "xui-badge-success": "xui-badge-warning"} xui-badge xui-font-sz-80 xui-bdr-rad-half`}>{item?.status === 0? "Error": item?.status === 1 ? "Success" : "Pending"}</span>
                                 </td>
                                 <td className=''>
-                                    <span xui-modal-open="viewMore" className='xui-cursor-pointer xui-font-sz-90 psc-text'>View more</span>
+                                    <span xui-modal-open="viewMore" onClick={(e)=>{setViewAnnouncement(true); setAnnouncementId(item?.unique_id)}} className='xui-cursor-pointer xui-font-sz-90 psc-text'>View more</span>
                                 </td>
                             </tr>
                         )
@@ -229,9 +244,8 @@ export default function Announcement(){
             state={data}
             show={render} 
             />}
-            <section className='xui-modal' xui-modal="viewMore">
-                
-            </section>
+
+            {viewAnnouncement && <ViewAnnouncement show={viewAnnouncement} unique_id={announcementId} />}
             <div className="aside psc-bg-light-blue xui-py-2 xui-px-1-half">
             <div className='hidden p-5 md:flex flex-col justify-between w-[250px] bg-[#F9FAFC] h-screen text-xs'>
                 <div>

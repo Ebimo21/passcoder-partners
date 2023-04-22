@@ -5,8 +5,8 @@ import Navbar from '../components/Navbar';
 import Boxes from '../assets/images/boxes.png';
 import FlowerPlant from '../assets/images/flower-plant.png';
 import Arrowright from '../icons/Arrowright';
-import {useState, UseEffect, useEffect, useRef} from "react"
-import { Partner, PartnerActivateUser, PartnerAddLoyaltyPoints, PartnerMetrics, PartnerOffers } from '../config/apiCalls';
+import {useState, UseEffect, useEffect, useRef, useReducer} from "react"
+import { Partner, PartnerActivateUser, PartnerAddLoyaltyPoints, PartnerAddOffer, PartnerMetrics, PartnerOffers } from '../config/apiCalls';
 import SideIssueLoyaltyPoints from '../components/SideIssueLoyaltyPoints';
 import SideCheckoutLoyaltyPoints from '../components/SideCheckoutLoyaltyPoints';
 import TailSpin from 'react-loading-icons/dist/esm/components/tail-spin';
@@ -18,6 +18,7 @@ import Key from '../icons/Key';
 import "../assets/css/alt.css"
 import PartnersUpgradeAccount from '../components/modals/PartnersUpgradeAccount';
 import ConfirmUser from '../components/modals/ConfirmUser';
+import AddOffer from '../components/modals/AddOffer';
 
 export default function Dashboard(){
      const [activationSuccessNotification, setActivationSuccessNotification] = useState(false);
@@ -44,20 +45,8 @@ export default function Dashboard(){
     const [checkoutLoading, setCheckoutLoading] = useState(false);
     const [authenticatedUser, setAuthenticatedUser] = useState({});
 
-    // const [authData, setAuthDate] = useState(
-    //     {
-    //         name: "Emmanuel Nwoye",
-    //         offer_unique_id: "hrzTwi8nYxiWCCJq98HE",
-    //         photo: "http://fls.passcoder.io/user.png",
-    //         pid: "641C1C",
-    //         star: 3,
-    //         unique_id: "GPVSv56WVFSUEsTIYFDf",
-    //         user_partner_points: 1501,
-    //         user_points: 54,
-    //         verification_count: 0,
-    //         message: "User authenticated successfully"
-    //     }
-    // )
+    const [render, setRender] = useState(false);
+    const [offerLoading, setOfferLoading] = useState(true);
 
      const handleLoyalty=()=>{
         setCheckout(false)
@@ -152,6 +141,89 @@ const handleCheckoutLoyalty = async(e)=>{
          getPartnerMetrics();
          getPartnerOffers();
      },[])
+
+     const offerForm = {
+        name: "",
+        discount: 0,
+        limit: 0,
+        single: true,
+        description: "",
+        points: 0,
+        star: 0,
+    }
+    const FORMACTION={
+        NAME: "name",
+        DISCOUNT: "discount",
+        LIMIT: "limit",
+        SINGLE: "false",
+        DESCRIPTION: "description",
+        START: "start",
+        END: "end",
+        POINTS: "points",
+        STAR: "star",
+        CLEAR: "clear"
+    }
+    const reducer =(state, action)=>{
+        const {type, payload} = action;
+        let newPayload;
+        switch(type){
+            case FORMACTION.NAME:
+                return {...state, name: payload};
+            case FORMACTION.DISCOUNT:
+                return {...state, discount: parseInt(payload)};
+            case FORMACTION.LIMIT:
+                console.log(state);
+                return {...state, limit: parseInt(payload)};
+            case FORMACTION.SINGLE:
+                return {...state, single: payload};
+            case FORMACTION.DESCRIPTION:
+                return {...state, description: payload};
+            case FORMACTION.START:
+                newPayload = payload.replace(/[T]/, " ");
+                return {...state, start: newPayload};
+            case FORMACTION.END:
+                newPayload = payload.replace(/[T]/, " ");
+                return {...state, end: newPayload};
+            case FORMACTION.POINTS:
+                return {...state, points: parseInt(payload)};
+            case FORMACTION.STAR:
+                return {...state, star: parseInt(payload)};
+            case FORMACTION.CLEAR:
+                return {...state, ...offerForm};
+            default:
+                return state;
+        };
+    };
+    const [state, dispatch] = useReducer(reducer, offerForm );
+    const handleSubmit= async(e)=>{
+        e.preventDefault();
+        console.log(state);
+        const response = await PartnerAddOffer(state);
+        setNotification(response);
+        setRender(false);
+
+        if(response.success){
+            setSuccessNotification(prev=>true);
+        }else{
+            setErrorNotification(prev=>true);
+        }
+        dispatch({type: FORMACTION.CLEAR});
+
+    }
+
+    const addOfferBtnRef = useRef();
+
+    useEffect(()=>{
+
+        const handleCaptureAddOffers=()=>{
+            setRender(prev=>!prev);
+        }
+
+        addOfferBtnRef.current?.addEventListener('click', handleCaptureAddOffers, false);
+        // return ()=> addOfferBtnRef.current?.removeEventListener('click', handleCaptureAddOffers);
+        
+
+    }, [render]);
     return(
         <>
         <Screen aside="true" navbar="false">
@@ -275,7 +347,7 @@ const handleCheckoutLoyalty = async(e)=>{
                     <div className='psc-bg-light-blue-ii xui-px-1 xui-pt-5 xui-pb-1 xui-mt--4'>
                         <h4 className='xui-font-sz-90 xui-mt-half'>Earn more with offers</h4>
                         <p className='xui-opacity-4 xui-font-sz-85 xui-line-height-1-half xui-mt-half xui-w-fluid-90'>Premium partners can earn more and attract more customers with amazing offers. Create yours now.</p>
-                        <button className='xui-btn-block psc-btn-blue-alt xui-bdr-rad-half xui-font-sz-85 xui-mt-2'>Create an offer</button>
+                        <button xui-modal-open="addOffer" ref={addOfferBtnRef} className='xui-btn-block psc-btn-blue-alt xui-bdr-rad-half xui-font-sz-85 xui-mt-2'>Create an offer</button>
                     </div>
                 </div>
             </div>
@@ -287,6 +359,7 @@ const handleCheckoutLoyalty = async(e)=>{
     onClose={()=>setErrorNotification(false)} 
     />}
 
+{render&&<AddOffer FORMACTION={FORMACTION} dispatch={dispatch} handleSubmit={handleSubmit} show={render}  />}
 {activationSuccessNotification && <ConfirmUser data={authenticatedUser?.data} message={authenticatedUser?.message} show={activationSuccessNotification} onClose={()=>setActivationSuccessNotification(false)} />}
     {successNotification && <Congratulations 
     lead={notification?.message} 
