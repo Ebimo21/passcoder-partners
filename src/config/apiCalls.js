@@ -195,7 +195,7 @@ export const PartnerLoginVerifyOtp =async(email, otp, stripped)=>{
             {
 
             })
-        const responseJWT = response.data.data.token
+        const responseJWT = response.data.data.token;
         jsCookie.set({
             name: "jwt",
             value: responseJWT,
@@ -838,11 +838,15 @@ export const PartnerGetAnnouncements =async(page=1, size=10)=>{
     }
 }
 
-export const PartnerGetAnnouncement =async()=>{
+export const PartnerGetAnnouncement =async(unique_id)=>{
     try {
         const response = await axios.post(
             `${host}partner/announcement`, 
-            {},
+            {
+                
+                unique_id: unique_id
+                
+            },
             {
                 headers: {
                     "passcoder-access-token": jwt

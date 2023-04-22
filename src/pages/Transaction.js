@@ -5,10 +5,13 @@ import Navbar from '../components/Navbar';
 import Content from '../components/Content';
 import Arrowright from '../icons/Arrowright';
 import Arrowleft from '../icons/Arrowleft';
-import {useState, useEffect} from "react";
-import { PartnerTransactions } from '../config/apiCalls';
+import {useState, useEffect, useReducer, useRef} from "react";
+import { PartnerAddOffer, PartnerOffers, PartnerTransactions } from '../config/apiCalls';
 import Screen from '../components/Screen';
 import TailSpin from 'react-loading-icons/dist/esm/components/tail-spin';
+import AddOffer from '../components/modals/AddOffer';
+import Congratulations from '../components/modals/Congratulations';
+import Error from '../components/modals/Error';
 
 export default function Transaction(){
     const [transactions, setTransactions] = useState([]);
@@ -16,6 +19,15 @@ export default function Transaction(){
     const [rowsPerPage, setRowsPerPage] = useState(10)
     const [page, setPage] = useState(1);
     const [transactionsLoading, setTransactionsLoading] = useState(true);
+    const [render, setRender] = useState(false);
+    const [notification, setNotification] = useState("");
+    const [successNotification, setSuccessNotification] = useState();
+    const [errorNotification, setErrorNotification] = useState();
+    const [offerLoading, setOfferLoading] = useState(true);
+    const [offers, setOffers] = useState();
+
+
+
 
     
     async function getPartnerTransactions (){
@@ -62,6 +74,89 @@ export default function Transaction(){
         .finally((res)=>setTransactionsLoading(false));
         setTransactions(response.data.rows);
     }
+
+    const offerForm = {
+        name: "",
+        discount: 0,
+        limit: 0,
+        single: true,
+        description: "",
+        points: 0,
+        star: 0,
+    }
+    const FORMACTION={
+        NAME: "name",
+        DISCOUNT: "discount",
+        LIMIT: "limit",
+        SINGLE: "false",
+        DESCRIPTION: "description",
+        START: "start",
+        END: "end",
+        POINTS: "points",
+        STAR: "star",
+        CLEAR: "clear"
+    }
+    const reducer =(state, action)=>{
+        const {type, payload} = action;
+        let newPayload;
+        switch(type){
+            case FORMACTION.NAME:
+                return {...state, name: payload};
+            case FORMACTION.DISCOUNT:
+                return {...state, discount: parseInt(payload)};
+            case FORMACTION.LIMIT:
+                console.log(state);
+                return {...state, limit: parseInt(payload)};
+            case FORMACTION.SINGLE:
+                return {...state, single: payload};
+            case FORMACTION.DESCRIPTION:
+                return {...state, description: payload};
+            case FORMACTION.START:
+                newPayload = payload.replace(/[T]/, " ");
+                return {...state, start: newPayload};
+            case FORMACTION.END:
+                newPayload = payload.replace(/[T]/, " ");
+                return {...state, end: newPayload};
+            case FORMACTION.POINTS:
+                return {...state, points: parseInt(payload)};
+            case FORMACTION.STAR:
+                return {...state, star: parseInt(payload)};
+            case FORMACTION.CLEAR:
+                return {...state, ...offerForm};
+            default:
+                return state;
+        };
+    };
+    const [state, dispatch] = useReducer(reducer, offerForm );
+    const handleSubmit= async(e)=>{
+        e.preventDefault();
+        console.log(state);
+        const response = await PartnerAddOffer(state);
+        setNotification(response);
+        setRender(false);
+
+        if(response.success){
+            setSuccessNotification(prev=>true);
+        }else{
+            setErrorNotification(prev=>true);
+        }
+        dispatch({type: FORMACTION.CLEAR});
+
+    }
+
+    const addOfferBtnRef = useRef();
+
+    useEffect(()=>{
+
+        const handleCaptureAddOffers=()=>{
+            setRender(prev=>!prev);
+        }
+
+        addOfferBtnRef.current?.addEventListener('click', handleCaptureAddOffers, false);
+        // return ()=> addOfferBtnRef.current?.removeEventListener('click', handleCaptureAddOffers);
+        
+
+    }, [render]);
     return(
         <>
         <Screen aside="true" navbar="false">
@@ -173,10 +268,21 @@ export default function Transaction(){
                     <div className='psc-bg-light-blue-ii xui-px-1 xui-pt-5 xui-pb-1 xui-mt--4'>
                         <h4 className='xui-font-sz-90 xui-mt-half'>Earn more with offers</h4>
                         <p className='xui-opacity-4 xui-font-sz-85 xui-line-height-1-half xui-mt-half xui-w-fluid-90'>Premium partners can earn more and attract more customers with amazing offers. Create yours now.</p>
-                        <button className='xui-btn-block psc-btn-blue-alt xui-bdr-rad-half xui-font-sz-85 xui-mt-2'>Create an offer</button>
+                        <button xui-modal-open="addOffer" ref={addOfferBtnRef} className='xui-btn-block psc-btn-blue-alt xui-bdr-rad-half xui-font-sz-85 xui-mt-2'>Create an offer</button>
                     </div>
                 </div>
             </div>
+        {render&&<AddOffer FORMACTION={FORMACTION} dispatch={dispatch} handleSubmit={handleSubmit} show={render}  />}
+        <Congratulations
+        lead={notification?.message} 
+        show={successNotification} 
+        onClose={()=>setSuccessNotification(false)}
+        />
+      <Error
+        lead={notification?.message} 
+        sub={notification?.data?.data} 
+        show={errorNotification} 
+        onClose={()=>setErrorNotification(false)} />
             </Screen>
         </>
     );
